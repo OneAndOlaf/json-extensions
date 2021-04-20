@@ -30,7 +30,7 @@ class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
 
     private fun unsupported() = UnsupportedOperationException("Attempt to write to a read-only object")
 
-    override fun iterator(): MutableIterator<Any> {
+    override fun iterator(): MutableIterator<*> {
         TODO()
     }
 
