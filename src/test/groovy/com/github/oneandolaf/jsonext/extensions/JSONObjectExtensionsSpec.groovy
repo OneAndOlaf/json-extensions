@@ -482,6 +482,25 @@ class JSONObjectExtensionsSpec extends Specification {
         val3 == 2l
     }
 
+    def "test getOrPut Number"() {
+        given:
+        def obj = new JSONObject([
+                present: 4l,
+                different: 'foo'
+        ])
+
+        when:
+
+        def val1 = getOrPut(obj, 'absent', BigInteger.valueOf(2) as Number)
+        def val2 = getOrPut(obj, 'present', BigInteger.valueOf(2) as Number)
+        def val3 = getOrPut(obj, 'different', BigInteger.valueOf(2) as Number)
+
+        then:
+        val1 == BigInteger.valueOf(2) as Number
+        val2 == BigInteger.valueOf(4) as Number
+        val3 == BigInteger.valueOf(2) as Number
+    }
+
     def "test getOrPut String"() {
         given:
         def obj = new JSONObject([

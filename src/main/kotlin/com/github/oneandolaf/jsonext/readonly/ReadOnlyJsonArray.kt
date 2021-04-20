@@ -18,15 +18,30 @@
 package com.github.oneandolaf.jsonext.readonly
 
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.Writer
-import java.lang.UnsupportedOperationException
-import org.json.JSONException
-
-
+import java.lang.reflect.Field
 
 
 class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
+
+    init {
+        try {
+            // set the internal ArrayList because org.json likes to access the private fields of other objects
+            // for instance, similar would not be symmetric if we don't do this
+
+            val field: Field? = JSONArray::class.java.getDeclaredField("myArrayList")
+
+            field?.let {
+                it.isAccessible = true
+                val list = it.get(src)
+                it.set(this, list)
+            }
+        } catch (e: Exception) {
+            // do nothing for now, it was worth a try
+        }
+    }
 
     private fun unsupported() = UnsupportedOperationException("Attempt to write to a read-only object")
 
@@ -53,14 +68,14 @@ class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
         return opt(index) ?: throw JSONException("JSONArray[$index] not found.")
     }
 
-    override fun getJSONObject(index: Int): JSONObject {
+    override fun getJSONObject(index: Int): ReadOnlyJsonObject {
         return when (val data = src.getJSONObject(index)) {
             is ReadOnlyJsonObject -> data
             else -> ReadOnlyJsonObject(data)
         }
     }
 
-    override fun getJSONArray(index: Int): JSONArray {
+    override fun getJSONArray(index: Int): ReadOnlyJsonArray {
         return when (val data = src.getJSONArray(index)) {
             is ReadOnlyJsonArray -> data
             else -> ReadOnlyJsonArray(data)
@@ -138,14 +153,14 @@ class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
     /**
      * Unsupported for read-only objects.
      */
-    override fun put(value: MutableCollection<*>?): JSONArray {
+    override fun put(value: Collection<*>?): JSONArray {
         throw unsupported()
     }
 
     /**
      * Unsupported for read-only objects.
      */
-    override fun put(value: MutableMap<*, *>?): JSONArray {
+    override fun put(value: Map<*, *>?): JSONArray {
         throw unsupported()
     }
 
@@ -194,14 +209,14 @@ class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
     /**
      * Unsupported for read-only objects.
      */
-    override fun put(index: Int, value: MutableCollection<*>?): JSONArray {
+    override fun put(index: Int, value: Collection<*>?): JSONArray {
         throw unsupported()
     }
 
     /**
      * Unsupported for read-only objects.
      */
-    override fun put(index: Int, value: MutableMap<*, *>?): JSONArray {
+    override fun put(index: Int, value: Map<*, *>?): JSONArray {
         throw unsupported()
     }
 
@@ -222,14 +237,14 @@ class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
     /**
      * Unsupported for read-only objects.
      */
-    override fun putAll(collection: MutableCollection<*>?): JSONArray {
+    override fun putAll(collection: Collection<*>?): JSONArray {
         throw unsupported()
     }
 
     /**
      * Unsupported for read-only objects.
      */
-    override fun putAll(iter: MutableIterable<*>?): JSONArray {
+    override fun putAll(iter: Iterable<*>?): JSONArray {
         throw unsupported()
     }
 
@@ -243,7 +258,13 @@ class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
 
 
     override fun similar(other: Any?): Boolean {
-        return src.similar(other)
+        return if (other is ReadOnlyJsonArray) {
+            // this is necessary because similar just accesses the other object's internal ArrayList, which is empty
+            // for read-only objects
+            src.similar(other.src)
+        } else {
+            src.similar(other)
+        }
     }
 
     override fun toString(): String = src.toString()
