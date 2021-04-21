@@ -17,6 +17,7 @@
 
 package com.github.oneandolaf.jsonext.extensions
 
+import com.github.oneandolaf.jsonext.readonly.ReadOnlyJsonArray
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -41,4 +42,11 @@ fun JSONArray.deepCopy(): JSONArray {
     }
 
     return copy
+}
+
+/**
+ * Creates a read-only array backed by this one.
+ */
+fun JSONArray.asReadOnly(): ReadOnlyJsonArray {
+    return ReadOnlyJsonArray(this)
 }

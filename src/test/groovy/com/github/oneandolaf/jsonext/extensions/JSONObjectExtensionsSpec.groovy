@@ -17,13 +17,12 @@
 
 package com.github.oneandolaf.jsonext.extensions
 
+import com.github.oneandolaf.jsonext.readonly.ReadOnlyJsonObject
 import org.json.JSONArray
 import org.json.JSONObject
 import spock.lang.Specification
 
-import javax.swing.GroupLayout
-
-import static com.github.oneandolaf.jsonext.extensions.JSONObjectExtensionsKt.*
+import javax.swing.*
 
 class JSONObjectExtensionsSpec extends Specification {
 
@@ -37,9 +36,9 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putIfAbsent(obj, 'absent', true)
-        returned += putIfAbsent(obj, 'present', false)
-        returned += putIfAbsent(obj, 'different', true)
+        returned += obj.putIfAbsent('absent', true)
+        returned += obj.putIfAbsent('present', false)
+        returned += obj.putIfAbsent('different', true)
 
         then:
         obj.getBoolean('absent')
@@ -59,9 +58,9 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putIfAbsent(obj, 'absent', ['b'])
-        returned += putIfAbsent(obj, 'present', ['b'])
-        returned += putIfAbsent(obj, 'different', ['b'])
+        returned += obj.putIfAbsent('absent', ['b'])
+        returned += obj.putIfAbsent('present', ['b'])
+        returned += obj.putIfAbsent('different', ['b'])
 
         then:
         obj.getJSONArray('absent').similar(new JSONArray(['b']))
@@ -81,9 +80,9 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putIfAbsent(obj, 'absent', 1.2d)
-        returned += putIfAbsent(obj, 'present', 1.2d)
-        returned += putIfAbsent(obj, 'different', 1.2d)
+        returned += obj.putIfAbsent('absent', 1.2d)
+        returned += obj.putIfAbsent('present', 1.2d)
+        returned += obj.putIfAbsent('different', 1.2d)
 
         then:
         obj.getDouble('absent') == 1.2d
@@ -103,9 +102,9 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putIfAbsent(obj, 'absent', 1.2f)
-        returned += putIfAbsent(obj, 'present', 1.2f)
-        returned += putIfAbsent(obj, 'different', 1.2f)
+        returned += obj.putIfAbsent('absent', 1.2f)
+        returned += obj.putIfAbsent('present', 1.2f)
+        returned += obj.putIfAbsent('different', 1.2f)
 
         then:
         obj.getFloat('absent') == 1.2f
@@ -125,9 +124,9 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putIfAbsent(obj, 'absent', 12)
-        returned += putIfAbsent(obj, 'present', 12)
-        returned += putIfAbsent(obj, 'different', 12)
+        returned += obj.putIfAbsent('absent', 12)
+        returned += obj.putIfAbsent('present', 12)
+        returned += obj.putIfAbsent('different', 12)
 
         then:
         obj.getInt('absent') == 12
@@ -147,9 +146,9 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putIfAbsent(obj, 'absent', 12l)
-        returned += putIfAbsent(obj, 'present', 12l)
-        returned += putIfAbsent(obj, 'different', 12l)
+        returned += obj.putIfAbsent('absent', 12l)
+        returned += obj.putIfAbsent('present', 12l)
+        returned += obj.putIfAbsent('different', 12l)
 
         then:
         obj.getLong('absent') == 12l
@@ -171,9 +170,9 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putIfAbsent(obj, 'absent', [b: true])
-        returned += putIfAbsent(obj, 'present', [b: true])
-        returned += putIfAbsent(obj, 'different', [b: true])
+        returned += obj.putIfAbsent('absent', [b: true])
+        returned += obj.putIfAbsent('present', [b: true])
+        returned += obj.putIfAbsent('different', [b: true])
 
         then:
         obj.getJSONObject('absent').similar(new JSONObject([b: true]))
@@ -195,9 +194,9 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putIfAbsent(obj, 'absent', new JSONObject([b: true]))
-        returned += putIfAbsent(obj, 'present', new JSONObject([b: true]))
-        returned += putIfAbsent(obj, 'different', new JSONObject([b: true]))
+        returned += obj.putIfAbsent('absent', new JSONObject([b: true]))
+        returned += obj.putIfAbsent('present', new JSONObject([b: true]))
+        returned += obj.putIfAbsent('different', new JSONObject([b: true]))
 
         then:
         obj.getJSONObject('absent').similar(new JSONObject([b: true]))
@@ -217,9 +216,9 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putIfAbsent(obj, 'absent', new JSONArray(['b']))
-        returned += putIfAbsent(obj, 'present', new JSONArray(['b']))
-        returned += putIfAbsent(obj, 'different', new JSONArray(['b']))
+        returned += obj.putIfAbsent('absent', new JSONArray(['b']))
+        returned += obj.putIfAbsent('present', new JSONArray(['b']))
+        returned += obj.putIfAbsent('different', new JSONArray(['b']))
 
         then:
         obj.getJSONArray('absent').similar(new JSONArray(['b']))
@@ -239,9 +238,9 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putIfAbsent(obj, 'absent', 'b')
-        returned += putIfAbsent(obj, 'present', 'b')
-        returned += putIfAbsent(obj, 'different', 'b')
+        returned += obj.putIfAbsent('absent', 'b')
+        returned += obj.putIfAbsent('present', 'b')
+        returned += obj.putIfAbsent('different', 'b')
 
         then:
         obj.getString('absent') == 'b'
@@ -260,8 +259,8 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putIfAbsent(obj, 'absent', JSONObject.NULL)
-        returned += putIfAbsent(obj, 'present', JSONObject.NULL)
+        returned += obj.putIfAbsent('absent', JSONObject.NULL)
+        returned += obj.putIfAbsent('present', JSONObject.NULL)
 
         then:
         obj.get('absent') === JSONObject.NULL
@@ -279,10 +278,10 @@ class JSONObjectExtensionsSpec extends Specification {
         List<JSONObject> returned = []
 
         when:
-        returned += putOptIfAbsent(obj, 'absent1', 'b')
-        returned += putOptIfAbsent(obj, 'present', 'b')
-        returned += putOptIfAbsent(obj, 'absent2', null)
-        returned += putOptIfAbsent(obj, null, 'b')
+        returned += obj.putOptIfAbsent('absent1', 'b')
+        returned += obj.putOptIfAbsent('present', 'b')
+        returned += obj.putOptIfAbsent('absent2', null)
+        returned += obj.putOptIfAbsent(null, 'b')
 
         then:
         obj.getString('absent1') == 'b'
@@ -301,9 +300,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', 2.0g)
-        def val2 = getOrPut(obj, 'present', 2.0g)
-        def val3 = getOrPut(obj, 'different', 2.0g)
+        def val1 = obj.getOrPut('absent', 2.0g)
+        def val2 = obj.getOrPut('present', 2.0g)
+        def val3 = obj.getOrPut('different', 2.0g)
 
         then:
         val1 == 2.0g
@@ -320,9 +319,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', 2g)
-        def val2 = getOrPut(obj, 'present', 2g)
-        def val3 = getOrPut(obj, 'different', 2g)
+        def val1 = obj.getOrPut('absent', 2g)
+        def val2 = obj.getOrPut('present', 2g)
+        def val3 = obj.getOrPut('different', 2g)
 
         then:
         val1 == 2g
@@ -339,9 +338,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', true)
-        def val2 = getOrPut(obj, 'present', true)
-        def val3 = getOrPut(obj, 'different', true)
+        def val1 = obj.getOrPut('absent', true)
+        def val2 = obj.getOrPut('present', true)
+        def val3 = obj.getOrPut('different', true)
 
         then:
         val1 === true
@@ -358,9 +357,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', 2.0d)
-        def val2 = getOrPut(obj, 'present', 2.0d)
-        def val3 = getOrPut(obj, 'different', 2.0d)
+        def val1 = obj.getOrPut('absent', 2.0d)
+        def val2 = obj.getOrPut('present', 2.0d)
+        def val3 = obj.getOrPut('different', 2.0d)
 
         then:
         val1 == 2.0d
@@ -377,9 +376,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', GroupLayout.Alignment.LEADING)
-        def val2 = getOrPut(obj, 'present', GroupLayout.Alignment.LEADING)
-        def val3 = getOrPut(obj, 'different', GroupLayout.Alignment.LEADING)
+        def val1 = obj.getOrPut('absent', GroupLayout.Alignment.LEADING)
+        def val2 = obj.getOrPut('present', GroupLayout.Alignment.LEADING)
+        def val3 = obj.getOrPut('different', GroupLayout.Alignment.LEADING)
 
         then:
         val1 == GroupLayout.Alignment.LEADING
@@ -396,9 +395,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', 2.0f)
-        def val2 = getOrPut(obj, 'present', 2.0f)
-        def val3 = getOrPut(obj, 'different', 2.0f)
+        def val1 = obj.getOrPut('absent', 2.0f)
+        def val2 = obj.getOrPut('present', 2.0f)
+        def val3 = obj.getOrPut('different', 2.0f)
 
         then:
         val1 == 2.0f
@@ -415,9 +414,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', 2)
-        def val2 = getOrPut(obj, 'present', 2)
-        def val3 = getOrPut(obj, 'different', 2)
+        def val1 = obj.getOrPut('absent', 2)
+        def val2 = obj.getOrPut('present', 2)
+        def val3 = obj.getOrPut('different', 2)
 
         then:
         val1 == 2
@@ -434,9 +433,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', new JSONArray(['b']))
-        def val2 = getOrPut(obj, 'present', new JSONArray(['b']))
-        def val3 = getOrPut(obj, 'different', new JSONArray(['b']))
+        def val1 = obj.getOrPut('absent', new JSONArray(['b']))
+        def val2 = obj.getOrPut('present', new JSONArray(['b']))
+        def val3 = obj.getOrPut('different', new JSONArray(['b']))
 
         then:
         val1.similar(new JSONArray(['b']))
@@ -453,9 +452,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', new JSONObject([b: true]))
-        def val2 = getOrPut(obj, 'present', new JSONObject([b: true]))
-        def val3 = getOrPut(obj, 'different', new JSONObject([b: true]))
+        def val1 = obj.getOrPut('absent', new JSONObject([b: true]))
+        def val2 = obj.getOrPut('present', new JSONObject([b: true]))
+        def val3 = obj.getOrPut('different', new JSONObject([b: true]))
 
         then:
         val1.similar(new JSONObject([b: true]))
@@ -472,9 +471,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', 2l)
-        def val2 = getOrPut(obj, 'present', 2l)
-        def val3 = getOrPut(obj, 'different', 2l)
+        def val1 = obj.getOrPut('absent', 2l)
+        def val2 = obj.getOrPut('present', 2l)
+        def val3 = obj.getOrPut('different', 2l)
 
         then:
         val1 == 2l
@@ -491,9 +490,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', BigInteger.valueOf(2) as Number)
-        def val2 = getOrPut(obj, 'present', BigInteger.valueOf(2) as Number)
-        def val3 = getOrPut(obj, 'different', BigInteger.valueOf(2) as Number)
+        def val1 = obj.getOrPut('absent', BigInteger.valueOf(2) as Number)
+        def val2 = obj.getOrPut('present', BigInteger.valueOf(2) as Number)
+        def val3 = obj.getOrPut('different', BigInteger.valueOf(2) as Number)
 
         then:
         val1 == BigInteger.valueOf(2) as Number
@@ -510,9 +509,9 @@ class JSONObjectExtensionsSpec extends Specification {
 
         when:
 
-        def val1 = getOrPut(obj, 'absent', 'bar')
-        def val2 = getOrPut(obj, 'present', 'bar')
-        def val3 = getOrPut(obj, 'different', 'bar')
+        def val1 = obj.getOrPut('absent', 'bar')
+        def val2 = obj.getOrPut('present', 'bar')
+        def val3 = obj.getOrPut('different', 'bar')
 
         then:
         val1 == 'bar'
@@ -539,7 +538,7 @@ class JSONObjectExtensionsSpec extends Specification {
         ])
 
         when:
-        def copy = deepCopy(obj)
+        def copy = obj.deepCopy()
 
         then:
         copy != obj
@@ -547,5 +546,23 @@ class JSONObjectExtensionsSpec extends Specification {
 
         copy.getJSONObject("subObj") != obj.getJSONObject("subObj")
 
+    }
+
+    def "asReadOnly"() {
+        given:
+        def obj = new JSONObject()
+
+        when:
+        def ro1 = obj.asReadOnly()
+
+        then:
+        ro1 instanceof ReadOnlyJsonObject
+        ro1.empty
+
+        when:
+        obj.put("foo", "bar")
+
+        then:
+        ro1.get("foo") == "bar"
     }
 }

@@ -36,7 +36,7 @@ class JSONArrayExtensionsSpec extends Specification {
         ])
 
         when:
-        def copy = JSONArrayExtensionsKt.deepCopy(arr)
+        def copy = arr.deepCopy()
 
         then:
         copy != arr

@@ -27,7 +27,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "length"() {
         given:
         def arr = new JSONArray()
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         expect:
         arr.length() == 0
@@ -44,7 +44,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "clear"() {
         given:
         def arr = new JSONArray()
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         when:
         ro.clear()
@@ -64,7 +64,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "join"() {
         given:
         def arr = new JSONArray()
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         arr.put("a").put("b")
 
@@ -75,7 +75,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "get"() {
         given:
         def arr = new JSONArray([1, "foo", new JSONObject(), new JSONArray([3])])
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         when:
         def el0 = ro.get(0)
@@ -94,7 +94,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "getJSONObject"() {
         given:
         def arr = new JSONArray([1, new JSONObject(), new ReadOnlyJsonObject(new JSONObject())])
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         when:
         ro.getJSONObject(0)
@@ -110,7 +110,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "getJSONArray"() {
         given:
         def arr = new JSONArray([1, new JSONArray(), new ReadOnlyJsonArray(new JSONArray())])
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         when:
         ro.getJSONArray(0)
@@ -125,7 +125,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "opt"() {
         given:
         def arr = new JSONArray([1, "foo", new JSONObject(), new JSONArray([3])])
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         when:
         def el0 = ro.opt(0)
@@ -146,7 +146,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "optJSONArray"() {
         given:
         def arr = new JSONArray([1, new JSONArray(), new ReadOnlyJsonArray(new JSONArray())])
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         expect:
         ro.optJSONArray(0) == null
@@ -158,7 +158,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "optJSONObject"() {
         given:
         def arr = new JSONArray([1, new JSONObject(), new ReadOnlyJsonObject(new JSONObject())])
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         expect:
         ro.optJSONObject(0) == null
@@ -170,7 +170,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "put end"() {
         given:
         def arr = new JSONArray()
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         when:
         ro.put(new Object())
@@ -216,7 +216,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "put index"() {
         given:
         def arr = new JSONArray([1, 2])
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         when:
         ro.put(0, new Object())
@@ -262,7 +262,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "putAll"() {
         given:
         def arr = new JSONArray()
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         when:
         ro.putAll(new Object())
@@ -288,7 +288,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "remove"() {
         given:
         def arr = new JSONArray()
-        def ro = new ReadOnlyJsonArray(arr)
+        def ro = arr.asReadOnly()
 
         when:
         ro.remove(0)
@@ -299,9 +299,9 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "similar"() {
         given:
         def arr1 = new JSONArray()
-        def ro1 = new ReadOnlyJsonArray(arr1)
+        def ro1 = arr1.asReadOnly()
         def arr2 = new JSONArray()
-        def ro2 = new ReadOnlyJsonArray(arr2)
+        def ro2 = arr2.asReadOnly()
 
         expect:
         ro1.similar(arr1)
@@ -341,7 +341,65 @@ class ReadOnlyJsonArraySpec extends Specification {
         arr1.similar(ro1)
         arr1.similar(arr2)
         arr1.similar(ro2)
+    }
 
+    def "test toString"() {
+        given:
+        def arr = new JSONArray()
+        def ro = arr.asReadOnly()
+
+        expect:
+        ro.toString() == arr.toString()
+        ro.toString(1) == arr.toString(1)
+        ro.toString(4) == arr.toString(4)
+
+        when:
+        arr.put("foo").put(1).put(false)
+
+        then:
+        ro.toString() == arr.toString()
+        ro.toString(1) == arr.toString(1)
+        ro.toString(4) == arr.toString(4)
+    }
+
+    def "toList"() {
+        given:
+        def arr = new JSONArray()
+        def ro = arr.asReadOnly()
+
+        when:
+        def list1 = ro.toList()
+
+        then:
+        list1.empty
+
+        when:
+        arr.put(1)
+        def list2 = ro.toList()
+
+        then:
+        list2.size() == 1
+        list1 != list2
+    }
+
+    def "isEmpty"() {
+        given:
+        def arr = new JSONArray()
+        def ro = arr.asReadOnly()
+
+        expect:
+        ro.isEmpty()
+
+        when:
+        arr.put(1)
+
+        then:
+        !ro.isEmpty()
+
+        when:
+        arr.remove(0)
+        then:
+        ro.isEmpty()
     }
 
 }

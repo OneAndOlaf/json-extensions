@@ -17,6 +17,7 @@
 
 package com.github.oneandolaf.jsonext.extensions
 
+import com.github.oneandolaf.jsonext.readonly.ReadOnlyJsonObject
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -390,4 +391,18 @@ fun JSONObject.deepCopy(): JSONObject {
     }
 
     return copy
+}
+
+/**
+ * Creates a read-only object backed by this one.
+ */
+fun JSONObject.asReadOnly(): ReadOnlyJsonObject {
+    return ReadOnlyJsonObject(this)
+}
+
+/**
+ * Checks whether the object contains a given key. Provided for operator overloading.
+ */
+operator fun JSONObject.contains(key: String?): Boolean {
+    return this.has(key)
 }
