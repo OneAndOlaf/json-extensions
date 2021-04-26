@@ -47,4 +47,30 @@ class JSONArrayExtensionsSpec extends Specification {
 
     }
 
+    def "toBigDecimalList"() {
+        given:
+        def arr = new JSONArray([BigDecimal.valueOf(1), BigDecimal.valueOf(2)])
+
+        when:
+        def list = arr.toBigDecimalList()
+
+        then:
+        list instanceof List
+        list.size() == 2
+        list[0] == BigDecimal.valueOf(1)
+        list[1] == BigDecimal.valueOf(2)
+
+        when:
+        arr.put(BigDecimal.valueOf(3))
+
+        then:
+        list.size() == 2
+
+        when:
+        list.add(BigDecimal.valueOf(4))
+
+        then:
+        arr.similar(new JSONArray([BigDecimal.valueOf(1), BigDecimal.valueOf(2), BigDecimal.valueOf(3)]))
+    }
+
 }

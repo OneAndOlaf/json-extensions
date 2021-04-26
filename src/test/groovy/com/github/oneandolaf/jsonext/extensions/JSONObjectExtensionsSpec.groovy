@@ -17,7 +17,7 @@
 
 package com.github.oneandolaf.jsonext.extensions
 
-import com.github.oneandolaf.jsonext.readonly.ReadOnlyJsonObject
+import com.github.oneandolaf.jsonext.readonly.JSONObjectUnmodifiable
 import org.json.JSONArray
 import org.json.JSONObject
 import spock.lang.Specification
@@ -343,9 +343,9 @@ class JSONObjectExtensionsSpec extends Specification {
         def val3 = obj.getOrPut('different', true)
 
         then:
-        val1 === true
-        val2 === false
-        val3 === true
+        val1
+        !val2
+        val3
     }
 
     def "test getOrPut double"() {
@@ -548,15 +548,15 @@ class JSONObjectExtensionsSpec extends Specification {
 
     }
 
-    def "asReadOnly"() {
+    def "asUnmodifiable"() {
         given:
         def obj = new JSONObject()
 
         when:
-        def ro1 = obj.asReadOnly()
+        def ro1 = obj.asUnmodifiable()
 
         then:
-        ro1 instanceof ReadOnlyJsonObject
+        ro1 instanceof JSONObjectUnmodifiable
         ro1.empty
 
         when:

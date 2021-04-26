@@ -22,12 +22,12 @@ import org.json.JSONException
 import org.json.JSONObject
 import spock.lang.Specification
 
-class ReadOnlyJsonArraySpec extends Specification {
+class JSONArrayUnmodifiableSpec extends Specification {
 
     def "length"() {
         given:
         def arr = new JSONArray()
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         expect:
         arr.length() == 0
@@ -44,7 +44,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "clear"() {
         given:
         def arr = new JSONArray()
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         when:
         ro.clear()
@@ -64,7 +64,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "join"() {
         given:
         def arr = new JSONArray()
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         arr.put("a").put("b")
 
@@ -75,7 +75,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "get"() {
         given:
         def arr = new JSONArray([1, "foo", new JSONObject(), new JSONArray([3])])
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         when:
         def el0 = ro.get(0)
@@ -86,15 +86,15 @@ class ReadOnlyJsonArraySpec extends Specification {
         then:
         el0 == 1
         el1 == "foo"
-        el2 instanceof ReadOnlyJsonObject
-        el3 instanceof ReadOnlyJsonArray
-        (el3 as ReadOnlyJsonArray).get(0) == 3
+        el2 instanceof JSONObjectUnmodifiable
+        el3 instanceof JSONArrayUnmodifiable
+        (el3 as JSONArrayUnmodifiable).get(0) == 3
     }
 
     def "getJSONObject"() {
         given:
-        def arr = new JSONArray([1, new JSONObject(), new ReadOnlyJsonObject(new JSONObject())])
-        def ro = arr.asReadOnly()
+        def arr = new JSONArray([1, new JSONObject(), new JSONObjectUnmodifiable(new JSONObject())])
+        def ro = arr.asUnmodifiable()
 
         when:
         ro.getJSONObject(0)
@@ -103,14 +103,14 @@ class ReadOnlyJsonArraySpec extends Specification {
         thrown(JSONException)
 
         expect:
-        ro.getJSONObject(1) instanceof ReadOnlyJsonObject
-        ro.getJSONObject(2) instanceof ReadOnlyJsonObject
+        ro.getJSONObject(1) instanceof JSONObjectUnmodifiable
+        ro.getJSONObject(2) instanceof JSONObjectUnmodifiable
     }
 
     def "getJSONArray"() {
         given:
-        def arr = new JSONArray([1, new JSONArray(), new ReadOnlyJsonArray(new JSONArray())])
-        def ro = arr.asReadOnly()
+        def arr = new JSONArray([1, new JSONArray(), new JSONArrayUnmodifiable(new JSONArray())])
+        def ro = arr.asUnmodifiable()
 
         when:
         ro.getJSONArray(0)
@@ -118,14 +118,14 @@ class ReadOnlyJsonArraySpec extends Specification {
         thrown(JSONException)
 
         expect:
-        ro.getJSONArray(1) instanceof ReadOnlyJsonArray
-        ro.getJSONArray(2) instanceof ReadOnlyJsonArray
+        ro.getJSONArray(1) instanceof JSONArrayUnmodifiable
+        ro.getJSONArray(2) instanceof JSONArrayUnmodifiable
     }
 
     def "opt"() {
         given:
         def arr = new JSONArray([1, "foo", new JSONObject(), new JSONArray([3])])
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         when:
         def el0 = ro.opt(0)
@@ -137,40 +137,40 @@ class ReadOnlyJsonArraySpec extends Specification {
         then:
         el0 == 1
         el1 == "foo"
-        el2 instanceof ReadOnlyJsonObject
-        el3 instanceof ReadOnlyJsonArray
-        (el3 as ReadOnlyJsonArray).get(0) == 3
+        el2 instanceof JSONObjectUnmodifiable
+        el3 instanceof JSONArrayUnmodifiable
+        (el3 as JSONArrayUnmodifiable).get(0) == 3
         el4 == null
     }
 
     def "optJSONArray"() {
         given:
-        def arr = new JSONArray([1, new JSONArray(), new ReadOnlyJsonArray(new JSONArray())])
-        def ro = arr.asReadOnly()
+        def arr = new JSONArray([1, new JSONArray(), new JSONArrayUnmodifiable(new JSONArray())])
+        def ro = arr.asUnmodifiable()
 
         expect:
         ro.optJSONArray(0) == null
-        ro.optJSONArray(1) instanceof ReadOnlyJsonArray
-        ro.optJSONArray(2) instanceof ReadOnlyJsonArray
+        ro.optJSONArray(1) instanceof JSONArrayUnmodifiable
+        ro.optJSONArray(2) instanceof JSONArrayUnmodifiable
         ro.optJSONArray(3) == null
     }
 
     def "optJSONObject"() {
         given:
-        def arr = new JSONArray([1, new JSONObject(), new ReadOnlyJsonObject(new JSONObject())])
-        def ro = arr.asReadOnly()
+        def arr = new JSONArray([1, new JSONObject(), new JSONObjectUnmodifiable(new JSONObject())])
+        def ro = arr.asUnmodifiable()
 
         expect:
         ro.optJSONObject(0) == null
-        ro.optJSONObject(1) instanceof ReadOnlyJsonObject
-        ro.optJSONObject(2) instanceof ReadOnlyJsonObject
+        ro.optJSONObject(1) instanceof JSONObjectUnmodifiable
+        ro.optJSONObject(2) instanceof JSONObjectUnmodifiable
         ro.optJSONObject(3) == null
     }
 
     def "put end"() {
         given:
         def arr = new JSONArray()
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         when:
         ro.put(new Object())
@@ -216,7 +216,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "put index"() {
         given:
         def arr = new JSONArray([1, 2])
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         when:
         ro.put(0, new Object())
@@ -262,7 +262,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "putAll"() {
         given:
         def arr = new JSONArray()
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         when:
         ro.putAll(new Object())
@@ -288,7 +288,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "remove"() {
         given:
         def arr = new JSONArray()
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         when:
         ro.remove(0)
@@ -299,9 +299,9 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "similar"() {
         given:
         def arr1 = new JSONArray()
-        def ro1 = arr1.asReadOnly()
+        def ro1 = arr1.asUnmodifiable()
         def arr2 = new JSONArray()
-        def ro2 = arr2.asReadOnly()
+        def ro2 = arr2.asUnmodifiable()
 
         expect:
         ro1.similar(arr1)
@@ -346,7 +346,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "test toString"() {
         given:
         def arr = new JSONArray()
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         expect:
         ro.toString() == arr.toString()
@@ -365,7 +365,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "toList"() {
         given:
         def arr = new JSONArray()
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         when:
         def list1 = ro.toList()
@@ -385,7 +385,7 @@ class ReadOnlyJsonArraySpec extends Specification {
     def "isEmpty"() {
         given:
         def arr = new JSONArray()
-        def ro = arr.asReadOnly()
+        def ro = arr.asUnmodifiable()
 
         expect:
         ro.isEmpty()

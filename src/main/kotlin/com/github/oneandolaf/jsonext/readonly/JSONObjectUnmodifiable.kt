@@ -21,11 +21,13 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.Writer
-import java.lang.UnsupportedOperationException
 import java.util.*
 
-
-class ReadOnlyJsonObject(private val src: JSONObject) : JSONObject() {
+/**
+ * Unmodifiable subclass of [JSONObject]. Instances are backed by a modifiable object, so any changes in the original
+ * are reflected in the unmodifiable view.
+ */
+class JSONObjectUnmodifiable(private val src: JSONObject) : JSONObject() {
 
     private fun unsupported() = UnsupportedOperationException("Attempt to write to a read-only object")
 
@@ -101,26 +103,26 @@ class ReadOnlyJsonObject(private val src: JSONObject) : JSONObject() {
 
     override fun opt(key: String?): Any? {
         return when (val value = src.opt(key)) {
-            is ReadOnlyJsonObject -> value
-            is ReadOnlyJsonArray -> value
-            is JSONObject -> ReadOnlyJsonObject(value)
-            is JSONArray -> ReadOnlyJsonArray(value)
+            is JSONObjectUnmodifiable -> value
+            is JSONArrayUnmodifiable -> value
+            is JSONObject -> JSONObjectUnmodifiable(value)
+            is JSONArray -> JSONArrayUnmodifiable(value)
             else -> value
         }
     }
 
-    override fun optJSONObject(key: String?): ReadOnlyJsonObject? {
+    override fun optJSONObject(key: String?): JSONObjectUnmodifiable? {
         return when (val obj = opt(key)) {
-            is ReadOnlyJsonObject -> obj
-            is JSONObject -> ReadOnlyJsonObject(obj)
+            is JSONObjectUnmodifiable -> obj
+            is JSONObject -> JSONObjectUnmodifiable(obj)
             else -> null
         }
     }
 
-    override fun optJSONArray(key: String?): ReadOnlyJsonArray? {
+    override fun optJSONArray(key: String?): JSONArrayUnmodifiable? {
         return when (val obj = opt(key)) {
-            is ReadOnlyJsonArray -> obj
-            is JSONArray -> ReadOnlyJsonArray(obj)
+            is JSONArrayUnmodifiable -> obj
+            is JSONArray -> JSONArrayUnmodifiable(obj)
             else -> null
         }
     }
@@ -132,17 +134,17 @@ class ReadOnlyJsonObject(private val src: JSONObject) : JSONObject() {
         }
     }
 
-    override fun getJSONObject(key: String?): ReadOnlyJsonObject {
+    override fun getJSONObject(key: String?): JSONObjectUnmodifiable {
         return when (val obj = src.getJSONObject(key)) {
-            is ReadOnlyJsonObject -> obj
-            else -> ReadOnlyJsonObject(obj)
+            is JSONObjectUnmodifiable -> obj
+            else -> JSONObjectUnmodifiable(obj)
         }
     }
 
-    override fun getJSONArray(key: String?): ReadOnlyJsonArray {
+    override fun getJSONArray(key: String?): JSONArrayUnmodifiable {
         return when (val obj = src.getJSONArray(key)) {
-            is ReadOnlyJsonArray -> obj
-            else -> ReadOnlyJsonArray(obj)
+            is JSONArrayUnmodifiable -> obj
+            else -> JSONArrayUnmodifiable(obj)
         }
     }
 

@@ -17,7 +17,7 @@
 
 package com.github.oneandolaf.jsonext.extensions
 
-import com.github.oneandolaf.jsonext.readonly.ReadOnlyJsonObject
+import com.github.oneandolaf.jsonext.readonly.JSONObjectUnmodifiable
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -396,8 +396,8 @@ fun JSONObject.deepCopy(): JSONObject {
 /**
  * Creates a read-only object backed by this one.
  */
-fun JSONObject.asReadOnly(): ReadOnlyJsonObject {
-    return ReadOnlyJsonObject(this)
+fun JSONObject.asUnmodifiable(): JSONObjectUnmodifiable {
+    return JSONObjectUnmodifiable(this)
 }
 
 /**

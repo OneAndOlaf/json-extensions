@@ -23,8 +23,11 @@ import org.json.JSONObject
 import java.io.Writer
 import java.lang.reflect.Field
 
-
-class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
+/**
+ * Unmodifiable subclass of [JSONArray]. Instances are backed by a modifiable array, so any changes in the original
+ * are reflected in the unmodifiable view.
+ */
+class JSONArrayUnmodifiable(private val src: JSONArray) : JSONArray() {
 
     init {
         try {
@@ -45,8 +48,11 @@ class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
 
     private fun unsupported() = UnsupportedOperationException("Attempt to write to a read-only object")
 
+    /**
+     * Returns an iterator for this array.
+     */
     override fun iterator(): MutableIterator<*> {
-        TODO()
+        return IteratorUnmodifiable(this)
     }
 
     override fun length(): Int {
@@ -68,42 +74,42 @@ class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
         return opt(index) ?: throw JSONException("JSONArray[$index] not found.")
     }
 
-    override fun getJSONObject(index: Int): ReadOnlyJsonObject {
+    override fun getJSONObject(index: Int): JSONObjectUnmodifiable {
         return when (val data = src.getJSONObject(index)) {
-            is ReadOnlyJsonObject -> data
-            else -> ReadOnlyJsonObject(data)
+            is JSONObjectUnmodifiable -> data
+            else -> JSONObjectUnmodifiable(data)
         }
     }
 
-    override fun getJSONArray(index: Int): ReadOnlyJsonArray {
+    override fun getJSONArray(index: Int): JSONArrayUnmodifiable {
         return when (val data = src.getJSONArray(index)) {
-            is ReadOnlyJsonArray -> data
-            else -> ReadOnlyJsonArray(data)
+            is JSONArrayUnmodifiable -> data
+            else -> JSONArrayUnmodifiable(data)
         }
     }
 
     override fun opt(index: Int): Any? {
         return when (val data = src.opt(index)) {
-            is ReadOnlyJsonObject -> data
-            is ReadOnlyJsonArray -> data
-            is JSONObject -> ReadOnlyJsonObject(data)
-            is JSONArray -> ReadOnlyJsonArray(data)
+            is JSONObjectUnmodifiable -> data
+            is JSONArrayUnmodifiable -> data
+            is JSONObject -> JSONObjectUnmodifiable(data)
+            is JSONArray -> JSONArrayUnmodifiable(data)
             else -> data
         }
     }
 
-    override fun optJSONArray(index: Int): ReadOnlyJsonArray? {
+    override fun optJSONArray(index: Int): JSONArrayUnmodifiable? {
         return when (val data = opt(index)) {
-            is ReadOnlyJsonArray -> data
-            is JSONArray -> ReadOnlyJsonArray(data)
+            is JSONArrayUnmodifiable -> data
+            is JSONArray -> JSONArrayUnmodifiable(data)
             else -> null
         }
     }
 
-    override fun optJSONObject(index: Int): ReadOnlyJsonObject? {
+    override fun optJSONObject(index: Int): JSONObjectUnmodifiable? {
         return when (val data = opt(index)) {
-            is ReadOnlyJsonObject -> data
-            is JSONObject -> ReadOnlyJsonObject(data)
+            is JSONObjectUnmodifiable -> data
+            is JSONObject -> JSONObjectUnmodifiable(data)
             else -> null
         }
     }
@@ -258,7 +264,7 @@ class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
 
 
     override fun similar(other: Any?): Boolean {
-        return if (other is ReadOnlyJsonArray) {
+        return if (other is JSONArrayUnmodifiable) {
             // this is necessary because similar just accesses the other object's internal ArrayList, which is empty
             // for read-only objects
             src.similar(other.src)
@@ -280,5 +286,25 @@ class ReadOnlyJsonArray(private val src: JSONArray) : JSONArray() {
 
     override fun isEmpty(): Boolean = src.isEmpty
 
+    private class IteratorUnmodifiable(array: JSONArrayUnmodifiable) : MutableIterator<Any> {
 
+        private val srcIt = array.src.iterator()
+
+        override fun hasNext(): Boolean = srcIt.hasNext()
+
+        override fun next(): Any {
+            val nextItem = srcIt.next()
+
+            return when {
+                nextItem is JSONObject && nextItem !is JSONObjectUnmodifiable -> JSONObjectUnmodifiable(nextItem)
+                nextItem is JSONArray && nextItem !is JSONArrayUnmodifiable -> JSONArrayUnmodifiable(nextItem)
+                else -> nextItem
+            }
+        }
+
+        override fun remove() {
+            throw UnsupportedOperationException("Attempt to write to a read-only object")
+        }
+
+    }
 }
