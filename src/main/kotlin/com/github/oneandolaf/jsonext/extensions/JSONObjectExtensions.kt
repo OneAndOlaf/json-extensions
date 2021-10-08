@@ -15,6 +15,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 @file:JvmName("JSONObjectExtensions")
+
 package com.github.oneandolaf.jsonext.extensions
 
 import com.github.oneandolaf.jsonext.impl.Conversions
@@ -138,7 +139,7 @@ fun JSONObject.putIfAbsent(key: String, value: Long): JSONObject {
  * @throws NullPointerException if the key is `null`
  */
 @Throws(JSONException::class)
-fun JSONObject.putIfAbsent(key: String, value: Map<*,*>): JSONObject {
+fun JSONObject.putIfAbsent(key: String, value: Map<*, *>): JSONObject {
     if (!this.has(key)) {
         put(key, value)
     }
@@ -217,8 +218,9 @@ fun JSONObject.hasDouble(key: String): Boolean = Conversions.toDouble(opt(key)) 
  * @param enumClass the enum class
  * @return whether the key is mapped to an enum
  */
-fun <E: Enum<E>> JSONObject.hasEnum(key: String, enumClass: Class<E>): Boolean = Conversions.toEnum(opt(key), enumClass) !=
-        null
+fun <E : Enum<E>> JSONObject.hasEnum(key: String, enumClass: Class<E>): Boolean =
+    Conversions.toEnum(opt(key), enumClass) !=
+            null
 
 /**
  * Determines if the object contains a specific key, and if the key is mapped to a float.
@@ -348,7 +350,7 @@ fun JSONObject.getOrPut(key: String, value: Double): Double {
  * @param value the default value to put
  * @return the value
  */
-fun <E: Enum<E>> JSONObject.getOrPut(key: String, value: E): E {
+fun <E : Enum<E>> JSONObject.getOrPut(key: String, value: E): E {
     val data = optEnum(value.javaClass, key)
 
     if (data == null) {

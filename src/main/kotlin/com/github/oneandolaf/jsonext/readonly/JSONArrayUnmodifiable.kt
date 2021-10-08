@@ -262,7 +262,6 @@ class JSONArrayUnmodifiable(private val src: JSONArray) : JSONArray() {
     }
 
 
-
     override fun similar(other: Any?): Boolean {
         return if (other is JSONArrayUnmodifiable) {
             // this is necessary because similar just accesses the other object's internal ArrayList, which is empty
@@ -278,7 +277,7 @@ class JSONArrayUnmodifiable(private val src: JSONArray) : JSONArray() {
     override fun toString(indentFactor: Int): String = src.toString(indentFactor)
 
     override fun write(writer: Writer?): Writer = src.write(writer)
-
+    
     override fun write(writer: Writer?, indentFactor: Int, indent: Int): Writer =
         src.write(writer, indentFactor, indent)
 

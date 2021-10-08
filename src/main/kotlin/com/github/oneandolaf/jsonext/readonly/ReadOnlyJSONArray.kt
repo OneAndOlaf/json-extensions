@@ -25,4 +25,11 @@ class ReadOnlyJSONArray(private val arr: JSONArray) {
         return ReadOnlyJSONObject.makeReadOnly(arr.opt(index))
     }
 
+    companion object {
+
+        @JvmStatic
+        val EMPTY = ReadOnlyJSONArray(JSONArray())
+
+    }
+
 }

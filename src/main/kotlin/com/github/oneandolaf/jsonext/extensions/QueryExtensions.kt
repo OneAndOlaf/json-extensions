@@ -55,14 +55,18 @@ fun JSONObject.queryForDouble(jsonPointer: JSONPointer): Double {
 
 fun JSONObject.queryForDouble(jsonPointer: String) = queryForDouble(JSONPointer(jsonPointer))
 
-fun <E: Enum<E>> JSONObject.queryForEnum(jsonPointer: JSONPointer, enumClass: Class<E>): E {
+fun <E : Enum<E>> JSONObject.queryForEnum(jsonPointer: JSONPointer, enumClass: Class<E>): E {
     val rawResult = query(jsonPointer)
-    return Conversions.toEnum(rawResult, enumClass) ?: throw queryWrongTypeException(jsonPointer, enumClass.canonicalName,
-        rawResult)
+    return Conversions.toEnum(rawResult, enumClass) ?: throw queryWrongTypeException(
+        jsonPointer, enumClass.canonicalName,
+        rawResult
+    )
 }
 
-fun <E: Enum<E>> JSONObject.queryForEnum(jsonPointer: String, enumClass: Class<E>) = queryForEnum(JSONPointer
-    (jsonPointer), enumClass)
+fun <E : Enum<E>> JSONObject.queryForEnum(jsonPointer: String, enumClass: Class<E>) = queryForEnum(
+    JSONPointer
+        (jsonPointer), enumClass
+)
 
 fun JSONObject.queryForFloat(jsonPointer: JSONPointer): Float {
     val rawResult = query(jsonPointer)
@@ -137,12 +141,14 @@ fun JSONObject.optQueryForDouble(jsonPointer: JSONPointer): Double? {
 
 fun JSONObject.optQueryForDouble(jsonPointer: String) = optQueryForDouble(JSONPointer(jsonPointer))
 
-fun <E: Enum<E>> JSONObject.optQueryForEnum(jsonPointer: JSONPointer, enumClass: Class<E>): E? {
+fun <E : Enum<E>> JSONObject.optQueryForEnum(jsonPointer: JSONPointer, enumClass: Class<E>): E? {
     return Conversions.toEnum(optQuery(jsonPointer), enumClass)
 }
 
-fun <E: Enum<E>> JSONObject.optQueryForEnum(jsonPointer: String, enumClass: Class<E>) = optQueryForEnum(JSONPointer
-    (jsonPointer), enumClass)
+fun <E : Enum<E>> JSONObject.optQueryForEnum(jsonPointer: String, enumClass: Class<E>) = optQueryForEnum(
+    JSONPointer
+        (jsonPointer), enumClass
+)
 
 fun JSONObject.optQueryForFloat(jsonPointer: JSONPointer): Float? {
     return Conversions.toNumber(optQuery(jsonPointer))?.toFloat()

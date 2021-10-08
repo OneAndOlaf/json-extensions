@@ -23,6 +23,44 @@ import spock.lang.Specification
 
 class ReadOnlyJSONObjectSpec extends Specification {
 
+    /**
+     * Generates a JSONObject.
+     *
+     * <ul>
+     *     <li>"a" will be {@code true}
+     *     <li>"b" will be {@code false}
+     *     <li>"c" will have a non-boolean value
+     * <ul>
+     */
+    private ReadOnlyJSONObject generateBooleanObject() {
+        def src = new JSONObject("""
+{
+    "a": true,
+    "b": false,
+    "c": "noBoolean"
+}
+""")
+        return new ReadOnlyJSONObject(src)
+    }
+
+    /**
+     * Generates a JSONObject.
+     *
+     * <ul>
+     *     <li>"a" will be {@code TestEnum.VAL2}
+     *     <li>"b" will have an invalid value for TestEnum
+     * <ul>
+     */
+    private ReadOnlyJSONObject generateEnumObject() {
+        def src = new JSONObject("""
+{
+    "a": "VAL2",
+    "b": "invalid"
+}
+""")
+        return new ReadOnlyJSONObject(src)
+    }
+
     def "getOrNull"() {
         given:
         def src = new JSONObject("""
@@ -95,187 +133,120 @@ class ReadOnlyJSONObjectSpec extends Specification {
 
     def "getEnumOrNull"() {
         given:
-        def src = new JSONObject("""
-{
-    "a": "VAL2",
-    "b": "invalid"
-}
-""")
-        def readOnly = new ReadOnlyJSONObject(src)
+        def readOnly = generateEnumObject()
 
-        when:
-        def a = readOnly.getEnumOrNull(TestEnum, "a")
-        def b = readOnly.getEnumOrNull(TestEnum, "b")
-        def c = readOnly.getEnumOrNull(TestEnum, "c")
+        expect:
+        readOnly.getEnumOrNull(TestEnum, key) == result
 
-        then:
-        a == TestEnum.VAL2
-        b === null
-        c === null
+        where:
+        key || result
+        "a" || TestEnum.VAL2
+        "b" || null
+        "c" || null
     }
 
     def "getEnumOrDefault"() {
         given:
-        def src = new JSONObject("""
-{
-    "a": "VAL2",
-    "b": "invalid"
-}
-""")
-        def readOnly = new ReadOnlyJSONObject(src)
+        def readOnly = generateEnumObject()
 
-        when:
-        def a = readOnly.getEnumOrDefault(TestEnum, "a", TestEnum.VAL3)
-        def b = readOnly.getEnumOrDefault(TestEnum, "b", TestEnum.VAL1)
-        def c = readOnly.getEnumOrDefault(TestEnum, "c", TestEnum.VAL2)
+        expect:
+        readOnly.getEnumOrDefault(TestEnum, key, defaultValue) == result
 
-        then:
-        a == TestEnum.VAL2
-        b == TestEnum.VAL1
-        c == TestEnum.VAL2
+        where:
+        key | defaultValue  || result
+        "a" | TestEnum.VAL3 || TestEnum.VAL2
+        "b" | TestEnum.VAL1 || TestEnum.VAL1
+        "c" | TestEnum.VAL2 || TestEnum.VAL2
     }
 
     def "getEnumOrElse"() {
         given:
-        def src = new JSONObject("""
-{
-    "a": "VAL2",
-    "b": "invalid"
-}
-""")
-        def readOnly = new ReadOnlyJSONObject(src)
+        def readOnly = generateEnumObject()
 
-        when:
-        def a = readOnly.getEnumOrElse(TestEnum, "a") { TestEnum.VAL3}
-        def b = readOnly.getEnumOrElse(TestEnum, "b") { TestEnum.VAL1 }
-        def c = readOnly.getEnumOrElse(TestEnum, "c") { TestEnum.VAL2 }
+        expect:
+        readOnly.getEnumOrElse(TestEnum, key, defaultValue) == result
 
-        then:
-        a == TestEnum.VAL2
-        b == TestEnum.VAL1
-        c == TestEnum.VAL2
+        where:
+        key | defaultValue      || result
+        "a" | { TestEnum.VAL3 } || TestEnum.VAL2
+        "b" | { TestEnum.VAL1 } || TestEnum.VAL1
+        "c" | { TestEnum.VAL2 } || TestEnum.VAL2
     }
 
     def "getBooleanOrNull"() {
         given:
-        def src = new JSONObject("""
-{
-    "a": true,
-    "b": false,
-    "c": "noBoolean"
-}
-""")
-        def readOnly = new ReadOnlyJSONObject(src)
+        def readOnly = generateBooleanObject()
 
-        when:
-        def a = readOnly.getBooleanOrNull("a")
-        def b = readOnly.getBooleanOrNull("b")
-        def c = readOnly.getBooleanOrNull("c")
-        def missing = readOnly.getBooleanOrNull("missing")
+        expect:
+        readOnly.getBooleanOrNull(key) === result
 
-        then:
-        a === true
-        b === false
-        c === null
-        missing === null
+        where:
+        key       || result
+        "a"       || true
+        "b"       || false
+        "c"       || null
+        "missing" || null
     }
 
     def "getBooleanOrDefault"() {
         given:
-        def src = new JSONObject("""
-{
-    "a": true,
-    "b": false,
-    "c": "noBoolean"
-}
-""")
-        def readOnly = new ReadOnlyJSONObject(src)
+        def readOnly = generateBooleanObject()
 
-        when:
-        def a = readOnly.getBooleanOrDefault("a", false)
-        def b = readOnly.getBooleanOrDefault("b", true)
-        def c = readOnly.getBooleanOrDefault("c", true)
-        def missing = readOnly.getBooleanOrDefault("missing", false)
+        expect:
+        readOnly.getBooleanOrDefault(key, defaultValue) == result
 
-        then:
-        a === true
-        b === false
-        c === true
-        missing === false
+        where:
+        key       | defaultValue || result
+        "a"       | false        || true
+        "b"       | true         || false
+        "c"       | true         || true
+        "missing" | false        || false
     }
 
     def "getBooleanOrTrue"() {
         given:
-        def src = new JSONObject("""
-{
-    "a": true,
-    "b": false,
-    "c": "noBoolean"
-}
-""")
-        def readOnly = new ReadOnlyJSONObject(src)
+        def readOnly = generateBooleanObject()
 
-        when:
-        def a = readOnly.getBooleanOrTrue("a")
-        def b = readOnly.getBooleanOrTrue("b")
-        def c = readOnly.getBooleanOrTrue("c")
-        def missing = readOnly.getBooleanOrTrue("missing")
+        expect:
+        readOnly.getBooleanOrTrue(key) == result
 
-        then:
-        a === true
-        b === false
-        c === true
-        missing === true
+        where:
+        key       || result
+        "a"       || true
+        "b"       || false
+        "c"       || true
+        "missing" || true
     }
 
     def "getBooleanOrFalse"() {
         given:
-        def src = new JSONObject("""
-{
-    "a": true,
-    "b": false,
-    "c": "noBoolean"
-}
-""")
-        def readOnly = new ReadOnlyJSONObject(src)
+        def readOnly = generateBooleanObject()
 
-        when:
-        def a = readOnly.getBooleanOrFalse("a")
-        def b = readOnly.getBooleanOrFalse("b")
-        def c = readOnly.getBooleanOrFalse("c")
-        def missing = readOnly.getBooleanOrFalse("missing")
+        expect:
+        readOnly.getBooleanOrFalse(key) == result
 
-        then:
-        a === true
-        b === false
-        c === false
-        missing === false
+        where:
+        key       || result
+        "a"       || true
+        "b"       || false
+        "c"       || false
+        "missing" || false
     }
 
     def "getBooleanOrElse"() {
         given:
-        def src = new JSONObject("""
-{
-    "a": true,
-    "b": false,
-    "c": "noBoolean"
-}
-""")
-        def readOnly = new ReadOnlyJSONObject(src)
+        def readOnly = generateBooleanObject()
 
-        when:
-        boolean a = readOnly.getBooleanOrElse("a") { false }
-        boolean b = readOnly.getBooleanOrElse("b") { true }
-        boolean c = readOnly.getBooleanOrElse("c") { true }
-        boolean missing = readOnly.getBooleanOrElse("missing") { false }
+        expect:
+        readOnly.getBooleanOrElse(key, defaultValue) == result
 
-        then:
-        a === true
-        b === false
-        c === true
-        missing === false
+        where:
+        key | defaultValue || result
+        "a" | { false }    || true
+        "b" | { true }     || false
+        "c" | { true }     || true
+        "d" | { false }    || false
     }
-
 
 
 }

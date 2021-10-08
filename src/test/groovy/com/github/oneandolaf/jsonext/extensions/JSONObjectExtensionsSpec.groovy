@@ -29,7 +29,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test putIfAbsent Boolean"() {
         given:
         def obj = new JSONObject([
-                present: true,
+                present  : true,
                 different: 'foo'
         ])
 
@@ -45,13 +45,13 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.getBoolean('present')
         obj.get('different') == 'foo'
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test putIfAbsent Collection"() {
         given:
         def obj = new JSONObject([
-                present: ['a'],
+                present  : ['a'],
                 different: 'foo'
         ])
 
@@ -67,13 +67,13 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.getJSONArray('present').similar(new JSONArray(['a']))
         obj.get('different') == 'foo'
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test putIfAbsent Double"() {
         given:
         def obj = new JSONObject([
-                present: 4.2,
+                present  : 4.2,
                 different: 'foo'
         ])
 
@@ -89,13 +89,13 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.getDouble('present') == 4.2d
         obj.get('different') == 'foo'
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test putIfAbsent Float"() {
         given:
         def obj = new JSONObject([
-                present: 4.2f,
+                present  : 4.2f,
                 different: 'foo'
         ])
 
@@ -111,13 +111,13 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.getFloat('present') == 4.2f
         obj.get('different') == 'foo'
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test putIfAbsent Int"() {
         given:
         def obj = new JSONObject([
-                present: 42,
+                present  : 42,
                 different: 'foo'
         ])
 
@@ -133,13 +133,13 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.getInt('present') == 42
         obj.get('different') == 'foo'
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test putIfAbsent Long"() {
         given:
         def obj = new JSONObject([
-                present: 42l,
+                present  : 42l,
                 different: 'foo'
         ])
 
@@ -155,14 +155,14 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.getLong('present') == 42l
         obj.get('different') == 'foo'
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test putIfAbsent Map"() {
         given:
         def obj = new JSONObject([
-                present: [
-                    a: true
+                present  : [
+                        a: true
                 ],
                 different: 'foo'
         ])
@@ -179,13 +179,13 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.getJSONObject('present').similar(new JSONObject([a: true]))
         obj.get('different') == 'foo'
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test putIfAbsent Any Obj"() {
         given:
         def obj = new JSONObject([
-                present: [
+                present  : [
                         a: true
                 ],
                 different: 'foo'
@@ -203,13 +203,13 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.getJSONObject('present').similar(new JSONObject([a: true]))
         obj.get('different') == 'foo'
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test putIfAbsent Any Array"() {
         given:
         def obj = new JSONObject([
-                present: [ 'a' ],
+                present  : ['a'],
                 different: 'foo'
         ])
 
@@ -225,13 +225,13 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.getJSONArray('present').similar(new JSONArray(['a']))
         obj.get('different') == 'foo'
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test putIfAbsent Any String"() {
         given:
         def obj = new JSONObject([
-                present: 'a',
+                present  : 'a',
                 different: false
         ])
 
@@ -247,13 +247,13 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.getString('present') == 'a'
         obj.get('different') == false
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test putIfAbsent Any Null"() {
         given:
         def obj = new JSONObject([
-                present: [ 'a' ]
+                present: ['a']
         ])
 
         List<JSONObject> returned = []
@@ -266,7 +266,7 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.get('absent') === JSONObject.NULL
         obj.getJSONArray('present').similar(new JSONArray(['a']))
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test putOptIfAbsent"() {
@@ -288,13 +288,13 @@ class JSONObjectExtensionsSpec extends Specification {
         obj.getString('present') == 'a'
         !obj.has("absent2")
 
-        returned.every {it === obj }
+        returned.every { it === obj }
     }
 
     def "test getOrPut BigDecimal"() {
         given:
         def obj = new JSONObject([
-                present: 4.0g,
+                present  : 4.0g,
                 different: 'foo'
         ])
 
@@ -313,7 +313,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test getOrPut BigInteger"() {
         given:
         def obj = new JSONObject([
-                present: 4g,
+                present  : 4g,
                 different: 'foo'
         ])
 
@@ -332,7 +332,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test getOrPut boolean"() {
         given:
         def obj = new JSONObject([
-                present: false,
+                present  : false,
                 different: 'foo'
         ])
 
@@ -351,7 +351,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test getOrPut double"() {
         given:
         def obj = new JSONObject([
-                present: 4.0d,
+                present  : 4.0d,
                 different: 'foo'
         ])
 
@@ -370,7 +370,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test getOrPut enum"() {
         given:
         def obj = new JSONObject([
-                present: GroupLayout.Alignment.BASELINE,
+                present  : GroupLayout.Alignment.BASELINE,
                 different: 42
         ])
 
@@ -389,7 +389,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test getOrPut float"() {
         given:
         def obj = new JSONObject([
-                present: 4.0f,
+                present  : 4.0f,
                 different: 'foo'
         ])
 
@@ -408,7 +408,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test getOrPut int"() {
         given:
         def obj = new JSONObject([
-                present: 4,
+                present  : 4,
                 different: 'foo'
         ])
 
@@ -427,7 +427,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test getOrPut JSONArray"() {
         given:
         def obj = new JSONObject([
-                present: ['a'],
+                present  : ['a'],
                 different: 'foo'
         ])
 
@@ -446,7 +446,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test getOrPut JSONObject"() {
         given:
         def obj = new JSONObject([
-                present: [a: true],
+                present  : [a: true],
                 different: 'foo'
         ])
 
@@ -465,7 +465,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test getOrPut long"() {
         given:
         def obj = new JSONObject([
-                present: 4l,
+                present  : 4l,
                 different: 'foo'
         ])
 
@@ -484,7 +484,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test getOrPut Number"() {
         given:
         def obj = new JSONObject([
-                present: 4l,
+                present  : 4l,
                 different: 'foo'
         ])
 
@@ -503,7 +503,7 @@ class JSONObjectExtensionsSpec extends Specification {
     def "test getOrPut String"() {
         given:
         def obj = new JSONObject([
-                present: 'foo',
+                present  : 'foo',
                 different: 42
         ])
 
@@ -522,19 +522,19 @@ class JSONObjectExtensionsSpec extends Specification {
     def "deepCopy"() {
         given:
         def obj = new JSONObject([
-                subObj: [
-                        a: 42,
-                        b: 'foo',
-                        c: false,
+                subObj : [
+                        a     : 42,
+                        b     : 'foo',
+                        c     : false,
                         subArr: [
                                 'a',
                                 1
                         ]
                 ],
-                str: 'bar',
+                str    : 'bar',
                 integer: 2,
-                num: 42.3,
-                bool: true
+                num    : 42.3,
+                bool   : true
         ])
 
         when:

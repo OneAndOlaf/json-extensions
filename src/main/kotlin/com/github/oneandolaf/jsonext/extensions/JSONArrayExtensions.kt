@@ -15,6 +15,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 @file:JvmName("JSONArrayExtensions")
+
 package com.github.oneandolaf.jsonext.extensions
 
 import com.github.oneandolaf.jsonext.impl.Conversions
@@ -83,7 +84,7 @@ fun JSONArray.toNumberList(): List<Number> {
  * Returns a list of all enum items in the array. The list returned represents a snapshot of the JSONArray
  * and is not kept synchronized.
  */
-fun <E: Enum<E>> JSONArray.toEnumList(enumClass: Class<E>): List<E> {
+fun <E : Enum<E>> JSONArray.toEnumList(enumClass: Class<E>): List<E> {
     return mapNotNull { Conversions.toEnum(it, enumClass) }
 }
 

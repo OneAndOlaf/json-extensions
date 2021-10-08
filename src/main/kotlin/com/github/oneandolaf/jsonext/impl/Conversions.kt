@@ -31,8 +31,18 @@ object Conversions {
         fun convStringToNumber(value: String): Number {
             return stringToNumber(value)
         }
+    }
 
-
+    fun toBigDecimal(obj: Any?): BigDecimal? {
+        return when (obj) {
+            null -> null
+            is BigDecimal -> obj
+            is BigInteger -> obj.toBigDecimal()
+            is Double -> if (obj.isFinite()) obj.toBigDecimal() else null
+            is Float -> if (obj.isFinite()) obj.toBigDecimal() else null
+            is Number -> obj.toLong().toBigDecimal()
+            else -> obj.toString().toBigDecimalOrNull()
+        }
     }
 
     fun toBigInteger(obj: Any?): BigInteger? {
@@ -50,18 +60,6 @@ object Conversions {
                 }
                 strObj.toBigIntegerOrNull()
             }
-        }
-    }
-
-    fun toBigDecimal(obj: Any?): BigDecimal? {
-        return when (obj) {
-            null -> null
-            is BigDecimal -> obj
-            is BigInteger -> obj.toBigDecimal()
-            is Double -> if (obj.isFinite()) obj.toBigDecimal() else null
-            is Float -> if (obj.isFinite()) obj.toBigDecimal() else null
-            is Number -> obj.toLong().toBigDecimal()
-            else -> obj.toString().toBigDecimalOrNull()
         }
     }
 
@@ -83,7 +81,7 @@ object Conversions {
         }
     }
 
-    fun <E: Enum<E>> toEnum(obj: Any?, enumClass: Class<E>): E? {
+    fun <E : Enum<E>> toEnum(obj: Any?, enumClass: Class<E>): E? {
         return when (obj) {
             null -> null
             enumClass.isInstance(obj) -> enumClass.cast(obj)
@@ -134,6 +132,20 @@ object Conversions {
         }
     }
 
+    fun toString(obj: Any?, coerce: Boolean): String? {
+        @Suppress("IfThenToSafeAccess") // we need to handle JSONObject.NULL, which is == null
+        return when {
+            coerce -> {
+                obj as? String
+            }
+            null != obj -> {
+                obj.toString()
+            }
+            else -> {
+                null
+            }
+        }
+    }
 
 
 }
