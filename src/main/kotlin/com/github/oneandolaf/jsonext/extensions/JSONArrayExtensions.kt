@@ -14,9 +14,10 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
+@file:JvmName("JSONArrayExtensions")
 package com.github.oneandolaf.jsonext.extensions
 
+import com.github.oneandolaf.jsonext.impl.Conversions
 import com.github.oneandolaf.jsonext.readonly.JSONArrayUnmodifiable
 import org.json.JSONArray
 import org.json.JSONObject
@@ -51,7 +52,7 @@ fun JSONArray.deepCopy(): JSONArray {
  * and is not kept synchronized.
  */
 fun JSONArray.toBooleanList(): List<Boolean> {
-    return filterIsInstance<Boolean>()
+    return mapNotNull { Conversions.toBoolean(it) }
 }
 
 /**
@@ -59,7 +60,7 @@ fun JSONArray.toBooleanList(): List<Boolean> {
  * and is not kept synchronized.
  */
 fun JSONArray.toDoubleList(): List<Double> {
-    return filterIsInstance<Double>()
+    return mapNotNull { Conversions.toDouble(it) }
 }
 
 /**
@@ -67,7 +68,7 @@ fun JSONArray.toDoubleList(): List<Double> {
  * and is not kept synchronized.
  */
 fun JSONArray.toFloatList(): List<Float> {
-    return filterIsInstance<Float>()
+    return mapNotNull { Conversions.toFloat(it) }
 }
 
 /**
@@ -75,7 +76,7 @@ fun JSONArray.toFloatList(): List<Float> {
  * and is not kept synchronized.
  */
 fun JSONArray.toNumberList(): List<Number> {
-    return filterIsInstance<Number>()
+    return mapNotNull { Conversions.toNumber(it) }
 }
 
 /**
@@ -83,7 +84,7 @@ fun JSONArray.toNumberList(): List<Number> {
  * and is not kept synchronized.
  */
 fun <E: Enum<E>> JSONArray.toEnumList(enumClass: Class<E>): List<E> {
-    return filterIsInstance(enumClass)
+    return mapNotNull { Conversions.toEnum(it, enumClass) }
 }
 
 /**
@@ -91,7 +92,7 @@ fun <E: Enum<E>> JSONArray.toEnumList(enumClass: Class<E>): List<E> {
  * and is not kept synchronized.
  */
 fun JSONArray.toBigDecimalList(): List<BigDecimal> {
-    return filterIsInstance<BigDecimal>()
+    return mapNotNull { Conversions.toBigDecimal(it) }
 }
 
 /**
@@ -99,7 +100,7 @@ fun JSONArray.toBigDecimalList(): List<BigDecimal> {
  * and is not kept synchronized.
  */
 fun JSONArray.toBigIntegerList(): List<BigInteger> {
-    return filterIsInstance<BigInteger>()
+    return mapNotNull { Conversions.toBigInteger(it) }
 }
 
 /**
@@ -107,7 +108,7 @@ fun JSONArray.toBigIntegerList(): List<BigInteger> {
  * and is not kept synchronized.
  */
 fun JSONArray.toIntList(): List<Int> {
-    return filterIsInstance<Int>()
+    return mapNotNull { Conversions.toInt(it) }
 }
 
 /**
@@ -131,7 +132,7 @@ fun JSONArray.toJSONObjectList(): List<JSONObject> {
  * and is not kept synchronized.
  */
 fun JSONArray.toLongList(): List<Long> {
-    return filterIsInstance<Long>()
+    return mapNotNull { Conversions.toLong(it) }
 }
 
 /**
@@ -142,11 +143,13 @@ fun JSONArray.toStringList(): List<String> {
     return filterIsInstance<String>()
 }
 
-
-
 /**
  * Creates a read-only array backed by this one.
  */
 fun JSONArray.asUnmodifiable(): JSONArrayUnmodifiable {
-    return JSONArrayUnmodifiable(this)
+    return if (this is JSONArrayUnmodifiable) {
+        this
+    } else {
+        JSONArrayUnmodifiable(this)
+    }
 }

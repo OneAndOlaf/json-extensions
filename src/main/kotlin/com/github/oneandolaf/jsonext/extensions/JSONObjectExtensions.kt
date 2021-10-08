@@ -14,9 +14,10 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
+@file:JvmName("JSONObjectExtensions")
 package com.github.oneandolaf.jsonext.extensions
 
+import com.github.oneandolaf.jsonext.impl.Conversions
 import com.github.oneandolaf.jsonext.readonly.JSONObjectUnmodifiable
 import org.json.JSONArray
 import org.json.JSONException
@@ -176,6 +177,104 @@ fun JSONObject.putOptIfAbsent(key: String?, value: Any?): JSONObject {
     }
     return this
 }
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to a [BigDecimal].
+ *
+ * @param key the key to check
+ * @return whether the key is mapped to a [BigDecimal]
+ */
+fun JSONObject.hasBigDecimal(key: String): Boolean = Conversions.toBigDecimal(opt(key)) != null
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to a [BigInteger].
+ *
+ * @param key the key to check
+ * @return whether the key is mapped to a [BigInteger]
+ */
+fun JSONObject.hasBigInteger(key: String): Boolean = Conversions.toBigInteger(opt(key)) != null
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to a boolean.
+ *
+ * @param key the key to check
+ * @return whether the key is mapped to a boolean
+ */
+fun JSONObject.hasBoolean(key: String): Boolean = Conversions.toBoolean(opt(key)) != null
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to a double.
+ *
+ * @param key the key to check
+ * @return whether the key is mapped to a double
+ */
+fun JSONObject.hasDouble(key: String): Boolean = Conversions.toDouble(opt(key)) != null
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to an enum.
+ *
+ * @param key the key to check
+ * @param enumClass the enum class
+ * @return whether the key is mapped to an enum
+ */
+fun <E: Enum<E>> JSONObject.hasEnum(key: String, enumClass: Class<E>): Boolean = Conversions.toEnum(opt(key), enumClass) !=
+        null
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to a float.
+ *
+ * @param key the key to check
+ * @return whether the key is mapped to a float
+ */
+fun JSONObject.hasFloat(key: String): Boolean = Conversions.toFloat(opt(key)) != null
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to an int.
+ *
+ * @param key the key to check
+ * @return whether the key is mapped to an int
+ */
+fun JSONObject.hasInt(key: String): Boolean = Conversions.toInt(opt(key)) != null
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to a [JSONArray].
+ *
+ * @param key the key to check
+ * @return whether the key is mapped to a [JSONArray]
+ */
+fun JSONObject.hasJSONArray(key: String): Boolean = opt(key) is JSONArray
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to a [JSONObject].
+ *
+ * @param key the key to check
+ * @return whether the key is mapped to a [JSONObject]
+ */
+fun JSONObject.hasJSONObject(key: String): Boolean = opt(key) is JSONObject
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to a [Long].
+ *
+ * @param key the key to check
+ * @return whether the key is mapped to a [Long]
+ */
+fun JSONObject.hasLong(key: String): Boolean = Conversions.toLong(opt(key)) != null
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to a [Number].
+ *
+ * @param key the key to check
+ * @return whether the key is mapped to a [Number]
+ */
+fun JSONObject.hasNumber(key: String): Boolean = Conversions.toNumber(opt(key)) != null
+
+/**
+ * Determines if the object contains a specific key, and if the key is mapped to a [String].
+ *
+ * @param key the key to check
+ * @return whether the key is mapped to a [String]
+ */
+fun JSONObject.hasString(key: String): Boolean = opt(key) is String
 
 /**
  * Gets a value from the object if it exists and is a number, or puts a default value and returns it otherwise.
@@ -397,7 +496,12 @@ fun JSONObject.deepCopy(): JSONObject {
  * Creates a read-only object backed by this one.
  */
 fun JSONObject.asUnmodifiable(): JSONObjectUnmodifiable {
-    return JSONObjectUnmodifiable(this)
+    return if (this is JSONObjectUnmodifiable) {
+        this
+    } else {
+        JSONObjectUnmodifiable(this)
+    }
+
 }
 
 /**
@@ -406,3 +510,4 @@ fun JSONObject.asUnmodifiable(): JSONObjectUnmodifiable {
 operator fun JSONObject.contains(key: String?): Boolean {
     return this.has(key)
 }
+
