@@ -66,11 +66,11 @@ object Conversions {
     }
 
     fun toBoolean(obj: Any?): Boolean? {
-        return when (obj) {
-            null -> null
-            is Boolean -> obj
-            toString().equals("false", ignoreCase = true) -> false
-            toString().equals("true", ignoreCase = true) -> true
+        return when {
+            obj == null -> null
+            obj is Boolean -> obj
+            "false".equals(obj.toString(), ignoreCase = true) -> false
+            "true".equals(obj.toString(), ignoreCase = true) -> true
             else -> null
         }
     }
