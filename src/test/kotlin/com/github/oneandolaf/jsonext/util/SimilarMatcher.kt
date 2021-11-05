@@ -15,8 +15,24 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.github.oneandolaf.jsonext
+package com.github.oneandolaf.jsonext.util
 
-enum TestEnum {
-    VAL1, VAL2, VAL3
+import io.kotest.matchers.Matcher
+import io.kotest.matchers.MatcherResult
+import io.kotest.matchers.should
+import io.kotest.matchers.shouldNot
+
+fun beSimilarTo(other: Any?) = object : Matcher<Any?> {
+
+    override fun test(value: Any?): MatcherResult {
+        return MatcherResult(
+            JSONSimilar.similar(value, other),
+            "$value should be similar to $other",
+            "$value should not be similar to $other"
+        )
+
+    }
 }
+
+infix fun Any?.shouldBeSimilarTo(other: Any?) = this should beSimilarTo(other)
+infix fun Any?.shouldNotBeSimilarTo(other: Any?) = this shouldNot beSimilarTo(other)

@@ -18,11 +18,47 @@
 package com.github.oneandolaf.jsonext.readonly
 
 import org.json.JSONArray
+import org.json.JSONObject
 
 class ReadOnlyJSONArray(private val arr: JSONArray) {
 
     fun getOrNull(index: Int): Any? {
         return ReadOnlyJSONObject.makeReadOnly(arr.opt(index))
+    }
+
+    /**
+     * Checks if this object is similar to another. `other` must be an instance of `ReadOnlyJSONObject`.
+     * If `other` is a plain [JSONObject], this method will return `false` to maintain symmetry.
+     *
+     * Two objects are similar if the [JSONObject]s they wrap are similar.
+     *
+     * @param other the object to compare this to
+     * @see JSONObject.similar
+     * @see similarToPlainObject
+     * @return whether the objects are similar
+     */
+    fun similar(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+        if (other !is ReadOnlyJSONArray) {
+            return false
+        }
+        return similarToPlainArray(other.arr)
+    }
+
+    override fun toString(): String {
+        return arr.toString()
+    }
+
+    /**
+     * Checks if this object is similar to a plain [JSONObject].
+     *
+     * @param other the object to compare this to
+     * @return whether the objects are similar
+     */
+    fun similarToPlainArray(other: JSONArray?): Boolean {
+        return other != null && arr.similar(other)
     }
 
     companion object {

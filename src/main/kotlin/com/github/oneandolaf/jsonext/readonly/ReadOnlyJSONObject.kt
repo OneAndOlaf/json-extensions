@@ -731,6 +731,42 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
     fun getStringOrElse(key: String, coerce: Boolean, defaultValue: (key: String) -> String) =
         getStringOrElse(key, defaultValue, coerce)
 
+
+    /**
+     * Checks if this object is similar to another. `other` must be an instance of `ReadOnlyJSONObject`.
+     * If `other` is a plain [JSONObject], this method will return `false` to maintain symmetry.
+     *
+     * Two objects are similar if the [JSONObject]s they wrap are similar.
+     *
+     * @param other the object to compare this to
+     * @see JSONObject.similar
+     * @see similarToPlainObject
+     * @return whether the objects are similar
+     */
+    fun similar(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+        if (other !is ReadOnlyJSONObject) {
+            return false
+        }
+        return similarToPlainObject(other.obj)
+    }
+
+    /**
+     * Checks if this object is similar to a plain [JSONObject].
+     *
+     * @param other the object to compare this to
+     * @return whether the objects are similar
+     */
+    fun similarToPlainObject(other: JSONObject?): Boolean {
+        return other != null && obj.similar(other)
+    }
+
+    override fun toString(): String {
+        return obj.toString()
+    }
+
     companion object {
 
         @JvmStatic

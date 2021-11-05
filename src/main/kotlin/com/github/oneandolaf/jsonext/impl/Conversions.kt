@@ -57,8 +57,9 @@ object Conversions {
                 val strObj = obj.toString()
                 if (jsonObjHelper.checkIsDecimalNotation(strObj)) {
                     strObj.toBigDecimalOrNull()?.toBigInteger()
+                } else {
+                    strObj.toBigIntegerOrNull()
                 }
-                strObj.toBigIntegerOrNull()
             }
         }
     }
@@ -82,8 +83,8 @@ object Conversions {
     }
 
     fun <E : Enum<E>> toEnum(obj: Any?, enumClass: Class<E>): E? {
-        return when (obj) {
-            null -> null
+        return when {
+            obj == null -> null
             enumClass.isInstance(obj) -> enumClass.cast(obj)
             else -> {
                 try {
@@ -104,6 +105,15 @@ object Conversions {
         }
     }
 
+    /**
+     * Attempts to convert an object to an integer using the rules set by JSON-Java. This will return `true` in the
+     * following cases:
+     *
+     * - `obj` is a [Number]
+     * - `obj` is the string representation of an integer
+     *
+     * This means that `1.0` and `"1"` will successfully convert to `1`, but `"1.0"` will not.
+     */
     fun toInt(obj: Any?): Int? {
         return when (obj) {
             null -> null
@@ -135,15 +145,9 @@ object Conversions {
     fun toString(obj: Any?, coerce: Boolean): String? {
         @Suppress("IfThenToSafeAccess") // we need to handle JSONObject.NULL, which is == null
         return when {
-            coerce -> {
-                obj as? String
-            }
-            null != obj -> {
-                obj.toString()
-            }
-            else -> {
-                null
-            }
+            !coerce -> obj as? String
+            null != obj -> obj.toString()
+            else -> null
         }
     }
 
