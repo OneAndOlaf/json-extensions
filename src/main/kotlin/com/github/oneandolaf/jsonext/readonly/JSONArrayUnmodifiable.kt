@@ -26,6 +26,9 @@ import java.lang.reflect.Field
 /**
  * Unmodifiable subclass of [JSONArray]. Instances are backed by a modifiable array, so any changes in the original
  * are reflected in the unmodifiable view.
+ *
+ * This class should be used with caution, especially if using a newer version of JSON-Java than this library was
+ * built with. See [ReadOnlyJSONArray] for a safer alternative.
  */
 class JSONArrayUnmodifiable(private val src: JSONArray) : JSONArray() {
 
@@ -277,7 +280,7 @@ class JSONArrayUnmodifiable(private val src: JSONArray) : JSONArray() {
     override fun toString(indentFactor: Int): String = src.toString(indentFactor)
 
     override fun write(writer: Writer?): Writer = src.write(writer)
-    
+
     override fun write(writer: Writer?, indentFactor: Int, indent: Int): Writer =
         src.write(writer, indentFactor, indent)
 

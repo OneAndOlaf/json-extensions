@@ -37,7 +37,7 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 
-class ReadOnlyJSONObjectTests : FunSpec({
+class ReadOnlyJSONObjectGetterTests : FunSpec({
 
 
     context("getOrNull") {

@@ -26,6 +26,9 @@ import java.util.*
 /**
  * Unmodifiable subclass of [JSONObject]. Instances are backed by a modifiable object, so any changes in the original
  * are reflected in the unmodifiable view.
+ *
+ * This class should be used with caution, especially if using a newer version of JSON-Java than this library was
+ * built with. See [ReadOnlyJSONObject] for a safer alternative.
  */
 class JSONObjectUnmodifiable(private val src: JSONObject) : JSONObject() {
 
