@@ -22,8 +22,9 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.util.*
 
-class ReadOnlyJSONArray(private val arr: JSONArray) {
+class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
 
     /**
      * Gets the value at a given index.
@@ -35,7 +36,7 @@ class ReadOnlyJSONArray(private val arr: JSONArray) {
      * @return the value at the given index, or `null` if not found or `index` is negative
      */
     fun getOrNull(index: Int): Any? {
-        return ReadOnlyJSONObject.makeReadOnly(arr.opt(index))
+        return ReadOnlyJSONObject.makeReadOnlyNullable(arr.opt(index))
     }
 
     /**
@@ -355,6 +356,19 @@ class ReadOnlyJSONArray(private val arr: JSONArray) {
     /**
      * Gets the enum value at a given index.
      *
+     * This function is only callable from Kotlin.
+     *
+     * @param index the index
+     * @throws NullPointerException if any parameter is `null`
+     * @return the enum value, or `null` if not found
+     */
+    inline fun <reified E : Enum<E>> getEnumOrNull(index: Int): E? {
+        return Conversions.toEnum<E>(getOrNull(index))
+    }
+
+    /**
+     * Gets the enum value at a given index.
+     *
      * @param clazz the enum class
      * @param index the index
      * @param defaultValue the default value
@@ -368,6 +382,20 @@ class ReadOnlyJSONArray(private val arr: JSONArray) {
     /**
      * Gets the enum value at a given index.
      *
+     * This function is only callable from Kotlin.
+     *
+     * @param index the index
+     * @param defaultValue the default value
+     * @throws NullPointerException if any parameter is `null`
+     * @return the enum value, or `defaultValue` if not found
+     */
+    inline fun <reified E : Enum<E>> getEnumOrDefault(index: Int, defaultValue: E): E {
+        return getEnumOrNull<E>(index) ?: defaultValue
+    }
+
+    /**
+     * Gets the enum value at a given index.
+     *
      * @param clazz the enum class
      * @param index the index
      * @param defaultValue a function to calculate the default value
@@ -376,6 +404,21 @@ class ReadOnlyJSONArray(private val arr: JSONArray) {
      */
     fun <E : Enum<E>> getEnumOrElse(clazz: Class<E>, index: Int, defaultValue: (index: Int) -> E): E {
         return getEnumOrNull(clazz, index) ?: defaultValue(index)
+    }
+
+    /**
+     * Gets the enum value at a given index.
+     *
+     * This function is only callable from Kotlin.
+     *
+     * @param clazz the enum class
+     * @param index the index
+     * @param defaultValue a function to calculate the default value
+     * @throws NullPointerException if any parameter is `null`
+     * @return the enum value, or the result of `defaultValue` if not found
+     */
+    inline fun <reified E : Enum<E>> getEnumOrElse(index: Int, defaultValue: (index: Int) -> E): E {
+        return getEnumOrNull<E>(index) ?: defaultValue(index)
     }
 
     /**
@@ -729,6 +772,37 @@ class ReadOnlyJSONArray(private val arr: JSONArray) {
         getStringOrElse(index, defaultValue, coerce)
 
     /**
+     * Checks whether the array is empty.
+     */
+    val isEmpty: Boolean
+        get() = arr.isEmpty
+
+    /**
+     * Checks whether the array is not empty.
+     */
+    val isNotEmpty: Boolean
+        get() = !isEmpty
+
+    /**
+     * Gets the size of the array.
+     */
+    val size: Int
+        get() = arr.length()
+
+    override fun iterator(): Iterator<Any> = ArrayIterator(this)
+
+    /**
+     * Returns a list of all string items in the array.
+     *
+     * @param coerce whether to coerce all items to Strings
+     */
+    @JvmOverloads
+    fun itemsAsString(coerce: Boolean = false): List<String> {
+        return arr.mapNotNull { Conversions.toString(it, coerce) }
+    }
+
+
+    /**
      * Checks if this object is similar to another. `other` must be an instance of `ReadOnlyJSONObject`.
      * If `other` is a plain [JSONObject], this method will return `false` to maintain symmetry.
      *
@@ -763,11 +837,27 @@ class ReadOnlyJSONArray(private val arr: JSONArray) {
         return other != null && arr.similar(other)
     }
 
+    private class ArrayIterator(array: ReadOnlyJSONArray) : Iterator<Any> {
+
+        private val srcIt = array.arr.iterator()
+
+        override fun hasNext(): Boolean {
+            return srcIt.hasNext()
+        }
+
+        override fun next(): Any {
+            return ReadOnlyJSONObject.makeReadOnly(srcIt.next())
+        }
+
+
+    }
+
     companion object {
 
         @JvmStatic
         val EMPTY = ReadOnlyJSONArray(JSONArray())
 
     }
+
 
 }

@@ -589,6 +589,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
 
             checkWithReadOnly(obj) {
                 getEnumOrNull(TestEnum::class.java, "val") shouldBe it
+                getEnumOrNull<TestEnum>("val") shouldBe it
             }
         }
 
@@ -597,6 +598,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
 
             checkWithReadOnly(obj) {
                 getEnumOrNull(TestEnum::class.java, "val").shouldBeNull()
+                getEnumOrNull<TestEnum>("val").shouldBeNull()
             }
         }
     }
@@ -607,6 +609,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
 
             checkWithReadOnly(obj) {
                 getEnumOrDefault(TestEnum::class.java, "val", it.second) shouldBe it.first
+                getEnumOrDefault("val", it.second) shouldBe it.first
             }
         }
 
@@ -615,6 +618,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
 
             checkWithReadOnly(obj) {
                 getEnumOrDefault(TestEnum::class.java, "val", it.second) shouldBe it.second
+                getEnumOrDefault("val", it.second) shouldBe it.second
             }
         }
     }
@@ -625,6 +629,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
 
             checkWithReadOnly(obj) {
                 getEnumOrElse(TestEnum::class.java, "val") { data.second } shouldBe data.first
+                getEnumOrElse("val") { data.second } shouldBe data.first
             }
         }
 
@@ -633,6 +638,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
 
             checkWithReadOnly(obj) {
                 getEnumOrElse(TestEnum::class.java, "val") { data.second } shouldBe data.second
+                getEnumOrElse("val") { data.second } shouldBe data.second
             }
         }
     }

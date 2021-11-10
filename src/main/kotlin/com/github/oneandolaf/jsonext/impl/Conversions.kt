@@ -21,6 +21,9 @@ import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.BigInteger
 
+/**
+ * Utility to convert arbitrary objects to JSON types. These methods usually employ the same rules as used by JSON-Java.
+ */
 object Conversions {
 
     private val jsonObjHelper = object : JSONObject() {
@@ -33,6 +36,16 @@ object Conversions {
         }
     }
 
+    /**
+     * Attempts to convert an object to a [BigDecimal]. This will return `true` in the following cases:
+     *
+     * - `obj` is a finite [Number]
+     * - `obj` is the string representation of a number
+     *
+     * @param obj the object to convert
+     * @return the converted [BigDecimal], or `null` if conversion failed
+     */
+    @JvmStatic
     fun toBigDecimal(obj: Any?): BigDecimal? {
         return when (obj) {
             null -> null
@@ -45,6 +58,16 @@ object Conversions {
         }
     }
 
+    /**
+     * Attempts to convert an object to a [BigInteger]. This will return `true` in the following cases:
+     *
+     * - `obj` is a finite [Number]
+     * - `obj` is the string representation of a number
+     *
+     * @param obj the object to convert
+     * @return the converted [BigInteger], or `null` if conversion failed
+     */
+    @JvmStatic
     fun toBigInteger(obj: Any?): BigInteger? {
         return when (obj) {
             null -> null
@@ -64,6 +87,16 @@ object Conversions {
         }
     }
 
+    /**
+     * Attempts to convert an object to a [Boolean]. This will return `true` in the following cases:
+     *
+     * - `obj` is a [Boolean] already
+     * - `obj` is the [String] representation of a boolean (case-insensitive)
+     *
+     * @param obj the object to convert
+     * @return the converted [Boolean], or `null` if conversion failed
+     */
+    @JvmStatic
     fun toBoolean(obj: Any?): Boolean? {
         return when {
             obj == null -> null
@@ -74,6 +107,16 @@ object Conversions {
         }
     }
 
+    /**
+     * Attempts to convert an object to a [Double]. This will return `true` in the following cases:
+     *
+     * - `obj` is a [Number]
+     * - `obj` is the string representation of a number
+     *
+     * @param obj the object to convert
+     * @return the converted [Double], or `null` if conversion failed
+     */
+    @JvmStatic
     fun toDouble(obj: Any?): Double? {
         return when (obj) {
             null -> null
@@ -82,6 +125,16 @@ object Conversions {
         }
     }
 
+    /**
+     * Attempts to convert an object to an [Enum]. This will return `true` in the following cases:
+     *
+     * - `obj` is an instance of `enumClass`
+     * - `obj` is the [String] representation of an instance of `enumClass` (case sensitive)
+     *
+     * @param obj the object to convert
+     * @return the converted [Boolean], or `null` if conversion failed
+     */
+    @JvmStatic
     fun <E : Enum<E>> toEnum(obj: Any?, enumClass: Class<E>): E? {
         return when {
             obj == null -> null
@@ -97,6 +150,31 @@ object Conversions {
         }
     }
 
+    /**
+     * Attempts to convert an object to an [Enum]. This will return `true` in the following cases:
+     *
+     * - `obj` is an instance of `E`
+     * - `obj` is the [String] representation of an instance of `E` (case sensitive)
+     *
+     * This method is only callable from Kotlin.
+     *
+     * @param obj the object to convert
+     * @return the converted [Boolean], or `null` if conversion failed
+     */
+    inline fun <reified E : Enum<E>> toEnum(obj: Any?): E? {
+        return toEnum(obj, E::class.java)
+    }
+
+    /**
+     * Attempts to convert an object to a [Float]. This will return `true` in the following cases:
+     *
+     * - `obj` is a [Number]
+     * - `obj` is the string representation of a number
+     *
+     * @param obj the object to convert
+     * @return the converted [Float], or `null` if conversion failed
+     */
+    @JvmStatic
     fun toFloat(obj: Any?): Float? {
         return when (obj) {
             null -> null
@@ -106,14 +184,18 @@ object Conversions {
     }
 
     /**
-     * Attempts to convert an object to an integer using the rules set by JSON-Java. This will return `true` in the
-     * following cases:
+     * Attempts to convert an object to an [Int]. This will return `true` in the following cases:
      *
      * - `obj` is a [Number]
      * - `obj` is the string representation of an integer
      *
-     * This means that `1.0` and `"1"` will successfully convert to `1`, but `"1.0"` will not.
+     * This means that `1.0` (a floating-point number) and `"1"` (the string representation of an integer) will
+     * successfully convert to `1`, but `"1.0"` (the string representation of a floating-point number) will not.
+     *
+     * @param obj the object to convert
+     * @return the converted [Int], or `null` if conversion failed
      */
+    @JvmStatic
     fun toInt(obj: Any?): Int? {
         return when (obj) {
             null -> null
@@ -122,6 +204,19 @@ object Conversions {
         }
     }
 
+    /**
+     * Attempts to convert an object to a [Long]. This will return `true` in the following cases:
+     *
+     * - `obj` is a [Number]
+     * - `obj` is the string representation of a long
+     *
+     * This means that `1.0` (a floating-point number) and `"1"` (the string representation of an integer) will
+     * successfully convert to `1`, but `"1.0"` (the string representation of a floating-point number) will not.
+     *
+     * @param obj the object to convert
+     * @return the converted [Long], or `null` if conversion failed
+     */
+    @JvmStatic
     fun toLong(obj: Any?): Long? {
         return when (obj) {
             null -> null
@@ -130,6 +225,19 @@ object Conversions {
         }
     }
 
+    /**
+     * Attempts to convert an object to a [Number]. This will return `true` in the following cases:
+     *
+     * - `obj` is a [Number]
+     * - `obj` is the string representation of a number
+     *
+     * This means that `1.0` (a floating-point number) and `"1"` (the string representation of an integer) will
+     * successfully convert to `1`, but `"1.0"` (the string representation of a floating-point number) will not.
+     *
+     * @param obj the object to convert
+     * @return the converted [Number], or `null` if conversion failed
+     */
+    @JvmStatic
     fun toNumber(obj: Any?): Number? {
         return when (obj) {
             null -> null
@@ -142,8 +250,17 @@ object Conversions {
         }
     }
 
+    /**
+     * Attempts to convert an object to a [String]. This operation has two modes: a coercing mode and a non-coercing
+     * mode. If coercing, any non-null object will be converted to a [String] using its [Any.toString] method. If
+     * non-coercing, only actual [String]s will be returned, and any non-string will result in `null`.
+     *
+     * @param obj the object to convert
+     * @param coerce whether to use string coercion
+     * @return the converted [String], or `null` if conversion failed
+     */
+    @JvmStatic
     fun toString(obj: Any?, coerce: Boolean): String? {
-        @Suppress("IfThenToSafeAccess") // we need to handle JSONObject.NULL, which is == null
         return when {
             !coerce -> obj as? String
             null != obj -> obj.toString()

@@ -103,7 +103,11 @@ object JSONGenerators {
      */
     val booleanStrings = listOf(
         "true",
-        "false"
+        "false",
+        "True",
+        "TRUE",
+        "False",
+        "FALSE"
     ).exhaustive()
 
     /**

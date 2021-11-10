@@ -591,6 +591,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getEnumOrNull(TestEnum::class.java, 0) shouldBe it
+                getEnumOrNull<TestEnum>(0) shouldBe it
             }
         }
 
@@ -599,6 +600,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getEnumOrNull(TestEnum::class.java, 0).shouldBeNull()
+                getEnumOrNull<TestEnum>(0).shouldBeNull()
             }
         }
     }
@@ -609,6 +611,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getEnumOrDefault(TestEnum::class.java, 0, it.second) shouldBe it.first
+                getEnumOrDefault(0, it.second) shouldBe it.first
             }
         }
 
@@ -617,6 +620,8 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getEnumOrDefault(TestEnum::class.java, 0, it.second) shouldBe it.second
+                getEnumOrDefault(0, it.second) shouldBe it.second
+
             }
         }
     }
@@ -627,6 +632,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getEnumOrElse(TestEnum::class.java, 0) { data.second } shouldBe data.first
+                getEnumOrElse(0) { data.second } shouldBe data.first
             }
         }
 
@@ -635,6 +641,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getEnumOrElse(TestEnum::class.java, 0) { data.second } shouldBe data.second
+                getEnumOrElse(0) { data.second } shouldBe data.second
             }
         }
     }

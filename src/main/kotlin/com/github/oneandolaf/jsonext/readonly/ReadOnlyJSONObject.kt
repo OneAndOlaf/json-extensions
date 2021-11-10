@@ -22,9 +22,11 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.BigInteger
+import java.util.*
 
 /**
- * Unmodifiable variant of JSONObject. This wraps a [JSONObject], but it does not extend from it.
+ * Unmodifiable variant of JSONObject. This wraps a [JSONObject], but it does not extend it, thus ensuring the read-only
+ * property at compile time.
  */
 class ReadOnlyJSONObject(private val obj: JSONObject) {
 
@@ -358,6 +360,19 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
     /**
      * Gets the enum value associated with a key.
      *
+     * This function is only callable from Kotlin.
+     *
+     * @param key the key
+     * @throws NullPointerException if any parameter is `null`
+     * @return the enum value, or `null` if not found
+     */
+    inline fun <reified E : Enum<E>> getEnumOrNull(key: String): E? {
+        return Conversions.toEnum<E>(getOrNull(key))
+    }
+
+    /**
+     * Gets the enum value associated with a key.
+     *
      * @param clazz the enum class
      * @param key the key
      * @param defaultValue the default value
@@ -371,6 +386,20 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
     /**
      * Gets the enum value associated with a key.
      *
+     * This function is only callable from Kotlin.
+     *
+     * @param key the key
+     * @param defaultValue the default value
+     * @throws NullPointerException if any parameter is `null`
+     * @return the enum value, or `defaultValue` if not found
+     */
+    inline fun <reified E : Enum<E>> getEnumOrDefault(key: String, defaultValue: E): E {
+        return getEnumOrNull<E>(key) ?: defaultValue
+    }
+
+    /**
+     * Gets the enum value associated with a key.
+     *
      * @param clazz the enum class
      * @param key the key
      * @param defaultValue a function to calculate the default value
@@ -379,6 +408,20 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
      */
     fun <E : Enum<E>> getEnumOrElse(clazz: Class<E>, key: String, defaultValue: (key: String) -> E): E {
         return getEnumOrNull(clazz, key) ?: defaultValue(key)
+    }
+
+    /**
+     * Gets the enum value associated with a key.
+     *
+     * This function is only callable from Kotlin.
+     *
+     * @param key the key
+     * @param defaultValue a function to calculate the default value
+     * @throws NullPointerException if any parameter is `null`
+     * @return the enum value, or the result of `defaultValue` if not found
+     */
+    inline fun <reified E : Enum<E>> getEnumOrElse(key: String, defaultValue: (key: String) -> E): E {
+        return getEnumOrNull<E>(key) ?: defaultValue(key)
     }
 
     /**
@@ -731,6 +774,57 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
     fun getStringOrElse(key: String, coerce: Boolean, defaultValue: (key: String) -> String) =
         getStringOrElse(key, defaultValue, coerce)
 
+    /**
+     * Checks whether the object contains a key.
+     *
+     * This will return `true` for keys associated with [JSONObject.NULL]. To treat [JSONObject.NULL] like a missing
+     * key, use [containsNonNull].
+     *
+     * @param key the key to test
+     * @return whether `key` is associated with a value
+     */
+    operator fun contains(key: String): Boolean {
+        return obj.has(key)
+    }
+
+    /**
+     * Checks whether a key is associated with a non-null value.
+     *
+     * This will return `false` for missing keys as well as keys associated with [JSONObject.NULL]. To treat
+     * [JSONObject.NULL] like a present key, use [contains].
+     *
+     * @param key the key to test
+     * @return whether `key` is associated with a value
+     */
+    fun containsNonNull(key: String): Boolean {
+        return getOrNull(key) !== JSONObject.NULL
+    }
+
+    /**
+     * Checks whether the object is empty.
+     */
+    val isEmpty: Boolean
+        get() = obj.isEmpty
+
+    /**
+     * Checks whether the object is not empty.
+     */
+    val isNotEmpty: Boolean
+        get() = !isEmpty
+
+    /**
+     * Gets the number of keys in the object.
+     */
+    val size: Int
+        get() = obj.length()
+
+    /**
+     * Gets the set of keys of the object. The set is backed by the underlying object, so any changes in the object
+     * itself will be reflected in the set returned.
+     */
+    val keySet: Set<String>
+        get() = Collections.unmodifiableSet(obj.keySet())
+
 
     /**
      * Checks if this object is similar to another. `other` must be an instance of `ReadOnlyJSONObject`.
@@ -772,14 +866,18 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
         @JvmStatic
         val EMPTY = ReadOnlyJSONObject(JSONObject())
 
-        internal fun makeReadOnly(o: Any?): Any? {
+        internal fun makeReadOnly(o: Any): Any {
             return when (o) {
-                null -> o
                 is JSONObject -> ReadOnlyJSONObject(o)
                 is JSONArray -> ReadOnlyJSONArray(o)
                 else -> o
             }
         }
+
+        internal fun makeReadOnlyNullable(o: Any?): Any? {
+            return o?.let { makeReadOnly(it) }
+        }
+
 
     }
 
