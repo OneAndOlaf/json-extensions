@@ -792,13 +792,55 @@ class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
     override fun iterator(): Iterator<Any> = ArrayIterator(this)
 
     /**
+     * Returns a list of all array items in the array.
+     */
+    fun itemsAsArrays(): List<ReadOnlyJSONArray> {
+        return filterIsInstance<ReadOnlyJSONArray>()
+    }
+
+    /**
+     * Returns a list of all boolean items in the array.
+     */
+    fun itemsAsBooleans(): List<Boolean> {
+        return mapNotNull { Conversions.toBoolean(it) }
+    }
+
+    /**
+     * Returns a list of all double items in the array.
+     */
+    fun itemsAsDoubles(): List<Double> {
+        return mapNotNull { Conversions.toDouble(it) }
+    }
+
+    /**
+     * Returns a list of all int items in the array.
+     */
+    fun itemsAsInts(): List<Int> {
+        return mapNotNull { Conversions.toInt(it) }
+    }
+
+    /**
+     * Returns a list of all long items in the array.
+     */
+    fun itemsAsLongs(): List<Long> {
+        return mapNotNull { Conversions.toLong(it) }
+    }
+
+    /**
      * Returns a list of all string items in the array.
      *
      * @param coerce whether to coerce all items to Strings
      */
     @JvmOverloads
-    fun itemsAsString(coerce: Boolean = false): List<String> {
-        return arr.mapNotNull { Conversions.toString(it, coerce) }
+    fun itemsAsStrings(coerce: Boolean = false): List<String> {
+        return mapNotNull { Conversions.toString(it, coerce) }
+    }
+
+    /**
+     * Returns a list of all object items in the array.
+     */
+    fun itemsAsObjects(): List<ReadOnlyJSONObject> {
+        return filterIsInstance<ReadOnlyJSONObject>()
     }
 
 

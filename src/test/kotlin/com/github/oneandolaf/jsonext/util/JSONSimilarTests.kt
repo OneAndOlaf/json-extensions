@@ -17,8 +17,8 @@
 
 package com.github.oneandolaf.jsonext.util
 
-import io.kotest.core.datatest.forAll
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.property.checkAll
 import org.json.JSONObject
 
 class JSONSimilarTests : FunSpec({
@@ -29,23 +29,19 @@ class JSONSimilarTests : FunSpec({
     )
 
     context("similar") {
-        forAll(
-            SimilarData(
-                null, null
-            )
-        ) { (a, b) ->
-            a shouldBeSimilarTo b
-            b shouldBeSimilarTo a
+
+        checkAll(JSONGenerators.values) {
+            it shouldBeSimilarTo it
         }
+
+        null shouldBeSimilarTo null
     }
 
     context("not similar") {
-        forAll(
-            SimilarData(null, JSONObject.NULL)
-        ) { (a, b) ->
-            a shouldNotBeSimilarTo b
-            b shouldNotBeSimilarTo a
-        }
+
+        null shouldNotBeSimilarTo JSONObject.NULL
+        JSONObject.NULL shouldBeSimilarTo null
+        
     }
 
 })
