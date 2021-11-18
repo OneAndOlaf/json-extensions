@@ -714,6 +714,7 @@ class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
      *
      * @param index the index
      * @param defaultValue a default value
+     * @param coerce whether to convert non-null, but non-string values to strings
      * @throws NullPointerException if any parameter is `null`
      * @return the string value, or `defaultValue` if not found
      */
@@ -730,6 +731,7 @@ class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
      * returned if the index is missing.
      *
      * @param index the index
+     * @param coerce whether to convert non-null, but non-string values to strings
      * @throws NullPointerException if any parameter is `null`
      * @return the string value, or an empty string if not found
      */
@@ -745,11 +747,12 @@ class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
      *
      * @param index the index
      * @param defaultValue a function to calculate the default value
+     * @param coerce whether to convert non-null, but non-string values to strings
      * @throws NullPointerException if any parameter is `null`
      * @return the string value, or `defaultValue` if not found
      */
     @JvmOverloads
-    fun getStringOrElse(index: Int, defaultValue: (index: Int) -> String, coerce: Boolean = false): String {
+    fun getStringOrElse(index: Int, defaultValue: (index: Int) -> String, coerce: Boolean): String {
         return getStringOrNull(index, coerce) ?: defaultValue(index)
     }
 
@@ -760,7 +763,26 @@ class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
      * used to convert it into a String via its `toString` method. When using the coercion, `defaultValue` is only
      * queried if the index is missing.
      *
-     * This method behaves exactly like its overload and exists so that Kotlin/Groovy users can pass a closure outside
+     * This method behaves exactly like its overloads and exists so that Kotlin/Groovy users can pass a closure outside
+     * of the parentheses.
+     *
+     * @param index the index
+     * @param coerce whether to convert non-null, but non-string values to strings
+     * @param defaultValue a function to calculate the default value
+     * @throws NullPointerException if any parameter is `null`
+     * @return the string value, or `defaultValue` if not found
+     */
+    fun getStringOrElse(index: Int, coerce: Boolean, defaultValue: (index: Int) -> String) =
+        getStringOrElse(index, defaultValue, coerce)
+
+    /**
+     * Gets the string value at a given index.
+     *
+     * By default, `defaultValue` is queried if the value is present, but not a string. A coercion mechanism can be
+     * used to convert it into a String via its `toString` method. When using the coercion, `defaultValue` is only
+     * queried if the index is missing.
+     *
+     * This method behaves exactly like its overloads and exists so that Kotlin/Groovy users can pass a closure outside
      * of the parentheses.
      *
      * @param index the index
@@ -768,8 +790,8 @@ class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
      * @throws NullPointerException if any parameter is `null`
      * @return the string value, or `defaultValue` if not found
      */
-    fun getStringOrElse(index: Int, coerce: Boolean, defaultValue: (index: Int) -> String) =
-        getStringOrElse(index, defaultValue, coerce)
+    fun getStringOrElse(index: Int, defaultValue: (index: Int) -> String) =
+        getStringOrElse(index, defaultValue, false)
 
     /**
      * Checks whether the array is empty.

@@ -1124,6 +1124,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(it)
 
             checkWithReadOnly(arr) {
+                getStringOrNull(0) shouldBe it
                 getStringOrNull(0, false) shouldBe it
                 getStringOrNull(0, true) shouldBe it
             }
@@ -1133,6 +1134,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(it)
 
             checkWithReadOnly(arr) {
+                getStringOrNull(0).shouldBeNull()
                 getStringOrNull(0, false).shouldBeNull()
                 getStringOrNull(0, true) shouldBeSimilarStringAs it
 
@@ -1145,6 +1147,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(it.first)
 
             checkWithReadOnly(arr) {
+                getStringOrDefault(0, it.second) shouldBe it.first
                 getStringOrDefault(0, it.second, false) shouldBe it.first
                 getStringOrDefault(0, it.second, true) shouldBe it.first
             }
@@ -1154,6 +1157,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(it.first)
 
             checkWithReadOnly(arr) {
+                getStringOrDefault(0, it.second) shouldBe it.second
                 getStringOrDefault(0, it.second, false) shouldBe it.second
                 getStringOrDefault(0, it.second, true) shouldBeSimilarStringAs it.first
             }
@@ -1165,6 +1169,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(it)
 
             checkWithReadOnly(arr) {
+                getStringOrEmpty(0) shouldBe it
                 getStringOrEmpty(0, false) shouldBe it
                 getStringOrEmpty(0, true) shouldBe it
             }
@@ -1174,6 +1179,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(it)
 
             checkWithReadOnly(arr) {
+                getStringOrEmpty(0).shouldBeEmpty()
                 getStringOrEmpty(0, false).shouldBeEmpty()
                 getStringOrEmpty(0, true) shouldBeSimilarStringAs it
             }
@@ -1185,6 +1191,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(data.first)
 
             checkWithReadOnly(arr) {
+                getStringOrElse(0) { data.second } shouldBe data.first
                 getStringOrElse(0, false) { data.second } shouldBe data.first
                 getStringOrElse(0, true) { data.second } shouldBe data.first
                 getStringOrElse(0, { data.second }, false) shouldBe data.first
@@ -1196,6 +1203,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(data.first)
 
             checkWithReadOnly(arr) {
+                getStringOrElse(0) { data.second } shouldBe data.second
                 getStringOrElse(0, false) { data.second } shouldBe data.second
                 getStringOrElse(0, true) { data.second } shouldBeSimilarStringAs data.first
                 getStringOrElse(0, { data.second }, false) shouldBe data.second

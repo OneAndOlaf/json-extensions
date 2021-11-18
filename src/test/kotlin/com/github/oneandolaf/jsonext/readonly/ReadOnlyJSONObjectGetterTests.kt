@@ -1153,6 +1153,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
             val obj = JSONObject().put("val", it.first)
 
             checkWithReadOnly(obj) {
+                getStringOrDefault("val", it.second) shouldBe it.second
                 getStringOrDefault("val", it.second, false) shouldBe it.second
                 getStringOrDefault("val", it.second, true) shouldBeSimilarStringAs it.first
             }
@@ -1164,6 +1165,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
             val obj = JSONObject().put("val", it)
 
             checkWithReadOnly(obj) {
+                getStringOrEmpty("val") shouldBe it
                 getStringOrEmpty("val", false) shouldBe it
                 getStringOrEmpty("val", true) shouldBe it
             }
@@ -1173,6 +1175,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
             val obj = JSONObject().put("val", it)
 
             checkWithReadOnly(obj) {
+                getStringOrEmpty("val").shouldBeEmpty()
                 getStringOrEmpty("val", false).shouldBeEmpty()
                 getStringOrEmpty("val", true) shouldBeSimilarStringAs it
             }
@@ -1196,6 +1199,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
             val obj = JSONObject().put("val", data.first)
 
             checkWithReadOnly(obj) {
+                getStringOrElse("val") { data.second } shouldBe data.second
                 getStringOrElse("val", false) { data.second } shouldBe data.second
                 getStringOrElse("val", true) { data.second } shouldBeSimilarStringAs data.first
                 getStringOrElse("val", { data.second }, false) shouldBe data.second
