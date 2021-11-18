@@ -751,7 +751,6 @@ class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
      * @throws NullPointerException if any parameter is `null`
      * @return the string value, or `defaultValue` if not found
      */
-    @JvmOverloads
     fun getStringOrElse(index: Int, defaultValue: (index: Int) -> String, coerce: Boolean): String {
         return getStringOrNull(index, coerce) ?: defaultValue(index)
     }

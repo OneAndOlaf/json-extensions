@@ -153,7 +153,7 @@ class ConversionsTests : FunSpec({
             Conversions.toEnum<TestEnum>(it).shouldNotBeNull()
         }
 
-        checkAll(Exhaustive.enum<TestEnum>().map { it.name.toLowerCase() }) {
+        checkAll(Exhaustive.enum<TestEnum>().map { it.name.lowercase() }) {
             Conversions.toEnum(it, TestEnum::class.java).shouldBeNull()
             Conversions.toEnum<TestEnum>(it).shouldBeNull()
         }
