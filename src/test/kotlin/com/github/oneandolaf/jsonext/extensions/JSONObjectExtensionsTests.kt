@@ -17,8 +17,8 @@
 
 package com.github.oneandolaf.jsonext.extensions
 
-import com.github.oneandolaf.jsonext.util.JSONGenerators
-import com.github.oneandolaf.jsonext.util.shouldBeSimilarTo
+import com.github.oneandolaf.jsonext.testutils.JSONGenerators
+import com.github.oneandolaf.jsonext.testutils.shouldBeSimilarTo
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import io.kotest.property.checkAll

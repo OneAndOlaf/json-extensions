@@ -15,11 +15,23 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.github.oneandolaf.jsonext
+package com.github.oneandolaf.jsonext.testutils
 
-enum class TestEnum {
+import io.kotest.property.Exhaustive
+import io.kotest.property.exhaustive.exhaustive
 
-    VAL1,
-    VAL2
-    
+operator fun <A : B, B> Exhaustive<A>.minus(other: Exhaustive<B>): Exhaustive<A> {
+    return (values.filter { it !in other.values }).exhaustive()
+}
+
+/**
+ * Alternative to * that does not require `other`s type to be related to the type of `this`.
+ */
+infix fun <A, B> Exhaustive<A>.cross(other: Exhaustive<B>): Exhaustive<Pair<A, B>> {
+    val values = this.values.flatMap { a ->
+        other.values.map { b ->
+            Pair(a, b)
+        }
+    }
+    return values.exhaustive()
 }

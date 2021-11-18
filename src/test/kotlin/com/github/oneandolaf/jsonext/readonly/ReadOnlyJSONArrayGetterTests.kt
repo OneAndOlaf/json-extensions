@@ -17,11 +17,12 @@
 
 package com.github.oneandolaf.jsonext.readonly
 
-import com.github.oneandolaf.jsonext.TestEnum
 import com.github.oneandolaf.jsonext.extensions.deepCopy
 import com.github.oneandolaf.jsonext.impl.Conversions
-import com.github.oneandolaf.jsonext.util.JSONGenerators
-import com.github.oneandolaf.jsonext.util.shouldBeSimilarTo
+import com.github.oneandolaf.jsonext.testutils.JSONGenerators
+import com.github.oneandolaf.jsonext.testutils.TestEnum
+import com.github.oneandolaf.jsonext.testutils.shouldBeSimilarStringAs
+import com.github.oneandolaf.jsonext.testutils.shouldBeSimilarTo
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
@@ -1133,7 +1134,8 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getStringOrNull(0, false).shouldBeNull()
-                getStringOrNull(0, true) shouldBe it.toString()
+                getStringOrNull(0, true) shouldBeSimilarStringAs it
+
             }
         }
     }
@@ -1153,7 +1155,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getStringOrDefault(0, it.second, false) shouldBe it.second
-                getStringOrDefault(0, it.second, true) shouldBe it.first.toString()
+                getStringOrDefault(0, it.second, true) shouldBeSimilarStringAs it.first
             }
         }
     }
@@ -1173,7 +1175,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getStringOrEmpty(0, false).shouldBeEmpty()
-                getStringOrEmpty(0, true) shouldBe it.toString()
+                getStringOrEmpty(0, true) shouldBeSimilarStringAs it
             }
         }
     }
@@ -1195,9 +1197,9 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getStringOrElse(0, false) { data.second } shouldBe data.second
-                getStringOrElse(0, true) { data.second } shouldBe data.first.toString()
+                getStringOrElse(0, true) { data.second } shouldBeSimilarStringAs data.first
                 getStringOrElse(0, { data.second }, false) shouldBe data.second
-                getStringOrElse(0, { data.second }, true) shouldBe data.first.toString()
+                getStringOrElse(0, { data.second }, true) shouldBeSimilarStringAs data.first
             }
         }
     }

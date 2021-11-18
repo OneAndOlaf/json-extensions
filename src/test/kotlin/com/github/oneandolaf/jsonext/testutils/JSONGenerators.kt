@@ -15,8 +15,10 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.github.oneandolaf.jsonext.util
+package com.github.oneandolaf.jsonext.testutils
 
+import com.github.oneandolaf.jsonext.extensions.jsonArrayOf
+import com.github.oneandolaf.jsonext.extensions.jsonObjectOf
 import io.kotest.property.Exhaustive
 import io.kotest.property.exhaustive.exhaustive
 import io.kotest.property.exhaustive.map
@@ -120,27 +122,36 @@ object JSONGenerators {
      */
     val allStrings = basicStrings + booleanStrings + numericStrings
 
-    val arraysAsLists = listOf(
-        emptyList(),
-        listOf(""),
-        listOf("foo"),
-        listOf(true),
-        listOf(false),
-        listOf(42),
-        listOf(5.0),
-        listOf(emptyList<Any>()),
-        listOf(listOf("foo"))
+    val arrays = listOf(
+        JSONArray(),
+        jsonArrayOf(""),
+        jsonArrayOf("foo"),
+        jsonArrayOf(true),
+        jsonArrayOf(false),
+        jsonArrayOf(42),
+        jsonArrayOf(5.0),
+        jsonArrayOf(emptyList<Any>()),
+        jsonArrayOf(jsonArrayOf("foo"))
     ).exhaustive()
 
-    val arrays = arraysAsLists.map { JSONArray(it) }
+    val arraysAsLists = arrays.map { it.toList() }
 
-    val objectsAsMaps = listOf(
-        emptyMap(),
-        mapOf("foo" to true),
-        mapOf("a" to "a string", "b" to 2)
+    val objects = listOf(
+        JSONObject(),
+        jsonObjectOf("foo" to true),
+        jsonObjectOf("a" to "a string", "b" to 2),
+        jsonObjectOf("i am null" to JSONObject.NULL),
+        jsonObjectOf(
+            "str" to "foo",
+            "int" to 42,
+            "double" to 2.5,
+            "bool" to false,
+            "subObj" to mapOf("substr" to "hello"),
+            "subArr" to listOf(1, "foo", true, emptyList<Any>())
+        ),
     ).exhaustive()
 
-    val objects = objectsAsMaps.map { JSONObject(it) }
+    val objectsAsMaps = objects.map { it.toMap() }
 
 
     val nonNullValues = bools + doubles + ints + arrays + objects + longs + allStrings

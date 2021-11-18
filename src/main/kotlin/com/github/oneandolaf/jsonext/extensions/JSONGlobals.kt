@@ -15,26 +15,29 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.github.oneandolaf.jsonext.util
+@file:JvmName("JSONGlobals")
 
-import io.kotest.matchers.Matcher
-import io.kotest.matchers.MatcherResult
-import io.kotest.matchers.should
-import io.kotest.matchers.shouldNot
-import org.intellij.lang.annotations.Language
+package com.github.oneandolaf.jsonext.extensions
+
+import org.json.JSONArray
 import org.json.JSONObject
 
-fun beJSONObject(other: String) = object : Matcher<JSONObject> {
+/**
+ * Returns a [JSONArray] containing the passed items.
+ *
+ * If any items are collections or maps, they will be wrapped into [JSONArray]s or [JSONObject]s.
+ *
+ * @param items the items to add to the array
+ * @return an array containing the items
+ */
+fun jsonArrayOf(vararg items: Any): JSONArray = JSONArray(listOf(*items))
 
-    override fun test(value: JSONObject): MatcherResult {
-        return MatcherResult(
-            value.similar(JSONObject(other)),
-            "$value should be similar to $other",
-            "$value should not be similar to $other"
-        )
-
-    }
-}
-
-infix fun JSONObject.shouldBeJSON(@Language("JSON") other: String) = this should beJSONObject(other)
-infix fun JSONObject.shouldNotBeJSON(@Language("JSON") other: String) = this shouldNot beJSONObject(other)
+/**
+ * Returns a [JSONObject] containing the passed key-value pairs.
+ *
+ * If any items are collections or maps, they will be wrapped into [JSONArray]s or [JSONObject]s.
+ *
+ * @param pairs the key-value pairs to add to the object
+ * @return an object containing the items
+ */
+fun jsonObjectOf(vararg pairs: Pair<String, Any>): JSONObject = JSONObject(mapOf(*pairs))

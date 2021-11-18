@@ -15,12 +15,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.github.oneandolaf.jsonext.util
+package com.github.oneandolaf.jsonext.testutils
 
+import com.github.oneandolaf.jsonext.util.JSONSimilar
 import io.kotest.matchers.Matcher
 import io.kotest.matchers.MatcherResult
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldNot
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 
 fun beSimilarTo(other: Any?) = object : Matcher<Any?> {
 
@@ -36,3 +40,30 @@ fun beSimilarTo(other: Any?) = object : Matcher<Any?> {
 
 infix fun Any?.shouldBeSimilarTo(other: Any?) = this should beSimilarTo(other)
 infix fun Any?.shouldNotBeSimilarTo(other: Any?) = this shouldNot beSimilarTo(other)
+
+fun beSimilarStringAs(other: Any?) = object : Matcher<String?> {
+
+    override fun test(value: String?): MatcherResult {
+        return MatcherResult(
+            when (other) {
+                null -> value == null
+                is JSONObject -> try {
+                    JSONObject(value).similar(other)
+                } catch (ex: JSONException) {
+                    false
+                }
+                is JSONArray -> try {
+                    JSONArray(value).similar(other)
+                } catch (ex: JSONException) {
+                    false
+                }
+                else -> value == other.toString()
+            },
+            "$value should be similar to the String of $other",
+            "$value should not be similar to the String of $other"
+        )
+    }
+}
+
+infix fun String?.shouldBeSimilarStringAs(other: Any?) = this should beSimilarStringAs(other)
+infix fun String?.shouldNotBeSimliarStringAs(other: Any?) = this shouldNot beSimilarStringAs(other)

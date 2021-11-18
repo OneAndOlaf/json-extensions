@@ -17,8 +17,15 @@
 
 package com.github.oneandolaf.jsonext.util
 
+import com.github.oneandolaf.jsonext.readonly.ReadOnlyJSONArray
+import com.github.oneandolaf.jsonext.readonly.ReadOnlyJSONObject
+import com.github.oneandolaf.jsonext.testutils.JSONGenerators
+import com.github.oneandolaf.jsonext.testutils.cross
+import com.github.oneandolaf.jsonext.testutils.shouldBeSimilarTo
+import com.github.oneandolaf.jsonext.testutils.shouldNotBeSimilarTo
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.property.checkAll
+import io.kotest.property.exhaustive.times
 import org.json.JSONObject
 
 class JSONSimilarTests : FunSpec({
@@ -34,14 +41,66 @@ class JSONSimilarTests : FunSpec({
             it shouldBeSimilarTo it
         }
 
+        checkAll(JSONGenerators.objects) {
+            it shouldBeSimilarTo ReadOnlyJSONObject(it)
+            ReadOnlyJSONObject(it) shouldBeSimilarTo it
+        }
+
+        checkAll(JSONGenerators.arrays) {
+            it shouldBeSimilarTo ReadOnlyJSONArray(it)
+            ReadOnlyJSONArray(it) shouldBeSimilarTo it
+        }
+
         null shouldBeSimilarTo null
     }
 
     context("not similar") {
 
         null shouldNotBeSimilarTo JSONObject.NULL
-        JSONObject.NULL shouldBeSimilarTo null
-        
+        JSONObject.NULL shouldNotBeSimilarTo null
+
+        checkAll(JSONGenerators.objects * JSONGenerators.objects) {
+            if (!it.first.similar(it.second)) {
+                it.first shouldNotBeSimilarTo it.second
+                ReadOnlyJSONObject(it.first) shouldNotBeSimilarTo it.second
+                it.first shouldNotBeSimilarTo ReadOnlyJSONObject(it.second)
+                ReadOnlyJSONObject(it.first) shouldNotBeSimilarTo ReadOnlyJSONObject(it.second)
+
+                it.second shouldNotBeSimilarTo it.first
+                ReadOnlyJSONObject(it.second) shouldNotBeSimilarTo it.first
+                it.second shouldNotBeSimilarTo ReadOnlyJSONObject(it.first)
+                ReadOnlyJSONObject(it.second) shouldNotBeSimilarTo ReadOnlyJSONObject(it.first)
+            }
+        }
+
+
+        checkAll(JSONGenerators.objects cross JSONGenerators.nonObjects) {
+            it.first shouldNotBeSimilarTo it.second
+            it.second shouldNotBeSimilarTo it.first
+            ReadOnlyJSONObject(it.first) shouldNotBeSimilarTo it.second
+            it.second shouldNotBeSimilarTo ReadOnlyJSONObject(it.first)
+        }
+
+        checkAll(JSONGenerators.arrays * JSONGenerators.arrays) {
+            if (!it.first.similar(it.second)) {
+                it.first shouldNotBeSimilarTo it.second
+                ReadOnlyJSONArray(it.first) shouldNotBeSimilarTo it.second
+                it.first shouldNotBeSimilarTo ReadOnlyJSONArray(it.second)
+                ReadOnlyJSONArray(it.first) shouldNotBeSimilarTo ReadOnlyJSONArray(it.second)
+
+                it.second shouldNotBeSimilarTo it.first
+                ReadOnlyJSONArray(it.second) shouldNotBeSimilarTo it.first
+                it.second shouldNotBeSimilarTo ReadOnlyJSONArray(it.first)
+                ReadOnlyJSONArray(it.second) shouldNotBeSimilarTo ReadOnlyJSONArray(it.first)
+            }
+        }
+
+        checkAll(JSONGenerators.arrays cross JSONGenerators.nonArrays) {
+            it.first shouldNotBeSimilarTo it.second
+            it.second shouldNotBeSimilarTo it.first
+            ReadOnlyJSONArray(it.first) shouldNotBeSimilarTo it.second
+            it.second shouldNotBeSimilarTo ReadOnlyJSONArray(it.first)
+        }
     }
 
 })

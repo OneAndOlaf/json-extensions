@@ -17,9 +17,9 @@
 
 package com.github.oneandolaf.jsonext.impl
 
-import com.github.oneandolaf.jsonext.TestEnum
-import com.github.oneandolaf.jsonext.util.JSONGenerators
-import com.github.oneandolaf.jsonext.util.minus
+import com.github.oneandolaf.jsonext.testutils.JSONGenerators
+import com.github.oneandolaf.jsonext.testutils.TestEnum
+import com.github.oneandolaf.jsonext.testutils.minus
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull

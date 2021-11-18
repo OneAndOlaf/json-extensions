@@ -17,11 +17,12 @@
 
 package com.github.oneandolaf.jsonext.readonly
 
-import com.github.oneandolaf.jsonext.TestEnum
 import com.github.oneandolaf.jsonext.extensions.deepCopy
 import com.github.oneandolaf.jsonext.impl.Conversions
-import com.github.oneandolaf.jsonext.util.JSONGenerators
-import com.github.oneandolaf.jsonext.util.shouldBeSimilarTo
+import com.github.oneandolaf.jsonext.testutils.JSONGenerators
+import com.github.oneandolaf.jsonext.testutils.TestEnum
+import com.github.oneandolaf.jsonext.testutils.shouldBeSimilarStringAs
+import com.github.oneandolaf.jsonext.testutils.shouldBeSimilarTo
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
@@ -1120,6 +1121,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
             val obj = JSONObject().put("val", it)
 
             checkWithReadOnly(obj) {
+                getStringOrNull("val") shouldBe it
                 getStringOrNull("val", false) shouldBe it
                 getStringOrNull("val", true) shouldBe it
             }
@@ -1129,8 +1131,9 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
             val obj = JSONObject().put("val", it)
 
             checkWithReadOnly(obj) {
+                getStringOrNull("val").shouldBeNull()
                 getStringOrNull("val", false).shouldBeNull()
-                getStringOrNull("val", true) shouldBe it.toString()
+                getStringOrNull("val", true) shouldBeSimilarStringAs it
             }
         }
     }
@@ -1140,6 +1143,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
             val obj = JSONObject().put("val", it.first)
 
             checkWithReadOnly(obj) {
+                getStringOrDefault("val", it.second) shouldBe it.first
                 getStringOrDefault("val", it.second, false) shouldBe it.first
                 getStringOrDefault("val", it.second, true) shouldBe it.first
             }
@@ -1150,7 +1154,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
 
             checkWithReadOnly(obj) {
                 getStringOrDefault("val", it.second, false) shouldBe it.second
-                getStringOrDefault("val", it.second, true) shouldBe it.first.toString()
+                getStringOrDefault("val", it.second, true) shouldBeSimilarStringAs it.first
             }
         }
     }
@@ -1170,7 +1174,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
 
             checkWithReadOnly(obj) {
                 getStringOrEmpty("val", false).shouldBeEmpty()
-                getStringOrEmpty("val", true) shouldBe it.toString()
+                getStringOrEmpty("val", true) shouldBeSimilarStringAs it
             }
         }
     }
@@ -1180,6 +1184,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
             val obj = JSONObject().put("val", data.first)
 
             checkWithReadOnly(obj) {
+                getStringOrElse("val") { data.second } shouldBe data.first
                 getStringOrElse("val", false) { data.second } shouldBe data.first
                 getStringOrElse("val", true) { data.second } shouldBe data.first
                 getStringOrElse("val", { data.second }, false) shouldBe data.first
@@ -1192,9 +1197,9 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
 
             checkWithReadOnly(obj) {
                 getStringOrElse("val", false) { data.second } shouldBe data.second
-                getStringOrElse("val", true) { data.second } shouldBe data.first.toString()
+                getStringOrElse("val", true) { data.second } shouldBeSimilarStringAs data.first
                 getStringOrElse("val", { data.second }, false) shouldBe data.second
-                getStringOrElse("val", { data.second }, true) shouldBe data.first.toString()
+                getStringOrElse("val", { data.second }, true) shouldBeSimilarStringAs data.first
             }
         }
     }

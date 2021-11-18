@@ -40,7 +40,7 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
      * @return the value associated with the key, or `null` if not found
      */
     fun getOrNull(key: String): Any? {
-        return makeReadOnly(obj.opt(key))
+        return makeReadOnlyNullable(obj.opt(key))
     }
 
     /**
@@ -717,6 +717,7 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
      *
      * @param key the key
      * @param defaultValue a default value
+     * @param coerce whether to convert non-null, but non-string values to strings
      * @throws NullPointerException if any parameter is `null`
      * @return the string value, or `defaultValue` if not found
      */
@@ -733,6 +734,7 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
      * returned if the key is missing.
      *
      * @param key the key
+     * @param coerce whether to convert non-null, but non-string values to strings
      * @throws NullPointerException if any parameter is `null`
      * @return the string value, or an empty string if not found
      */
@@ -746,14 +748,16 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
      * used to convert it into a String via its `toString` method. When using the coercion, `defaultValue` is only
      * queried if the key is missing.
      *
+     * This method behaves exactly like its overloads and exists so that Kotlin/Groovy users can pass a closure outside
+     * of the parentheses.
+     *
      * @param key the key
      * @param defaultValue a function to calculate the default value
      * @throws NullPointerException if any parameter is `null`
      * @return the string value, or `defaultValue` if not found
      */
-    @JvmOverloads
-    fun getStringOrElse(key: String, defaultValue: (key: String) -> String, coerce: Boolean = false): String {
-        return getStringOrNull(key, coerce) ?: defaultValue(key)
+    fun getStringOrElse(key: String, defaultValue: (key: String) -> String): String {
+        return getStringOrElse(key, false, defaultValue)
     }
 
     /**
@@ -763,16 +767,33 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
      * used to convert it into a String via its `toString` method. When using the coercion, `defaultValue` is only
      * queried if the key is missing.
      *
-     * This method behaves exactly like its overload and exists so that Kotlin/Groovy users can pass a closure outside
+     * This method behaves exactly like its overloads and exists so that Kotlin/Groovy users can pass a closure outside
      * of the parentheses.
      *
      * @param key the key
+     * @param coerce whether to convert non-null, but non-string values to strings
      * @param defaultValue a function to calculate the default value
      * @throws NullPointerException if any parameter is `null`
      * @return the string value, or `defaultValue` if not found
      */
     fun getStringOrElse(key: String, coerce: Boolean, defaultValue: (key: String) -> String) =
-        getStringOrElse(key, defaultValue, coerce)
+        getStringOrNull(key, coerce) ?: defaultValue(key)
+
+    /**
+     * Gets the string value associated with a key.
+     *
+     * By default, `defaultValue` is queried if the value is present, but not a string. A coercion mechanism can be
+     * used to convert it into a String via its `toString` method. When using the coercion, `defaultValue` is only
+     * queried if the key is missing.
+     *
+     * @param key the key
+     * @param defaultValue a function to calculate the default value
+     * @param coerce whether to convert non-null, but non-string values to strings
+     * @throws NullPointerException if any parameter is `null`
+     * @return the string value, or `defaultValue` if not found
+     */
+    fun getStringOrElse(key: String, defaultValue: (key: String) -> String, coerce: Boolean) =
+        getStringOrNull(key, coerce) ?: defaultValue(key)
 
     /**
      * Checks whether the object contains a key.
