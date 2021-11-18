@@ -17,7 +17,6 @@
 
 package com.github.oneandolaf.jsonext.readonly
 
-import com.github.oneandolaf.jsonext.extensions.contains
 import com.github.oneandolaf.jsonext.extensions.deepCopy
 import com.github.oneandolaf.jsonext.testutils.JSONGenerators
 import com.github.oneandolaf.jsonext.testutils.cross
@@ -40,7 +39,7 @@ class ReadOnlyJSONObjectTests : FunSpec({
             }
 
             for (s in JSONGenerators.allStrings.values) {
-                ro.contains(s) shouldBe it.contains(s)
+                ro.contains(s) shouldBe it.has(s)
             }
         }
     }
@@ -54,7 +53,7 @@ class ReadOnlyJSONObjectTests : FunSpec({
             }
 
             for (s in JSONGenerators.allStrings.values) {
-                ro.contains(s) shouldBe (it.contains(s) && it.opt(s) !== JSONObject.NULL)
+                ro.contains(s) shouldBe (it.has(s) && it.opt(s) !== JSONObject.NULL)
             }
         }
     }
