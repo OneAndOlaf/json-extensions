@@ -17,6 +17,7 @@
 
 package com.github.oneandolaf.jsonext.readonly
 
+import com.github.oneandolaf.jsonext.extensions.deepCopy
 import com.github.oneandolaf.jsonext.impl.Conversions
 import org.json.JSONArray
 import org.json.JSONObject
@@ -28,7 +29,7 @@ import java.util.*
  * Unmodifiable variant of JSONObject. This wraps a [JSONObject], but it does not extend it, thus ensuring the read-only
  * property at compile time.
  */
-class ReadOnlyJSONObject(private val obj: JSONObject) {
+class ReadOnlyJSONObject private constructor(private val obj: JSONObject) {
 
     /**
      * Gets the value associated with a key.
@@ -887,10 +888,33 @@ class ReadOnlyJSONObject(private val obj: JSONObject) {
         @JvmStatic
         val EMPTY = ReadOnlyJSONObject(JSONObject())
 
+        /**
+         * Creates a read-only object from `o`.
+         *
+         * The object returned is backed by `o`. Any changes made to `o` will be reflected in the object returned.
+         */
+        @JvmStatic
+        fun create(o: JSONObject): ReadOnlyJSONObject {
+            return ReadOnlyJSONObject(o)
+        }
+
+        /**
+         * Creates a read-only object from the current state of `o`.
+         *
+         * The object returned is _not_ backed by `o`, so changes to `o` will not be reflected in the object returned.
+         */
+        @JvmStatic
+        fun snapshot(o: JSONObject): ReadOnlyJSONObject {
+            if (o.isEmpty) {
+                return EMPTY
+            }
+            return ReadOnlyJSONObject(o.deepCopy())
+        }
+
         internal fun makeReadOnly(o: Any): Any {
             return when (o) {
-                is JSONObject -> ReadOnlyJSONObject(o)
-                is JSONArray -> ReadOnlyJSONArray(o)
+                is JSONObject -> create(o)
+                is JSONArray -> ReadOnlyJSONArray.create(o)
                 else -> o
             }
         }

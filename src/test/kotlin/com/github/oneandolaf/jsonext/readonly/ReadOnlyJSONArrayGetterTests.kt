@@ -44,7 +44,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(it)
             val orig = arr.deepCopy()
 
-            val ro = ReadOnlyJSONArray(arr)
+            val ro = ReadOnlyJSONArray.create(arr)
 
             ro.getOrNull(0) shouldBeSimilarTo it
 
@@ -69,7 +69,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(data.first)
             val orig = arr.deepCopy()
 
-            val ro = ReadOnlyJSONArray(arr)
+            val ro = ReadOnlyJSONArray.create(arr)
 
             ro.getOrElse(0) { data.second } shouldBeSimilarTo data.first
             ro.getOrElse(1) { data.second } shouldBeSimilarTo data.second
@@ -101,7 +101,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(it.first)
 
             checkWithReadOnly(arr) {
-                getArrayOrDefault(0, ReadOnlyJSONArray(it.second)) shouldBeSimilarTo it.first
+                getArrayOrDefault(0, ReadOnlyJSONArray.create(it.second)) shouldBeSimilarTo it.first
             }
         }
 
@@ -109,7 +109,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(it.first)
 
             checkWithReadOnly(arr) {
-                getArrayOrDefault(0, ReadOnlyJSONArray(it.second)) shouldBeSimilarTo it.second
+                getArrayOrDefault(0, ReadOnlyJSONArray.create(it.second)) shouldBeSimilarTo it.second
             }
         }
     }
@@ -138,7 +138,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getArrayOrElse(0) {
-                    ReadOnlyJSONArray(data.second)
+                    ReadOnlyJSONArray.create(data.second)
                 } shouldBeSimilarTo data.first
             }
         }
@@ -148,7 +148,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getArrayOrElse(0) {
-                    ReadOnlyJSONArray(data.second)
+                    ReadOnlyJSONArray.create(data.second)
                 } shouldBeSimilarTo data.second
             }
         }
@@ -1066,7 +1066,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(it.first)
 
             checkWithReadOnly(arr) {
-                getObjectOrDefault(0, ReadOnlyJSONObject(it.second)) shouldBeSimilarTo it.first
+                getObjectOrDefault(0, ReadOnlyJSONObject.create(it.second)) shouldBeSimilarTo it.first
             }
         }
 
@@ -1074,7 +1074,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
             val arr = JSONArray().put(it.first)
 
             checkWithReadOnly(arr) {
-                getObjectOrDefault(0, ReadOnlyJSONObject(it.second)) shouldBeSimilarTo it.second
+                getObjectOrDefault(0, ReadOnlyJSONObject.create(it.second)) shouldBeSimilarTo it.second
             }
         }
     }
@@ -1103,7 +1103,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getObjectOrElse(0) {
-                    ReadOnlyJSONObject(data.second)
+                    ReadOnlyJSONObject.create(data.second)
                 } shouldBeSimilarTo data.first
             }
         }
@@ -1113,7 +1113,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 
             checkWithReadOnly(arr) {
                 getObjectOrElse(0) {
-                    ReadOnlyJSONObject(data.second)
+                    ReadOnlyJSONObject.create(data.second)
                 } shouldBeSimilarTo data.second
             }
         }
@@ -1214,7 +1214,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
 })
 
 private fun checkWithReadOnly(orig: JSONArray, func: ReadOnlyJSONArray.() -> Unit) {
-    val ro = ReadOnlyJSONArray(orig.deepCopy())
+    val ro = ReadOnlyJSONArray.snapshot(orig)
 
     ro.func()
 

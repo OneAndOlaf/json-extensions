@@ -17,6 +17,7 @@
 
 package com.github.oneandolaf.jsonext.readonly
 
+import com.github.oneandolaf.jsonext.extensions.asUnmodifiable
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -122,6 +123,14 @@ class JSONObjectUnmodifiable(private val src: JSONObject) : JSONObject() {
         }
     }
 
+    override fun optJSONObject(key: String?, defaultValue: JSONObject?): JSONObjectUnmodifiable? {
+        return when (val obj = opt(key)) {
+            is JSONObjectUnmodifiable -> obj
+            is JSONObject -> JSONObjectUnmodifiable(obj)
+            else -> defaultValue?.asUnmodifiable()
+        }
+    }
+
     override fun optJSONArray(key: String?): JSONArrayUnmodifiable? {
         return when (val obj = opt(key)) {
             is JSONArrayUnmodifiable -> obj
@@ -196,14 +205,14 @@ class JSONObjectUnmodifiable(private val src: JSONObject) : JSONObject() {
     /**
      * Unsupported for read-only objects.
      */
-    override fun put(key: String?, value: MutableCollection<*>?): JSONObject {
+    override fun put(key: String?, value: Collection<*>?): JSONObject {
         throw unsupported()
     }
 
     /**
      * Unsupported for read-only objects.
      */
-    override fun put(key: String?, value: MutableMap<*, *>?): JSONObject {
+    override fun put(key: String?, value: Map<*, *>?): JSONObject {
         throw unsupported()
     }
 

@@ -18,6 +18,8 @@
 
 package com.github.oneandolaf.jsonext.extensions
 
+import com.github.oneandolaf.jsonext.readonly.JSONObjectUnmodifiable
+import com.github.oneandolaf.jsonext.readonly.ReadOnlyJSONObject
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -44,3 +46,25 @@ fun JSONObject.deepCopy(): JSONObject {
     return copy
 }
 
+/**
+ * Wraps this [JSONObject] into an unmodifiable subclass.
+ *
+ * Consider using [ReadOnlyJSONObject] for a more typesafe alternative.
+ */
+fun JSONObject.asUnmodifiable(): JSONObjectUnmodifiable {
+    return this as? JSONObjectUnmodifiable ?: JSONObjectUnmodifiable(this)
+}
+
+/**
+ * Wraps this [JSONObject] into a [ReadOnlyJSONObject].
+ */
+fun JSONObject.asReadOnly(): ReadOnlyJSONObject {
+    return ReadOnlyJSONObject.create(this)
+}
+
+/**
+ * Creates a [ReadOnlyJSONObject] from the current state of this object.
+ */
+fun JSONObject.readOnlySnapshot(): ReadOnlyJSONObject {
+    return ReadOnlyJSONObject.snapshot(this)
+}

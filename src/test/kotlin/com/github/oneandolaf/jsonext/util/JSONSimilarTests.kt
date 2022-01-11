@@ -30,11 +30,6 @@ import org.json.JSONObject
 
 class JSONSimilarTests : FunSpec({
 
-    data class SimilarData(
-        val a: Any?,
-        val b: Any?
-    )
-
     context("similar") {
 
         checkAll(JSONGenerators.values) {
@@ -42,13 +37,13 @@ class JSONSimilarTests : FunSpec({
         }
 
         checkAll(JSONGenerators.objects) {
-            it shouldBeSimilarTo ReadOnlyJSONObject(it)
-            ReadOnlyJSONObject(it) shouldBeSimilarTo it
+            it shouldBeSimilarTo ReadOnlyJSONObject.create(it)
+            ReadOnlyJSONObject.create(it) shouldBeSimilarTo it
         }
 
         checkAll(JSONGenerators.arrays) {
-            it shouldBeSimilarTo ReadOnlyJSONArray(it)
-            ReadOnlyJSONArray(it) shouldBeSimilarTo it
+            it shouldBeSimilarTo ReadOnlyJSONArray.create(it)
+            ReadOnlyJSONArray.create(it) shouldBeSimilarTo it
         }
 
         null shouldBeSimilarTo null
@@ -62,14 +57,14 @@ class JSONSimilarTests : FunSpec({
         checkAll(JSONGenerators.objects * JSONGenerators.objects) {
             if (!it.first.similar(it.second)) {
                 it.first shouldNotBeSimilarTo it.second
-                ReadOnlyJSONObject(it.first) shouldNotBeSimilarTo it.second
-                it.first shouldNotBeSimilarTo ReadOnlyJSONObject(it.second)
-                ReadOnlyJSONObject(it.first) shouldNotBeSimilarTo ReadOnlyJSONObject(it.second)
+                ReadOnlyJSONObject.create(it.first) shouldNotBeSimilarTo it.second
+                it.first shouldNotBeSimilarTo ReadOnlyJSONObject.create(it.second)
+                ReadOnlyJSONObject.create(it.first) shouldNotBeSimilarTo ReadOnlyJSONObject.create(it.second)
 
                 it.second shouldNotBeSimilarTo it.first
-                ReadOnlyJSONObject(it.second) shouldNotBeSimilarTo it.first
-                it.second shouldNotBeSimilarTo ReadOnlyJSONObject(it.first)
-                ReadOnlyJSONObject(it.second) shouldNotBeSimilarTo ReadOnlyJSONObject(it.first)
+                ReadOnlyJSONObject.create(it.second) shouldNotBeSimilarTo it.first
+                it.second shouldNotBeSimilarTo ReadOnlyJSONObject.create(it.first)
+                ReadOnlyJSONObject.create(it.second) shouldNotBeSimilarTo ReadOnlyJSONObject.create(it.first)
             }
         }
 
@@ -77,29 +72,29 @@ class JSONSimilarTests : FunSpec({
         checkAll(JSONGenerators.objects cross JSONGenerators.nonObjects) {
             it.first shouldNotBeSimilarTo it.second
             it.second shouldNotBeSimilarTo it.first
-            ReadOnlyJSONObject(it.first) shouldNotBeSimilarTo it.second
-            it.second shouldNotBeSimilarTo ReadOnlyJSONObject(it.first)
+            ReadOnlyJSONObject.create(it.first) shouldNotBeSimilarTo it.second
+            it.second shouldNotBeSimilarTo ReadOnlyJSONObject.create(it.first)
         }
 
         checkAll(JSONGenerators.arrays * JSONGenerators.arrays) {
             if (!it.first.similar(it.second)) {
                 it.first shouldNotBeSimilarTo it.second
-                ReadOnlyJSONArray(it.first) shouldNotBeSimilarTo it.second
-                it.first shouldNotBeSimilarTo ReadOnlyJSONArray(it.second)
-                ReadOnlyJSONArray(it.first) shouldNotBeSimilarTo ReadOnlyJSONArray(it.second)
+                ReadOnlyJSONArray.create(it.first) shouldNotBeSimilarTo it.second
+                it.first shouldNotBeSimilarTo ReadOnlyJSONArray.create(it.second)
+                ReadOnlyJSONArray.create(it.first) shouldNotBeSimilarTo ReadOnlyJSONArray.create(it.second)
 
                 it.second shouldNotBeSimilarTo it.first
-                ReadOnlyJSONArray(it.second) shouldNotBeSimilarTo it.first
-                it.second shouldNotBeSimilarTo ReadOnlyJSONArray(it.first)
-                ReadOnlyJSONArray(it.second) shouldNotBeSimilarTo ReadOnlyJSONArray(it.first)
+                ReadOnlyJSONArray.create(it.second) shouldNotBeSimilarTo it.first
+                it.second shouldNotBeSimilarTo ReadOnlyJSONArray.create(it.first)
+                ReadOnlyJSONArray.create(it.second) shouldNotBeSimilarTo ReadOnlyJSONArray.create(it.first)
             }
         }
 
         checkAll(JSONGenerators.arrays cross JSONGenerators.nonArrays) {
             it.first shouldNotBeSimilarTo it.second
             it.second shouldNotBeSimilarTo it.first
-            ReadOnlyJSONArray(it.first) shouldNotBeSimilarTo it.second
-            it.second shouldNotBeSimilarTo ReadOnlyJSONArray(it.first)
+            ReadOnlyJSONArray.create(it.first) shouldNotBeSimilarTo it.second
+            it.second shouldNotBeSimilarTo ReadOnlyJSONArray.create(it.first)
         }
     }
 

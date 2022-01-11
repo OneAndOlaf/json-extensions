@@ -30,65 +30,72 @@ class ReadOnlyJSONArrayTests : FunSpec({
 
     context("size") {
         forAll(JSONGenerators.arrays) {
-            ReadOnlyJSONArray(it).size == it.length()
+            ReadOnlyJSONArray.create(it).size == it.length()
         }
     }
 
     context("isEmpty") {
         forAll(JSONGenerators.arrays) {
-            ReadOnlyJSONArray(it).isEmpty == it.isEmpty
+            ReadOnlyJSONArray.create(it).isEmpty == it.isEmpty
         }
     }
 
     context("isNotEmpty") {
         forAll(JSONGenerators.arrays) {
-            ReadOnlyJSONArray(it).isNotEmpty != it.isEmpty
+            ReadOnlyJSONArray.create(it).isNotEmpty != it.isEmpty
         }
     }
 
     context("itemsAsArrays") {
         checkAll(JSONGenerators.arrays) {
-            ReadOnlyJSONArray(it).itemsAsArrays() shouldHaveSize it.filterIsInstance<JSONArray>().size
+            ReadOnlyJSONArray.create(it).itemsAsArrays() shouldHaveSize it.filterIsInstance<JSONArray>().size
         }
     }
 
     context("itemsAsBooleans") {
         checkAll(JSONGenerators.arrays) {
-            ReadOnlyJSONArray(it).itemsAsBooleans() shouldHaveSize it.mapNotNull { Conversions.toBoolean(it) }.size
+            ReadOnlyJSONArray.create(it)
+                .itemsAsBooleans() shouldHaveSize it.mapNotNull { Conversions.toBoolean(it) }.size
         }
     }
 
     context("itemsAsDoubles") {
         checkAll(JSONGenerators.arrays) {
-            ReadOnlyJSONArray(it).itemsAsDoubles() shouldHaveSize it.mapNotNull { Conversions.toDouble(it) }.size
+            ReadOnlyJSONArray.create(it).itemsAsDoubles() shouldHaveSize it.mapNotNull { Conversions.toDouble(it) }.size
         }
     }
 
     context("itemsAsInts") {
         checkAll(JSONGenerators.arrays) {
-            ReadOnlyJSONArray(it).itemsAsInts() shouldHaveSize it.mapNotNull { Conversions.toInt(it) }.size
+            ReadOnlyJSONArray.create(it).itemsAsInts() shouldHaveSize it.mapNotNull { Conversions.toInt(it) }.size
         }
     }
 
     context("itemsAsLongs") {
         checkAll(JSONGenerators.arrays) {
-            ReadOnlyJSONArray(it).itemsAsLongs() shouldHaveSize it.mapNotNull { Conversions.toLong(it) }.size
+            ReadOnlyJSONArray.create(it).itemsAsLongs() shouldHaveSize it.mapNotNull { Conversions.toLong(it) }.size
         }
     }
 
     context("itemsAsObjects") {
         checkAll(JSONGenerators.arrays) {
-            ReadOnlyJSONArray(it).itemsAsObjects() shouldHaveSize it.filterIsInstance<JSONObject>().size
+            ReadOnlyJSONArray.create(it).itemsAsObjects() shouldHaveSize it.filterIsInstance<JSONObject>().size
         }
     }
 
     context("itemsAsStrings") {
         checkAll(JSONGenerators.arrays) {
-            ReadOnlyJSONArray(it).itemsAsStrings() shouldHaveSize it.mapNotNull { Conversions.toString(it, false) }.size
-            ReadOnlyJSONArray(it).itemsAsStrings(false) shouldHaveSize it.mapNotNull {
+            ReadOnlyJSONArray.create(it).itemsAsStrings() shouldHaveSize it.mapNotNull {
+                Conversions.toString(
+                    it,
+                    false
+                )
+            }
+                .size
+            ReadOnlyJSONArray.create(it).itemsAsStrings(false) shouldHaveSize it.mapNotNull {
                 Conversions.toString(it, false)
             }.size
-            ReadOnlyJSONArray(it).itemsAsStrings(true) shouldHaveSize it.mapNotNull {
+            ReadOnlyJSONArray.create(it).itemsAsStrings(true) shouldHaveSize it.mapNotNull {
                 Conversions.toString(it, true)
             }.size
         }

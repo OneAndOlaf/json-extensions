@@ -53,6 +53,8 @@ class JSONArrayUnmodifiable(private val src: JSONArray) : JSONArray() {
 
     /**
      * Returns an iterator for this array.
+     *
+     * While the iterator is typed as mutable, attempting to mutate the array through it will throw an exception.
      */
     override fun iterator(): MutableIterator<*> {
         return IteratorUnmodifiable(this)

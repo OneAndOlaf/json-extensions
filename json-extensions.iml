@@ -7,8 +7,8 @@
           <option name="additionalArguments" value="-Xjvm-default=all" />
         </compilerSettings>
         <compilerArguments>
-          <option name="languageVersion" value="1.5" />
-          <option name="apiVersion" value="1.5" />
+          <option name="languageVersion" value="1.6" />
+          <option name="apiVersion" value="1.6" />
           <option name="pluginOptions">
             <array />
           </option>
@@ -35,56 +35,52 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.5.31" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.5.31" level="project" />
-    <orderEntry type="library" name="Maven: org.json:json:20210307" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20211205" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:22.0.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.8.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-engine:1.8.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.opentest4j:opentest4j:1.2.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.8.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-commons:1.8.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apiguardian:apiguardian-api:1.1.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-runner-junit5-jvm:4.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-framework-api-jvm:4.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-common-jvm:4.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-framework-engine-jvm:4.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.github.classgraph:classgraph:4.8.105" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-runner-junit5-jvm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-framework-api-jvm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-common-jvm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-framework-engine-jvm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.github.classgraph:classgraph:4.8.135" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.github.ajalt:mordant:1.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.github.ajalt:colormath:1.2.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-script-util:1.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.intellij.deps:trove4j:1.0.20181211" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-daemon-client:1.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-scripting-jvm:1.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-scripting-common:1.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-framework-discovery-jvm:4.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-assertions-core-jvm:4.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-assertions-api-jvm:4.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-extensions-jvm:4.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: commons-io:commons-io:2.6" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk:1.9.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-common:1.9.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-dsl:1.9.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-dsl-jvm:1.9.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-agent-jvm:1.9.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-agent-api:1.9.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-agent-common:1.9.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.objenesis:objenesis:3.0.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy:1.9.10" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy-agent:1.9.10" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-framework-concurrency-jvm:4.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-suite-api:1.6.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-launcher:1.6.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.6.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-script-runtime:1.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-reflect:1.5.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-property-jvm:4.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-assertions-shared-jvm:4.6.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.github.java-diff-utils:java-diff-utils:4.9" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: com.github.mifmif:generex:1.0.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: dk.brics.automaton:automaton:1.11-8" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.5.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: net.java.dev.jna:jna:5.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: net.java.dev.jna:jna-platform:5.5.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-framework-discovery-jvm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-assertions-core-jvm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-assertions-api-jvm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-extensions-jvm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: commons-io:commons-io:2.11.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk:1.12.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-dsl-jvm:1.12.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-dsl:1.12.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-common:1.12.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-agent-jvm:1.12.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-agent-api:1.12.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.mockk:mockk-agent-common:1.12.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.objenesis:objenesis:3.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy:1.11.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: net.bytebuddy:byte-buddy-agent:1.11.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-framework-concurrency-jvm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-suite-api:1.7.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.platform:junit-platform-launcher:1.7.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.7.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.jetbrains.kotlin:kotlin-reflect:1.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-property-jvm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.kotest:kotest-assertions-shared-jvm:5.0.3" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.github.java-diff-utils:java-diff-utils:4.11" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: com.github.curious-odd-man:rgxgen:1.3" level="project" />
   </component>
 </module>

@@ -17,14 +17,14 @@
 
 package com.github.oneandolaf.jsonext.readonly
 
+import com.github.oneandolaf.jsonext.extensions.deepCopy
 import com.github.oneandolaf.jsonext.impl.Conversions
 import org.json.JSONArray
 import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.BigInteger
-import java.util.*
 
-class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
+class ReadOnlyJSONArray private constructor(private val arr: JSONArray) : Iterable<Any> {
 
     /**
      * Gets the value at a given index.
@@ -411,7 +411,7 @@ class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
      *
      * This function is only callable from Kotlin.
      *
-     * @param clazz the enum class
+     * @param E the enum class
      * @param index the index
      * @param defaultValue a function to calculate the default value
      * @throws NullPointerException if any parameter is `null`
@@ -873,7 +873,7 @@ class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
      *
      * @param other the object to compare this to
      * @see JSONObject.similar
-     * @see similarToPlainObject
+     * @see similarToPlainArray
      * @return whether the objects are similar
      */
     fun similar(other: Any?): Boolean {
@@ -919,6 +919,30 @@ class ReadOnlyJSONArray(private val arr: JSONArray) : Iterable<Any> {
 
         @JvmStatic
         val EMPTY = ReadOnlyJSONArray(JSONArray())
+
+        /**
+         * Creates a read-only array from `arr`.
+         *
+         * The object returned is backed by `arr`. Any changes made to `arr` will be reflected in the array returned.
+         */
+        @JvmStatic
+        fun create(arr: JSONArray): ReadOnlyJSONArray {
+            return ReadOnlyJSONArray(arr)
+        }
+
+        /**
+         * Creates a read-only array from the current state of `arr`.
+         *
+         * The array returned is _not_ backed by `arr`, so changes to `arr` will not be reflected in the array
+         * returned.
+         */
+        @JvmStatic
+        fun snapshot(arr: JSONArray): ReadOnlyJSONArray {
+            if (arr.isEmpty) {
+                return EMPTY
+            }
+            return ReadOnlyJSONArray(arr.deepCopy())
+        }
 
     }
 

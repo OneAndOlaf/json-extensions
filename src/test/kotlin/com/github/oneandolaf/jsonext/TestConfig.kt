@@ -18,7 +18,7 @@
 package com.github.oneandolaf.jsonext
 
 import io.kotest.core.config.AbstractProjectConfig
-import io.kotest.core.test.DuplicateTestNameMode
+import io.kotest.core.names.DuplicateTestNameMode
 
 @Suppress("unused")
 object TestConfig : AbstractProjectConfig() {

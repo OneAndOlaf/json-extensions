@@ -17,7 +17,6 @@
 
 package com.github.oneandolaf.jsonext.readonly
 
-import com.github.oneandolaf.jsonext.extensions.deepCopy
 import com.github.oneandolaf.jsonext.testutils.JSONGenerators
 import com.github.oneandolaf.jsonext.testutils.cross
 import io.kotest.core.spec.style.FunSpec
@@ -32,7 +31,7 @@ class ReadOnlyJSONObjectTests : FunSpec({
 
     context("contains") {
         checkAll(JSONGenerators.objects) {
-            val ro = ReadOnlyJSONObject(it)
+            val ro = ReadOnlyJSONObject.create(it)
 
             for (key in it.keySet()) {
                 ro.contains(key).shouldBeTrue()
@@ -46,7 +45,7 @@ class ReadOnlyJSONObjectTests : FunSpec({
 
     context("containsNonNull") {
         checkAll(JSONGenerators.objects) {
-            val ro = ReadOnlyJSONObject(it)
+            val ro = ReadOnlyJSONObject.create(it)
 
             for (key in it.keySet()) {
                 ro.containsNonNull(key) shouldBe (ro.getOrNull(key) !== JSONObject.NULL)
@@ -60,25 +59,25 @@ class ReadOnlyJSONObjectTests : FunSpec({
 
     context("size") {
         forAll(JSONGenerators.objects) {
-            ReadOnlyJSONObject(it).size == it.length()
+            ReadOnlyJSONObject.create(it).size == it.length()
         }
     }
 
     context("isEmpty") {
         forAll(JSONGenerators.objects) {
-            ReadOnlyJSONObject(it).isEmpty == it.isEmpty
+            ReadOnlyJSONObject.create(it).isEmpty == it.isEmpty
         }
     }
 
     context("isNotEmpty") {
         forAll(JSONGenerators.objects) {
-            ReadOnlyJSONObject(it).isNotEmpty != it.isEmpty
+            ReadOnlyJSONObject.create(it).isNotEmpty != it.isEmpty
         }
     }
 
     context("keySet") {
         forAll(JSONGenerators.objects) {
-            ReadOnlyJSONObject(it).keySet == it.keySet()
+            ReadOnlyJSONObject.create(it).keySet == it.keySet()
         }
     }
 
@@ -86,8 +85,8 @@ class ReadOnlyJSONObjectTests : FunSpec({
         checkAll(JSONGenerators.objects cross JSONGenerators.objects) {
             val (obj1, obj2) = it
 
-            val ro1 = ReadOnlyJSONObject(obj1.deepCopy())
-            val ro2 = ReadOnlyJSONObject(obj2.deepCopy())
+            val ro1 = ReadOnlyJSONObject.snapshot(obj1)
+            val ro2 = ReadOnlyJSONObject.snapshot(obj2)
 
             ro1.similar(ro1).shouldBeTrue()
             ro2.similar(ro2).shouldBeTrue()
@@ -104,8 +103,8 @@ class ReadOnlyJSONObjectTests : FunSpec({
         checkAll(JSONGenerators.objects cross JSONGenerators.objects) {
             val (obj1, obj2) = it
 
-            val ro1 = ReadOnlyJSONObject(obj1.deepCopy())
-            val ro2 = ReadOnlyJSONObject(obj2.deepCopy())
+            val ro1 = ReadOnlyJSONObject.snapshot(obj1)
+            val ro2 = ReadOnlyJSONObject.snapshot(obj2)
 
             ro1.similarToPlainObject(null).shouldBeFalse()
             ro2.similarToPlainObject(null).shouldBeFalse()
@@ -121,7 +120,7 @@ class ReadOnlyJSONObjectTests : FunSpec({
 
     context("toString") {
         forAll(JSONGenerators.objects) {
-            ReadOnlyJSONObject(it).toString() == it.toString()
+            ReadOnlyJSONObject.create(it).toString() == it.toString()
         }
     }
 
