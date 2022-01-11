@@ -131,7 +131,9 @@ object JSONGenerators {
         jsonArrayOf(42),
         jsonArrayOf(5.0),
         jsonArrayOf(emptyList<Any>()),
-        jsonArrayOf(jsonArrayOf("foo"))
+        jsonArrayOf(jsonArrayOf("foo")),
+        jsonArrayOf(jsonObjectOf()),
+        jsonArrayOf("bar", 5, true, jsonArrayOf("hello", "world"), jsonObjectOf("foo" to false))
     ).exhaustive()
 
     val arraysAsLists = arrays.map { it.toList() }
