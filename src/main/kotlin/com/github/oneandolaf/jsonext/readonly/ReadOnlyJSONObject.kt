@@ -48,6 +48,20 @@ class ReadOnlyJSONObject private constructor(private val obj: JSONObject) {
      * Gets the value associated with a key.
      *
      * If the value is an object or an array, it will be wrapped inside a readonly version.
+     * The value returned is not copied, so if the underlying object or array is changed, it will reflect this.
+     *
+     * @param key the key
+     * @throws NullPointerException if any parameter is `null`
+     * @return the value associated with the key
+     */
+    operator fun get(key: String): ReadOnlyJSONVal {
+        return ReadOnlyJSONVal(getOrNull(key))
+    }
+
+    /**
+     * Gets the value associated with a key.
+     *
+     * If the value is an object or an array, it will be wrapped inside a readonly version.
      *
      * @param key the key
      * @param defaultValue a function to calculate a default value if not found
@@ -362,6 +376,7 @@ class ReadOnlyJSONObject private constructor(private val obj: JSONObject) {
      * Gets the enum value associated with a key.
      *
      * This function is only callable from Kotlin.
+     * Use its overload when calling from other languages.
      *
      * @param key the key
      * @throws NullPointerException if any parameter is `null`
@@ -380,22 +395,8 @@ class ReadOnlyJSONObject private constructor(private val obj: JSONObject) {
      * @throws NullPointerException if any parameter is `null`
      * @return the enum value, or `defaultValue` if not found
      */
-    fun <E : Enum<E>> getEnumOrDefault(clazz: Class<E>, key: String, defaultValue: E): E {
-        return getEnumOrNull(clazz, key) ?: defaultValue
-    }
-
-    /**
-     * Gets the enum value associated with a key.
-     *
-     * This function is only callable from Kotlin.
-     *
-     * @param key the key
-     * @param defaultValue the default value
-     * @throws NullPointerException if any parameter is `null`
-     * @return the enum value, or `defaultValue` if not found
-     */
-    inline fun <reified E : Enum<E>> getEnumOrDefault(key: String, defaultValue: E): E {
-        return getEnumOrNull<E>(key) ?: defaultValue
+    fun <E : Enum<E>> getEnumOrDefault(key: String, defaultValue: E): E {
+        return getEnumOrNull(defaultValue::class.java, key) ?: defaultValue
     }
 
     /**
@@ -415,6 +416,7 @@ class ReadOnlyJSONObject private constructor(private val obj: JSONObject) {
      * Gets the enum value associated with a key.
      *
      * This function is only callable from Kotlin.
+     * Use its overload when calling from other languages.
      *
      * @param key the key
      * @param defaultValue a function to calculate the default value

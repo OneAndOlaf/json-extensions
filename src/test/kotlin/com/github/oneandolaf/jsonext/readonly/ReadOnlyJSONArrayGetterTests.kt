@@ -39,7 +39,7 @@ import java.math.BigInteger
 
 class ReadOnlyJSONArrayGetterTests : FunSpec({
 
-    context("getOrNull") {
+    test("getOrNull") {
         checkAll(JSONGenerators.values) {
             val arr = JSONArray().put(it)
             val orig = arr.deepCopy()
@@ -64,7 +64,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getOrElse") {
+    test("getOrElse") {
         checkAll(JSONGenerators.values * JSONGenerators.values) { data ->
             val arr = JSONArray().put(data.first)
             val orig = arr.deepCopy()
@@ -78,7 +78,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getArrayOrNull") {
+    test("getArrayOrNull") {
         checkAll(JSONGenerators.arrays) {
             val arr = JSONArray().put(it)
 
@@ -96,7 +96,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getArrayOrDefault") {
+    test("getArrayOrDefault") {
         checkAll(JSONGenerators.arrays * JSONGenerators.arrays) {
             val arr = JSONArray().put(it.first)
 
@@ -114,7 +114,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getArrayOrEmpty") {
+    test("getArrayOrEmpty") {
         checkAll(JSONGenerators.arrays) {
             val arr = JSONArray().put(it)
 
@@ -132,7 +132,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getArrayOrElse") {
+    test("getArrayOrElse") {
         checkAll(JSONGenerators.arrays * JSONGenerators.arrays) { data ->
             val arr = JSONArray().put(data.first)
 
@@ -154,7 +154,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrNull") {
+    test("getBigDecimalOrNull") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -172,7 +172,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrDefault") {
+    test("getBigDecimalOrDefault") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.bigDecimals) {
             val arr = JSONArray().put(it.first)
 
@@ -190,7 +190,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrZero") {
+    test("getBigDecimalOrZero") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -208,7 +208,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrOne") {
+    test("getBigDecimalOrOne") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -226,7 +226,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrMinusOne") {
+    test("getBigDecimalOrMinusOne") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -244,7 +244,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrElse") {
+    test("getBigDecimalOrElse") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.bigDecimals) { data ->
             val arr = JSONArray().put(data.first)
 
@@ -262,7 +262,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrNull") {
+    test("getBigIntegerOrNull") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -280,7 +280,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrDefault") {
+    test("getBigIntegerOrDefault") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.bigIntegers) {
             val arr = JSONArray().put(it.first)
 
@@ -298,7 +298,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrZero") {
+    test("getBigIntegerOrZero") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -316,7 +316,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrOne") {
+    test("getBigIntegerOrOne") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -334,7 +334,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrMinusOne") {
+    test("getBigIntegerOrMinusOne") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -352,7 +352,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrElse") {
+    test("getBigIntegerOrElse") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.bigIntegers) { data ->
             val arr = JSONArray().put(data.first)
 
@@ -370,7 +370,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBooleanOrNull") {
+    test("getBooleanOrNull") {
         checkAll(JSONGenerators.booleanLikes) {
             val arr = JSONArray().put(it)
 
@@ -388,7 +388,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBooleanOrDefault") {
+    test("getBooleanOrDefault") {
         checkAll(JSONGenerators.booleanLikes * JSONGenerators.bools) {
             val arr = JSONArray().put(it.first)
 
@@ -406,7 +406,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBooleanOrTrue") {
+    test("getBooleanOrTrue") {
         checkAll(JSONGenerators.booleanLikes) {
             val arr = JSONArray().put(it)
 
@@ -424,7 +424,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBooleanOrFalse") {
+    test("getBooleanOrFalse") {
         checkAll(JSONGenerators.booleanLikes) {
             val arr = JSONArray().put(it)
 
@@ -442,7 +442,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getBooleanOrElse") {
+    test("getBooleanOrElse") {
         checkAll(JSONGenerators.booleanLikes * JSONGenerators.bools) { data ->
             val arr = JSONArray().put(data.first)
 
@@ -460,7 +460,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrNull") {
+    test("getDoubleOrNull") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -478,7 +478,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrDefault") {
+    test("getDoubleOrDefault") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.doubles) {
             val arr = JSONArray().put(it.first)
 
@@ -496,7 +496,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrZero") {
+    test("getDoubleOrZero") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -514,7 +514,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrOne") {
+    test("getDoubleOrOne") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -532,7 +532,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrMinusOne") {
+    test("getDoubleOrMinusOne") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -550,7 +550,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrNaN") {
+    test("getDoubleOrNaN") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -568,7 +568,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrElse") {
+    test("getDoubleOrElse") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.doubles) { data ->
             val arr = JSONArray().put(data.first)
 
@@ -586,7 +586,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getEnumOrNull") {
+    test("getEnumOrNull") {
         checkAll(Exhaustive.enum<TestEnum>()) {
             val arr = JSONArray().put(it.name)
 
@@ -606,7 +606,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getEnumOrDefault") {
+    test("getEnumOrDefault") {
         checkAll(Exhaustive.enum<TestEnum>() * Exhaustive.enum()) {
             val arr = JSONArray().put(it.first.name)
 
@@ -627,7 +627,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getEnumOrElse") {
+    test("getEnumOrElse") {
         checkAll(Exhaustive.enum<TestEnum>() * Exhaustive.enum()) { data ->
             val arr = JSONArray().put(data.first.name)
 
@@ -647,7 +647,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrNull") {
+    test("getFloatOrNull") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -665,7 +665,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrDefault") {
+    test("getFloatOrDefault") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.floats) {
             val arr = JSONArray().put(it.first)
 
@@ -683,7 +683,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrZero") {
+    test("getFloatOrZero") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -701,7 +701,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrOne") {
+    test("getFloatOrOne") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -719,7 +719,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrMinusOne") {
+    test("getFloatOrMinusOne") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -737,7 +737,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrNaN") {
+    test("getFloatOrNaN") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -755,7 +755,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrElse") {
+    test("getFloatOrElse") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.floats) { data ->
             val arr = JSONArray().put(data.first)
 
@@ -773,7 +773,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrNull") {
+    test("getIntOrNull") {
         checkAll(JSONGenerators.intLikes) {
             val arr = JSONArray().put(it)
 
@@ -791,7 +791,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrDefault") {
+    test("getIntOrDefault") {
         checkAll(JSONGenerators.intLikes * JSONGenerators.ints) {
             val arr = JSONArray().put(it.first)
 
@@ -809,7 +809,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrZero") {
+    test("getIntOrZero") {
         checkAll(JSONGenerators.intLikes) {
             val arr = JSONArray().put(it)
 
@@ -827,7 +827,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrOne") {
+    test("getIntOrOne") {
         checkAll(JSONGenerators.intLikes) {
             val arr = JSONArray().put(it)
 
@@ -845,7 +845,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrMinusOne") {
+    test("getIntOrMinusOne") {
         checkAll(JSONGenerators.intLikes) {
             val arr = JSONArray().put(it)
 
@@ -863,7 +863,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrElse") {
+    test("getIntOrElse") {
         checkAll(JSONGenerators.intLikes * JSONGenerators.ints) { data ->
             val arr = JSONArray().put(data.first)
 
@@ -881,7 +881,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrNull") {
+    test("getLongOrNull") {
         checkAll(JSONGenerators.intLikes) {
             val arr = JSONArray().put(it)
 
@@ -899,7 +899,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrDefault") {
+    test("getLongOrDefault") {
         checkAll(JSONGenerators.intLikes * JSONGenerators.longs) {
             val arr = JSONArray().put(it.first)
 
@@ -917,7 +917,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrZero") {
+    test("getLongOrZero") {
         checkAll(JSONGenerators.intLikes) {
             val arr = JSONArray().put(it)
 
@@ -935,7 +935,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrOne") {
+    test("getLongOrOne") {
         checkAll(JSONGenerators.intLikes) {
             val arr = JSONArray().put(it)
 
@@ -953,7 +953,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrMinusOne") {
+    test("getLongOrMinusOne") {
         checkAll(JSONGenerators.intLikes) {
             val arr = JSONArray().put(it)
 
@@ -971,7 +971,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrElse") {
+    test("getLongOrElse") {
         checkAll(JSONGenerators.intLikes * JSONGenerators.longs) { data ->
             val arr = JSONArray().put(data.first)
 
@@ -989,7 +989,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getNumberOrNull") {
+    test("getNumberOrNull") {
         checkAll(JSONGenerators.numberLikes) {
             val arr = JSONArray().put(it)
 
@@ -1007,7 +1007,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getNumberOrDefault") {
+    test("getNumberOrDefault") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.numbers) {
             val arr = JSONArray().put(it.first)
 
@@ -1025,7 +1025,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getNumberOrElse") {
+    test("getNumberOrElse") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.numbers) { data ->
             val arr = JSONArray().put(data.first)
 
@@ -1043,7 +1043,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getObjectOrNull") {
+    test("getObjectOrNull") {
         checkAll(JSONGenerators.objects) {
             val arr = JSONArray().put(it)
 
@@ -1061,7 +1061,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getObjectOrDefault") {
+    test("getObjectOrDefault") {
         checkAll(JSONGenerators.objects * JSONGenerators.objects) {
             val arr = JSONArray().put(it.first)
 
@@ -1079,7 +1079,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getObjectOrEmpty") {
+    test("getObjectOrEmpty") {
         checkAll(JSONGenerators.objects) {
             val arr = JSONArray().put(it)
 
@@ -1097,7 +1097,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getObjectOrElse") {
+    test("getObjectOrElse") {
         checkAll(JSONGenerators.objects * JSONGenerators.objects) { data ->
             val arr = JSONArray().put(data.first)
 
@@ -1119,7 +1119,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getStringOrNull") {
+    test("getStringOrNull") {
         checkAll(JSONGenerators.allStrings) {
             val arr = JSONArray().put(it)
 
@@ -1142,7 +1142,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getStringOrDefault") {
+    test("getStringOrDefault") {
         checkAll(JSONGenerators.allStrings * JSONGenerators.allStrings) {
             val arr = JSONArray().put(it.first)
 
@@ -1164,7 +1164,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getStringOrEmpty") {
+    test("getStringOrEmpty") {
         checkAll(JSONGenerators.allStrings) {
             val arr = JSONArray().put(it)
 
@@ -1186,7 +1186,7 @@ class ReadOnlyJSONArrayGetterTests : FunSpec({
         }
     }
 
-    context("getStringOrElse") {
+    test("getStringOrElse") {
         checkAll(JSONGenerators.allStrings * JSONGenerators.allStrings) { data ->
             val arr = JSONArray().put(data.first)
 

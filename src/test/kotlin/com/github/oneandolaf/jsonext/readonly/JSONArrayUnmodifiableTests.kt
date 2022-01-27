@@ -33,7 +33,7 @@ import org.json.JSONObject
 
 class JSONArrayUnmodifiableTests : FunSpec({
 
-    context("iterator") {
+    test("iterator") {
         checkAll(JSONGenerators.arrays) {
             val unmodifiable = JSONArrayUnmodifiable(it)
 
@@ -52,13 +52,13 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("length") {
+    test("length") {
         checkAll(JSONGenerators.arrays) {
             JSONArrayUnmodifiable(it).length() shouldBe it.length()
         }
     }
 
-    context("clear") {
+    test("clear") {
         checkAll(JSONGenerators.arrays) {
             shouldThrow<UnsupportedOperationException> {
                 JSONArrayUnmodifiable(it).clear()
@@ -66,7 +66,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("join") {
+    test("join") {
         checkAll(JSONGenerators.arrays) {
             val unmodifiable = JSONArrayUnmodifiable(it)
 
@@ -75,7 +75,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("get is unmodifiable") {
+    test("get is unmodifiable") {
         checkAll(JSONGenerators.arrays) {
             val unmodifiable = JSONArrayUnmodifiable(it)
 
@@ -91,7 +91,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("getJSONObject is unmodifiable") {
+    test("getJSONObject is unmodifiable") {
         checkAll(JSONGenerators.arrays) {
             val unmodifiable = JSONArrayUnmodifiable(it)
 
@@ -114,7 +114,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("getJSONArray is unmodifiable") {
+    test("getJSONArray is unmodifiable") {
         checkAll(JSONGenerators.arrays) {
             val unmodifiable = JSONArrayUnmodifiable(it)
 
@@ -137,7 +137,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("opt is unmodifiable") {
+    test("opt is unmodifiable") {
         checkAll(JSONGenerators.arrays) {
             val unmodifiable = JSONArrayUnmodifiable(it)
 
@@ -153,7 +153,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("optJSONObject is unmodifiable") {
+    test("optJSONObject is unmodifiable") {
         checkAll(JSONGenerators.arrays) {
             val unmodifiable = JSONArrayUnmodifiable(it)
 
@@ -169,7 +169,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("optJSONArray is unmodifiable") {
+    test("optJSONArray is unmodifiable") {
         checkAll(JSONGenerators.arrays) {
             val unmodifiable = JSONArrayUnmodifiable(it)
 
@@ -185,7 +185,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("put any") {
+    test("put any") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.values) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -198,7 +198,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("put booleans") {
+    test("put booleans") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.bools) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -211,7 +211,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("put doubles") {
+    test("put doubles") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.doubles) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -224,7 +224,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("put floats") {
+    test("put floats") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.floats) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -237,7 +237,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("put ints") {
+    test("put ints") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.ints) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -250,7 +250,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("put longs") {
+    test("put longs") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.longs) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -263,7 +263,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("put collections") {
+    test("put collections") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.arraysAsLists) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -276,7 +276,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("put maps") {
+    test("put maps") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.objectsAsMaps) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -289,7 +289,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("putAll any") {
+    test("putAll any") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.objectsAsMaps) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -299,7 +299,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("putAll array") {
+    test("putAll array") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.arrays) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -309,7 +309,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("putAll collection") {
+    test("putAll collection") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.arraysAsLists) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -319,7 +319,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("putAll iterable") {
+    test("putAll iterable") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.arraysAsLists) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -329,7 +329,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("remove") {
+    test("remove") {
         checkAll(JSONGenerators.arrays) {
             val unmodifiable = JSONArrayUnmodifiable(it)
 
@@ -341,7 +341,7 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("similar") {
+    test("similar") {
         checkAll(JSONGenerators.arrays cross JSONGenerators.values) {
             val unmodifiable = JSONArrayUnmodifiable(it.first)
 
@@ -349,13 +349,13 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("toString") {
+    test("toString") {
         checkAll(JSONGenerators.arrays) {
             JSONArrayUnmodifiable(it).toString() shouldBe it.toString()
         }
     }
 
-    context("toString indent") {
+    test("toString indent") {
         checkAll(JSONGenerators.arrays) {
             for (i in 0..6) {
                 JSONArrayUnmodifiable(it).toString(i) shouldBe it.toString(i)
@@ -363,13 +363,13 @@ class JSONArrayUnmodifiableTests : FunSpec({
         }
     }
 
-    context("toList") {
+    test("toList") {
         checkAll(JSONGenerators.arrays) {
             JSONArrayUnmodifiable(it).toList() shouldBe it.toList()
         }
     }
 
-    context("isEmpty") {
+    test("isEmpty") {
         checkAll(JSONGenerators.arrays) {
             JSONArrayUnmodifiable(it).isEmpty shouldBe it.isEmpty
         }

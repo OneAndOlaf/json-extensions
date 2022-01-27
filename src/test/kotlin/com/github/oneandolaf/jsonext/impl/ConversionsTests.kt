@@ -30,7 +30,7 @@ import io.kotest.property.exhaustive.map
 
 class ConversionsTests : FunSpec({
 
-    context("toBigDecimal") {
+    test("toBigDecimal") {
         Conversions.toBigDecimal(null).shouldBeNull()
 
         checkAll(JSONGenerators.bigDecimals) {
@@ -61,7 +61,7 @@ class ConversionsTests : FunSpec({
         }
     }
 
-    context("toBigInteger") {
+    test("toBigInteger") {
         Conversions.toBigInteger(null).shouldBeNull()
 
         checkAll(JSONGenerators.bigDecimals) {
@@ -92,7 +92,7 @@ class ConversionsTests : FunSpec({
         }
     }
 
-    context("toBoolean") {
+    test("toBoolean") {
         Conversions.toBoolean(null).shouldBeNull()
 
         checkAll(JSONGenerators.booleanLikes) {
@@ -103,7 +103,7 @@ class ConversionsTests : FunSpec({
         }
     }
 
-    context("toDouble") {
+    test("toDouble") {
         Conversions.toDouble(null).shouldBeNull()
 
         checkAll(JSONGenerators.bigDecimals) {
@@ -134,7 +134,7 @@ class ConversionsTests : FunSpec({
         }
     }
 
-    context("toEnum") {
+    test("toEnum") {
         Conversions.toEnum(null, TestEnum::class.java).shouldBeNull()
         Conversions.toEnum<TestEnum>(null).shouldBeNull()
 
@@ -159,7 +159,7 @@ class ConversionsTests : FunSpec({
         }
     }
 
-    context("toFloat") {
+    test("toFloat") {
         Conversions.toFloat(null).shouldBeNull()
 
         checkAll(JSONGenerators.bigDecimals) {
@@ -190,7 +190,7 @@ class ConversionsTests : FunSpec({
         }
     }
 
-    context("toInt") {
+    test("toInt") {
         Conversions.toInt(null).shouldBeNull()
 
         checkAll(JSONGenerators.bigDecimals) {
@@ -225,7 +225,7 @@ class ConversionsTests : FunSpec({
         }
     }
 
-    context("toLong") {
+    test("toLong") {
         Conversions.toLong(null).shouldBeNull()
 
         checkAll(JSONGenerators.bigDecimals) {
@@ -260,7 +260,7 @@ class ConversionsTests : FunSpec({
         }
     }
 
-    context("toNumber") {
+    test("toNumber") {
         Conversions.toNumber(null).shouldBeNull()
 
         checkAll(JSONGenerators.bigDecimals) {
@@ -291,7 +291,7 @@ class ConversionsTests : FunSpec({
         }
     }
 
-    context("toString") {
+    test("toString") {
         Conversions.toString(null, false).shouldBeNull()
         Conversions.toString(null, true).shouldBeNull()
 

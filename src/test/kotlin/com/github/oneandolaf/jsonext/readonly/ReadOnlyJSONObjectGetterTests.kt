@@ -41,7 +41,7 @@ import java.math.BigInteger
 class ReadOnlyJSONObjectGetterTests : FunSpec({
 
 
-    context("getOrNull") {
+    test("getOrNull") {
         checkAll(JSONGenerators.values) {
             val obj = JSONObject().put("val", it)
             val orig = obj.deepCopy()
@@ -62,7 +62,28 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getOrElse") {
+    test("get") {
+        checkAll(JSONGenerators.values) {
+            val obj = JSONObject().put("val", it)
+            val orig = obj.deepCopy()
+
+            val ro = ReadOnlyJSONObject.create(obj)
+
+            ro["val"].orNull() shouldBeSimilarTo it
+
+            if (it is JSONObject) {
+                ro["val"].orNull().shouldBeInstanceOf<ReadOnlyJSONObject>()
+            } else if (it is JSONArray) {
+                ro["val"].orNull().shouldBeInstanceOf<ReadOnlyJSONArray>()
+            }
+
+            ro["missing"].orNull().shouldBeNull()
+
+            obj shouldBeSimilarTo orig
+        }
+    }
+
+    test("getOrElse") {
         checkAll(JSONGenerators.values * JSONGenerators.values) { data ->
             val obj = JSONObject().put("val", data.first)
             val orig = obj.deepCopy()
@@ -76,7 +97,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getArrayOrNull") {
+    test("getArrayOrNull") {
         checkAll(JSONGenerators.arrays) {
             val obj = JSONObject().put("val", it)
 
@@ -94,7 +115,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getArrayOrDefault") {
+    test("getArrayOrDefault") {
         checkAll(JSONGenerators.arrays * JSONGenerators.arrays) {
             val obj = JSONObject().put("val", it.first)
 
@@ -112,7 +133,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getArrayOrEmpty") {
+    test("getArrayOrEmpty") {
         checkAll(JSONGenerators.arrays) {
             val obj = JSONObject().put("val", it)
 
@@ -130,7 +151,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getArrayOrElse") {
+    test("getArrayOrElse") {
         checkAll(JSONGenerators.arrays * JSONGenerators.arrays) { data ->
             val obj = JSONObject().put("val", data.first)
 
@@ -152,7 +173,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrNull") {
+    test("getBigDecimalOrNull") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -170,7 +191,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrDefault") {
+    test("getBigDecimalOrDefault") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.bigDecimals) {
             val obj = JSONObject().put("val", it.first)
 
@@ -188,7 +209,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrZero") {
+    test("getBigDecimalOrZero") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -206,7 +227,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrOne") {
+    test("getBigDecimalOrOne") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -224,7 +245,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrMinusOne") {
+    test("getBigDecimalOrMinusOne") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -242,7 +263,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigDecimalOrElse") {
+    test("getBigDecimalOrElse") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.bigDecimals) { data ->
             val obj = JSONObject().put("val", data.first)
 
@@ -260,7 +281,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrNull") {
+    test("getBigIntegerOrNull") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -278,7 +299,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrDefault") {
+    test("getBigIntegerOrDefault") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.bigIntegers) {
             val obj = JSONObject().put("val", it.first)
 
@@ -296,7 +317,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrZero") {
+    test("getBigIntegerOrZero") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -314,7 +335,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrOne") {
+    test("getBigIntegerOrOne") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -332,7 +353,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrMinusOne") {
+    test("getBigIntegerOrMinusOne") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -350,7 +371,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBigIntegerOrElse") {
+    test("getBigIntegerOrElse") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.bigIntegers) { data ->
             val obj = JSONObject().put("val", data.first)
 
@@ -368,7 +389,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBooleanOrNull") {
+    test("getBooleanOrNull") {
         checkAll(JSONGenerators.booleanLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -386,7 +407,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBooleanOrDefault") {
+    test("getBooleanOrDefault") {
         checkAll(JSONGenerators.booleanLikes * JSONGenerators.bools) {
             val obj = JSONObject().put("val", it.first)
 
@@ -404,7 +425,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBooleanOrTrue") {
+    test("getBooleanOrTrue") {
         checkAll(JSONGenerators.booleanLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -422,7 +443,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBooleanOrFalse") {
+    test("getBooleanOrFalse") {
         checkAll(JSONGenerators.booleanLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -440,7 +461,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getBooleanOrElse") {
+    test("getBooleanOrElse") {
         checkAll(JSONGenerators.booleanLikes * JSONGenerators.bools) { data ->
             val obj = JSONObject().put("val", data.first)
 
@@ -458,7 +479,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrNull") {
+    test("getDoubleOrNull") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -476,7 +497,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrDefault") {
+    test("getDoubleOrDefault") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.doubles) {
             val obj = JSONObject().put("val", it.first)
 
@@ -494,7 +515,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrZero") {
+    test("getDoubleOrZero") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -512,7 +533,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrOne") {
+    test("getDoubleOrOne") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -530,7 +551,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrMinusOne") {
+    test("getDoubleOrMinusOne") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -548,7 +569,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrNaN") {
+    test("getDoubleOrNaN") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -566,7 +587,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getDoubleOrElse") {
+    test("getDoubleOrElse") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.doubles) { data ->
             val obj = JSONObject().put("val", data.first)
 
@@ -584,7 +605,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getEnumOrNull") {
+    test("getEnumOrNull") {
         checkAll(Exhaustive.enum<TestEnum>()) {
             val obj = JSONObject().put("val", it.name)
 
@@ -604,12 +625,11 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getEnumOrDefault") {
+    test("getEnumOrDefault") {
         checkAll(Exhaustive.enum<TestEnum>() * Exhaustive.enum()) {
             val obj = JSONObject().put("val", it.first.name)
 
             checkWithReadOnly(obj) {
-                getEnumOrDefault(TestEnum::class.java, "val", it.second) shouldBe it.first
                 getEnumOrDefault("val", it.second) shouldBe it.first
             }
         }
@@ -618,13 +638,12 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
             val obj = JSONObject().put("val", it)
 
             checkWithReadOnly(obj) {
-                getEnumOrDefault(TestEnum::class.java, "val", it.second) shouldBe it.second
                 getEnumOrDefault("val", it.second) shouldBe it.second
             }
         }
     }
 
-    context("getEnumOrElse") {
+    test("getEnumOrElse") {
         checkAll(Exhaustive.enum<TestEnum>() * Exhaustive.enum()) { data ->
             val obj = JSONObject().put("val", data.first.name)
 
@@ -644,7 +663,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrNull") {
+    test("getFloatOrNull") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -662,7 +681,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrDefault") {
+    test("getFloatOrDefault") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.floats) {
             val obj = JSONObject().put("val", it.first)
 
@@ -680,7 +699,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrZero") {
+    test("getFloatOrZero") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -698,7 +717,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrOne") {
+    test("getFloatOrOne") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -716,7 +735,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrMinusOne") {
+    test("getFloatOrMinusOne") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -734,7 +753,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrNaN") {
+    test("getFloatOrNaN") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -752,7 +771,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getFloatOrElse") {
+    test("getFloatOrElse") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.floats) { data ->
             val obj = JSONObject().put("val", data.first)
 
@@ -770,7 +789,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrNull") {
+    test("getIntOrNull") {
         checkAll(JSONGenerators.intLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -788,7 +807,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrDefault") {
+    test("getIntOrDefault") {
         checkAll(JSONGenerators.intLikes * JSONGenerators.ints) {
             val obj = JSONObject().put("val", it.first)
 
@@ -806,7 +825,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrZero") {
+    test("getIntOrZero") {
         checkAll(JSONGenerators.intLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -824,7 +843,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrOne") {
+    test("getIntOrOne") {
         checkAll(JSONGenerators.intLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -842,7 +861,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrMinusOne") {
+    test("getIntOrMinusOne") {
         checkAll(JSONGenerators.intLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -860,7 +879,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getIntOrElse") {
+    test("getIntOrElse") {
         checkAll(JSONGenerators.intLikes * JSONGenerators.ints) { data ->
             val obj = JSONObject().put("val", data.first)
 
@@ -878,7 +897,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrNull") {
+    test("getLongOrNull") {
         checkAll(JSONGenerators.intLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -896,7 +915,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrDefault") {
+    test("getLongOrDefault") {
         checkAll(JSONGenerators.intLikes * JSONGenerators.longs) {
             val obj = JSONObject().put("val", it.first)
 
@@ -914,7 +933,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrZero") {
+    test("getLongOrZero") {
         checkAll(JSONGenerators.intLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -932,7 +951,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrOne") {
+    test("getLongOrOne") {
         checkAll(JSONGenerators.intLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -950,7 +969,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrMinusOne") {
+    test("getLongOrMinusOne") {
         checkAll(JSONGenerators.intLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -968,7 +987,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getLongOrElse") {
+    test("getLongOrElse") {
         checkAll(JSONGenerators.intLikes * JSONGenerators.longs) { data ->
             val obj = JSONObject().put("val", data.first)
 
@@ -986,7 +1005,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getNumberOrNull") {
+    test("getNumberOrNull") {
         checkAll(JSONGenerators.numberLikes) {
             val obj = JSONObject().put("val", it)
 
@@ -1004,7 +1023,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getNumberOrDefault") {
+    test("getNumberOrDefault") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.numbers) {
             val obj = JSONObject().put("val", it.first)
 
@@ -1022,7 +1041,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getNumberOrElse") {
+    test("getNumberOrElse") {
         checkAll(JSONGenerators.numberLikes * JSONGenerators.numbers) { data ->
             val obj = JSONObject().put("val", data.first)
 
@@ -1040,7 +1059,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getObjectOrNull") {
+    test("getObjectOrNull") {
         checkAll(JSONGenerators.objects) {
             val obj = JSONObject().put("val", it)
 
@@ -1058,7 +1077,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getObjectOrDefault") {
+    test("getObjectOrDefault") {
         checkAll(JSONGenerators.objects * JSONGenerators.objects) {
             val obj = JSONObject().put("val", it.first)
 
@@ -1076,7 +1095,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getObjectOrEmpty") {
+    test("getObjectOrEmpty") {
         checkAll(JSONGenerators.objects) {
             val obj = JSONObject().put("val", it)
 
@@ -1094,7 +1113,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getObjectOrElse") {
+    test("getObjectOrElse") {
         checkAll(JSONGenerators.objects * JSONGenerators.objects) { data ->
             val obj = JSONObject().put("val", data.first)
 
@@ -1116,7 +1135,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getStringOrNull") {
+    test("getStringOrNull") {
         checkAll(JSONGenerators.allStrings) {
             val obj = JSONObject().put("val", it)
 
@@ -1138,7 +1157,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getStringOrDefault") {
+    test("getStringOrDefault") {
         checkAll(JSONGenerators.allStrings * JSONGenerators.allStrings) {
             val obj = JSONObject().put("val", it.first)
 
@@ -1160,7 +1179,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getStringOrEmpty") {
+    test("getStringOrEmpty") {
         checkAll(JSONGenerators.allStrings) {
             val obj = JSONObject().put("val", it)
 
@@ -1182,7 +1201,7 @@ class ReadOnlyJSONObjectGetterTests : FunSpec({
         }
     }
 
-    context("getStringOrElse") {
+    test("getStringOrElse") {
         checkAll(JSONGenerators.allStrings * JSONGenerators.allStrings) { data ->
             val obj = JSONObject().put("val", data.first)
 

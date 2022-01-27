@@ -37,7 +37,7 @@ object Conversions {
     }
 
     /**
-     * Attempts to convert an object to a [BigDecimal]. This will return `true` in the following cases:
+     * Attempts to convert an object to a [BigDecimal]. This will return non-null in the following cases:
      *
      * - `obj` is a finite [Number]
      * - `obj` is the string representation of a number
@@ -59,7 +59,7 @@ object Conversions {
     }
 
     /**
-     * Attempts to convert an object to a [BigInteger]. This will return `true` in the following cases:
+     * Attempts to convert an object to a [BigInteger]. This will return non-null in the following cases:
      *
      * - `obj` is a finite [Number]
      * - `obj` is the string representation of a number
@@ -88,7 +88,7 @@ object Conversions {
     }
 
     /**
-     * Attempts to convert an object to a [Boolean]. This will return `true` in the following cases:
+     * Attempts to convert an object to a [Boolean]. This will return non-null in the following cases:
      *
      * - `obj` is a [Boolean] already
      * - `obj` is the [String] representation of a boolean (case-insensitive)
@@ -108,7 +108,7 @@ object Conversions {
     }
 
     /**
-     * Attempts to convert an object to a [Double]. This will return `true` in the following cases:
+     * Attempts to convert an object to a [Double]. This will return non-null in the following cases:
      *
      * - `obj` is a [Number]
      * - `obj` is the string representation of a number
@@ -126,7 +126,7 @@ object Conversions {
     }
 
     /**
-     * Attempts to convert an object to an [Enum]. This will return `true` in the following cases:
+     * Attempts to convert an object to an [Enum]. This will return non-null in the following cases:
      *
      * - `obj` is an instance of `enumClass`
      * - `obj` is the [String] representation of an instance of `enumClass` (case sensitive)
@@ -151,7 +151,7 @@ object Conversions {
     }
 
     /**
-     * Attempts to convert an object to an [Enum]. This will return `true` in the following cases:
+     * Attempts to convert an object to an [Enum]. This will return non-null in the following cases:
      *
      * - `obj` is an instance of `E`
      * - `obj` is the [String] representation of an instance of `E` (case sensitive)
@@ -166,7 +166,7 @@ object Conversions {
     }
 
     /**
-     * Attempts to convert an object to a [Float]. This will return `true` in the following cases:
+     * Attempts to convert an object to a [Float]. This will return non-null in the following cases:
      *
      * - `obj` is a [Number]
      * - `obj` is the string representation of a number
@@ -184,7 +184,7 @@ object Conversions {
     }
 
     /**
-     * Attempts to convert an object to an [Int]. This will return `true` in the following cases:
+     * Attempts to convert an object to an [Int]. This will return non-null in the following cases:
      *
      * - `obj` is a [Number]
      * - `obj` is the string representation of an integer
@@ -205,7 +205,7 @@ object Conversions {
     }
 
     /**
-     * Attempts to convert an object to a [Long]. This will return `true` in the following cases:
+     * Attempts to convert an object to a [Long]. This will return non-null in the following cases:
      *
      * - `obj` is a [Number]
      * - `obj` is the string representation of a long
@@ -226,7 +226,7 @@ object Conversions {
     }
 
     /**
-     * Attempts to convert an object to a [Number]. This will return `true` in the following cases:
+     * Attempts to convert an object to a [Number]. This will return non-null in the following cases:
      *
      * - `obj` is a [Number]
      * - `obj` is the string representation of a number

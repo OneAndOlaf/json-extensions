@@ -357,6 +357,7 @@ class ReadOnlyJSONArray private constructor(private val arr: JSONArray) : Iterab
      * Gets the enum value at a given index.
      *
      * This function is only callable from Kotlin.
+     * Use its overload when calling from other languages.
      *
      * @param index the index
      * @throws NullPointerException if any parameter is `null`
@@ -383,6 +384,7 @@ class ReadOnlyJSONArray private constructor(private val arr: JSONArray) : Iterab
      * Gets the enum value at a given index.
      *
      * This function is only callable from Kotlin.
+     * Use its overload when calling from other languages.
      *
      * @param index the index
      * @param defaultValue the default value
@@ -410,6 +412,7 @@ class ReadOnlyJSONArray private constructor(private val arr: JSONArray) : Iterab
      * Gets the enum value at a given index.
      *
      * This function is only callable from Kotlin.
+     * Use its overload when calling from other languages.
      *
      * @param E the enum class
      * @param index the index

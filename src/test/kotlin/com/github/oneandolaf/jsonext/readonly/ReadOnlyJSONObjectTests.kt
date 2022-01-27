@@ -29,7 +29,7 @@ import org.json.JSONObject
 
 class ReadOnlyJSONObjectTests : FunSpec({
 
-    context("contains") {
+    test("contains") {
         checkAll(JSONGenerators.objects) {
             val ro = ReadOnlyJSONObject.create(it)
 
@@ -43,7 +43,7 @@ class ReadOnlyJSONObjectTests : FunSpec({
         }
     }
 
-    context("containsNonNull") {
+    test("containsNonNull") {
         checkAll(JSONGenerators.objects) {
             val ro = ReadOnlyJSONObject.create(it)
 
@@ -57,31 +57,31 @@ class ReadOnlyJSONObjectTests : FunSpec({
         }
     }
 
-    context("size") {
+    test("size") {
         forAll(JSONGenerators.objects) {
             ReadOnlyJSONObject.create(it).size == it.length()
         }
     }
 
-    context("isEmpty") {
+    test("isEmpty") {
         forAll(JSONGenerators.objects) {
             ReadOnlyJSONObject.create(it).isEmpty == it.isEmpty
         }
     }
 
-    context("isNotEmpty") {
+    test("isNotEmpty") {
         forAll(JSONGenerators.objects) {
             ReadOnlyJSONObject.create(it).isNotEmpty != it.isEmpty
         }
     }
 
-    context("keySet") {
+    test("keySet") {
         forAll(JSONGenerators.objects) {
             ReadOnlyJSONObject.create(it).keySet == it.keySet()
         }
     }
 
-    context("similar") {
+    test("similar") {
         checkAll(JSONGenerators.objects cross JSONGenerators.objects) {
             val (obj1, obj2) = it
 
@@ -99,7 +99,7 @@ class ReadOnlyJSONObjectTests : FunSpec({
         }
     }
 
-    context("similarToPlainObject") {
+    test("similarToPlainObject") {
         checkAll(JSONGenerators.objects cross JSONGenerators.objects) {
             val (obj1, obj2) = it
 
@@ -118,7 +118,7 @@ class ReadOnlyJSONObjectTests : FunSpec({
         }
     }
 
-    context("toString") {
+    test("toString") {
         forAll(JSONGenerators.objects) {
             ReadOnlyJSONObject.create(it).toString() == it.toString()
         }

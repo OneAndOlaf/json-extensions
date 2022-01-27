@@ -28,62 +28,62 @@ import org.json.JSONObject
 
 class ReadOnlyJSONArrayTests : FunSpec({
 
-    context("size") {
+    test("size") {
         forAll(JSONGenerators.arrays) {
             ReadOnlyJSONArray.create(it).size == it.length()
         }
     }
 
-    context("isEmpty") {
+    test("isEmpty") {
         forAll(JSONGenerators.arrays) {
             ReadOnlyJSONArray.create(it).isEmpty == it.isEmpty
         }
     }
 
-    context("isNotEmpty") {
+    test("isNotEmpty") {
         forAll(JSONGenerators.arrays) {
             ReadOnlyJSONArray.create(it).isNotEmpty != it.isEmpty
         }
     }
 
-    context("itemsAsArrays") {
+    test("itemsAsArrays") {
         checkAll(JSONGenerators.arrays) {
             ReadOnlyJSONArray.create(it).itemsAsArrays() shouldHaveSize it.filterIsInstance<JSONArray>().size
         }
     }
 
-    context("itemsAsBooleans") {
+    test("itemsAsBooleans") {
         checkAll(JSONGenerators.arrays) {
             ReadOnlyJSONArray.create(it)
                 .itemsAsBooleans() shouldHaveSize it.mapNotNull { Conversions.toBoolean(it) }.size
         }
     }
 
-    context("itemsAsDoubles") {
+    test("itemsAsDoubles") {
         checkAll(JSONGenerators.arrays) {
             ReadOnlyJSONArray.create(it).itemsAsDoubles() shouldHaveSize it.mapNotNull { Conversions.toDouble(it) }.size
         }
     }
 
-    context("itemsAsInts") {
+    test("itemsAsInts") {
         checkAll(JSONGenerators.arrays) {
             ReadOnlyJSONArray.create(it).itemsAsInts() shouldHaveSize it.mapNotNull { Conversions.toInt(it) }.size
         }
     }
 
-    context("itemsAsLongs") {
+    test("itemsAsLongs") {
         checkAll(JSONGenerators.arrays) {
             ReadOnlyJSONArray.create(it).itemsAsLongs() shouldHaveSize it.mapNotNull { Conversions.toLong(it) }.size
         }
     }
 
-    context("itemsAsObjects") {
+    test("itemsAsObjects") {
         checkAll(JSONGenerators.arrays) {
             ReadOnlyJSONArray.create(it).itemsAsObjects() shouldHaveSize it.filterIsInstance<JSONObject>().size
         }
     }
 
-    context("itemsAsStrings") {
+    test("itemsAsStrings") {
         checkAll(JSONGenerators.arrays) {
             ReadOnlyJSONArray.create(it).itemsAsStrings() shouldHaveSize it.mapNotNull {
                 Conversions.toString(

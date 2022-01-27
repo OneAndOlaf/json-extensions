@@ -30,7 +30,7 @@ import org.json.JSONObject
 
 class JSONSimilarTests : FunSpec({
 
-    context("similar") {
+    test("similar") {
 
         checkAll(JSONGenerators.values) {
             it shouldBeSimilarTo it
@@ -49,7 +49,7 @@ class JSONSimilarTests : FunSpec({
         null shouldBeSimilarTo null
     }
 
-    context("not similar") {
+    test("not similar") {
 
         null shouldNotBeSimilarTo JSONObject.NULL
         JSONObject.NULL shouldNotBeSimilarTo null
