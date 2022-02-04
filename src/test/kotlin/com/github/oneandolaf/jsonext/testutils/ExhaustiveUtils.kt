@@ -20,6 +20,22 @@ package com.github.oneandolaf.jsonext.testutils
 import io.kotest.property.Exhaustive
 import io.kotest.property.exhaustive.exhaustive
 
+/**
+ * Allows safe creation of an exhaustive generator for data that is mutable.
+ */
+fun <T> mutableExhaustive(generator: () -> Exhaustive<T>): Exhaustive<T> {
+    return object : Exhaustive<T>() {
+        override val values: List<T>
+            get() = generator().values
+
+    }
+}
+
+fun <A, B> Exhaustive<A>.mapMutable(f: (A) -> B): Exhaustive<B> = object : Exhaustive<B>() {
+    override val values: List<B>
+        get() = this@mapMutable.values.map { f(it) }
+}
+
 operator fun <A : B, B> Exhaustive<A>.minus(other: Exhaustive<B>): Exhaustive<A> {
     return (values.filter { it !in other.values }).exhaustive()
 }

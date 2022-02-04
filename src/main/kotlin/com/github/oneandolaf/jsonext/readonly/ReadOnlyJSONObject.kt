@@ -389,7 +389,6 @@ class ReadOnlyJSONObject private constructor(private val obj: JSONObject) {
     /**
      * Gets the enum value associated with a key.
      *
-     * @param clazz the enum class
      * @param key the key
      * @param defaultValue the default value
      * @throws NullPointerException if any parameter is `null`

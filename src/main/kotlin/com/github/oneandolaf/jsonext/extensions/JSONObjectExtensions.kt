@@ -50,6 +50,9 @@ fun JSONObject.deepCopy(): JSONObject {
  * Wraps this [JSONObject] into an unmodifiable subclass.
  *
  * Consider using [ReadOnlyJSONObject] for a more typesafe alternative.
+ *
+ * The object returned is backed by this one: future changes to this object will
+ * be reflected in the one returned.
  */
 fun JSONObject.asUnmodifiable(): JSONObjectUnmodifiable {
     return this as? JSONObjectUnmodifiable ?: JSONObjectUnmodifiable(this)
@@ -57,6 +60,9 @@ fun JSONObject.asUnmodifiable(): JSONObjectUnmodifiable {
 
 /**
  * Wraps this [JSONObject] into a [ReadOnlyJSONObject].
+ *
+ * The object returned is backed by this one: future changes to this object will
+ * be reflected in the one returned.
  */
 fun JSONObject.asReadOnly(): ReadOnlyJSONObject {
     return ReadOnlyJSONObject.create(this)
@@ -64,6 +70,9 @@ fun JSONObject.asReadOnly(): ReadOnlyJSONObject {
 
 /**
  * Creates a [ReadOnlyJSONObject] from the current state of this object.
+ *
+ * The object returned is _not_ backed by this one: the object returned will
+ * never change after creation.
  */
 fun JSONObject.readOnlySnapshot(): ReadOnlyJSONObject {
     return ReadOnlyJSONObject.snapshot(this)

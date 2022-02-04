@@ -18,6 +18,7 @@
 
 package com.github.oneandolaf.jsonext.extensions
 
+import com.github.oneandolaf.jsonext.readonly.JSONArrayUnmodifiable
 import com.github.oneandolaf.jsonext.readonly.ReadOnlyJSONArray
 import org.json.JSONArray
 import org.json.JSONObject
@@ -45,4 +46,32 @@ fun JSONArray.deepCopy(): JSONArray {
     return copy
 }
 
+/**
+ * Wraps this [JSONArray] into an unmodifiable subclass.
+ *
+ * Consider using [ReadOnlyJSONArray] for a more typesafe alternative.
+ *
+ * The object returned is backed by this one: future changes to this object will
+ * be reflected in the one returned.
+ */
+fun JSONArray.asUnmodifiable(): JSONArrayUnmodifiable {
+    return this as? JSONArrayUnmodifiable ?: JSONArrayUnmodifiable(this)
+}
+
+/**
+ * Wraps this [JSONArray] into a [ReadOnlyJSONArray].
+ *
+ * The array returned is backed by this one: future changes to this array will
+ * be reflected in the one returned.
+ */
 fun JSONArray.asReadOnly(): ReadOnlyJSONArray = ReadOnlyJSONArray.create(this)
+
+/**
+ * Creates a [ReadOnlyJSONArray] from the current state of this array.
+ *
+ * The array returned is _not_ backed by this one: the array returned will
+ * never change after creation.
+ */
+fun JSONArray.readOnlySnapshot(): ReadOnlyJSONArray {
+    return ReadOnlyJSONArray.snapshot(this)
+}
