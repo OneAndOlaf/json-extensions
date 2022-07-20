@@ -29,6 +29,31 @@ import java.math.BigInteger
 class ReadOnlyJSONArray private constructor(private val arr: JSONArray) : Iterable<Any> {
 
     /**
+     * Creates a deep copy of the [JSONArray] wrapped by this array.
+     *
+     * Future changes in this array will not be reflected in the array returned, and vice versa.
+     *
+     * @return the copy
+     */
+    fun copyToPlain(): JSONArray {
+        return arr.deepCopy()
+    }
+
+    /**
+     * Gets the value at a given index.
+     *
+     * If the value is an object or an array, it will be wrapped inside a readonly version.
+     * The value returned is not copied, so if the underlying object or array is changed, it will reflect this.
+     *
+     * @param index the index
+     * @throws NullPointerException if any parameter is `null`
+     * @return the value at the given index
+     */
+    operator fun get(index: Int): ReadOnlyJSONVal {
+        return ReadOnlyJSONVal(getOrNull(index))
+    }
+
+    /**
      * Gets the value at a given index.
      *
      * If the value is an object or an array, it will be wrapped inside a readonly version.
@@ -937,6 +962,19 @@ class ReadOnlyJSONArray private constructor(private val arr: JSONArray) : Iterab
      */
     fun similarToPlainArray(other: JSONArray?): Boolean {
         return other != null && arr.similar(other)
+    }
+
+    /**
+     * Creates a snapshot of this array.
+     *
+     * The array returned will _not_ be backed by this one. Any changes to this array's original [JSONArray] will
+     * not be reflected in the snapshot.
+     *
+     * Please note that this need not create a new array if it can be guaranteed that this object's original [JSONObject]
+     * will never change.
+     */
+    fun snapshot(): ReadOnlyJSONArray {
+        return snapshot(arr)
     }
 
     private class ArrayIterator(array: ReadOnlyJSONArray) : Iterator<Any> {

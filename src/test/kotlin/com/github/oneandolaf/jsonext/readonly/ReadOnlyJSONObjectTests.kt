@@ -17,6 +17,7 @@
 
 package com.github.oneandolaf.jsonext.readonly
 
+import com.github.oneandolaf.jsonext.extensions.asReadOnly
 import com.github.oneandolaf.jsonext.extensions.jsonArrayOf
 import com.github.oneandolaf.jsonext.extensions.jsonObjectOf
 import com.github.oneandolaf.jsonext.extensions.jsonPointerOf
@@ -28,6 +29,8 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeSameInstanceAs
+import io.kotest.matchers.types.shouldNotBeSameInstanceAs
 import io.kotest.property.checkAll
 import io.kotest.property.exhaustive.exhaustive
 import io.kotest.property.forAll
@@ -202,6 +205,30 @@ class ReadOnlyJSONObjectTests : FunSpec({
             ro2.similarToPlainObject(obj1) shouldBe (obj2.similar(obj1))
 
         }
+    }
+
+    test("copyToPlain") {
+        checkAll(JSONGenerators.objects) {
+            val ro = it.asReadOnly()
+
+            val newCopy = ro.copyToPlain()
+
+            newCopy shouldBeSimilarTo it
+            newCopy shouldNotBeSameInstanceAs it
+        }
+    }
+
+    test("snapshot") {
+        checkAll(JSONGenerators.objects) {
+            val ro = it.asReadOnly()
+
+            val newCopy = ro.snapshot()
+
+            newCopy shouldBeSimilarTo it
+            newCopy shouldNotBeSameInstanceAs it
+        }
+
+        ReadOnlyJSONObject.EMPTY.snapshot() shouldBeSameInstanceAs ReadOnlyJSONObject.EMPTY
     }
 
     test("toString") {

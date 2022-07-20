@@ -34,6 +34,17 @@ import java.util.*
 class ReadOnlyJSONObject private constructor(private val obj: JSONObject) {
 
     /**
+     * Creates a deep copy of the [JSONObject] wrapped by this object.
+     *
+     * Future changes in this object will not be reflected in the object returned, and vice versa.
+     *
+     * @return the copy
+     */
+    fun copyToPlain(): JSONObject {
+        return obj.deepCopy()
+    }
+
+    /**
      * Gets the value associated with a key.
      *
      * If the value is an object or an array, it will be wrapped inside a readonly version.
@@ -914,6 +925,19 @@ class ReadOnlyJSONObject private constructor(private val obj: JSONObject) {
      */
     fun query(pointer: JSONPointer): ReadOnlyJSONVal {
         return ReadOnlyJSONVal(obj.optQuery(pointer))
+    }
+
+    /**
+     * Creates a snapshot of this object.
+     *
+     * The object returned will _not_ be backed by this one. Any changes to this object's original [JSONObject] will
+     * not be reflected in the snapshot.
+     *
+     * Please note that this need not create a new object if it can be guaranteed that this object's original [JSONObject]
+     * will never change.
+     */
+    fun snapshot(): ReadOnlyJSONObject {
+        return snapshot(obj)
     }
 
     override fun toString(): String {

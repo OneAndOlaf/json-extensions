@@ -21,7 +21,10 @@ import com.github.oneandolaf.jsonext.impl.Conversions
 import java.math.BigDecimal
 import java.math.BigInteger
 
-class ReadOnlyJSONVal(
+/**
+ * A holder for any kind of JSON value.
+ */
+class ReadOnlyJSONVal internal constructor(
     value: Any?
 ) {
 

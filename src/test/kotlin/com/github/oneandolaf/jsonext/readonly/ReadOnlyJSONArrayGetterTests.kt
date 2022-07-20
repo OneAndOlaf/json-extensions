@@ -39,6 +39,31 @@ import java.math.BigInteger
 
 class ReadOnlyJSONArrayGetterTests : FunSpec({
 
+    test("get") {
+        checkAll(JSONGenerators.values) {
+            val arr = JSONArray().put(it)
+            val orig = arr.deepCopy()
+
+            val ro = ReadOnlyJSONArray.create(arr)
+
+            ro[0].orNull() shouldBeSimilarTo it
+
+            if (it is JSONObject) {
+                ro[0].orNull().shouldBeInstanceOf<ReadOnlyJSONObject>()
+            } else if (it is JSONArray) {
+                ro[0].orNull().shouldBeInstanceOf<ReadOnlyJSONArray>()
+            }
+
+            ro[1].orNull().shouldBeNull()
+            ro[2].orNull().shouldBeNull()
+            ro[42].orNull().shouldBeNull()
+            ro[-1].orNull().shouldBeNull()
+            ro[-10].orNull().shouldBeNull()
+
+            arr shouldBeSimilarTo orig
+        }
+    }
+
     test("getOrNull") {
         checkAll(JSONGenerators.values) {
             val arr = JSONArray().put(it)

@@ -17,11 +17,15 @@
 
 package com.github.oneandolaf.jsonext.misc
 
+import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.lang.reflect.Field
 
 /**
  * Tests to see if JSON-Java actually works as expected.
@@ -39,6 +43,22 @@ class JSONJavaTests : FunSpec({
 
         shouldThrow<JSONException> {
             JSONObject().put("a", "1.0").getInt("a")
+        }
+    }
+
+    /**
+     * Checks whether the reflective access to [JSONArray]'s internal array succeeds.
+     *
+     * This is not a perfect indicator, but it should at least detect if the field is renamed or something.
+     */
+    test("JSONArray field is accessible") {
+        shouldNotThrow<Throwable> {
+            val field: Field? = JSONArray::class.java.getDeclaredField("myArrayList")
+
+            field?.let {
+                it.isAccessible = true
+                it.get(JSONArray()).shouldBeInstanceOf<ArrayList<*>>()
+            }
         }
     }
 

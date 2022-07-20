@@ -17,6 +17,7 @@
 
 package com.github.oneandolaf.jsonext.readonly
 
+import com.github.oneandolaf.jsonext.extensions.asReadOnly
 import com.github.oneandolaf.jsonext.extensions.jsonArrayOf
 import com.github.oneandolaf.jsonext.extensions.jsonObjectOf
 import com.github.oneandolaf.jsonext.extensions.jsonPointerOf
@@ -26,6 +27,8 @@ import com.github.oneandolaf.jsonext.testutils.shouldBeSimilarTo
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.types.shouldBeSameInstanceAs
+import io.kotest.matchers.types.shouldNotBeSameInstanceAs
 import io.kotest.property.checkAll
 import io.kotest.property.exhaustive.exhaustive
 import io.kotest.property.forAll
@@ -185,6 +188,30 @@ class ReadOnlyJSONArrayTests : FunSpec({
                 it.orNull().shouldBeNull()
             }
         }
+    }
+
+    test("copyToPlain") {
+        checkAll(JSONGenerators.arrays) {
+            val ro = it.asReadOnly()
+
+            val newCopy = ro.copyToPlain()
+
+            newCopy shouldBeSimilarTo it
+            newCopy shouldNotBeSameInstanceAs it
+        }
+    }
+
+    test("snapshot") {
+        checkAll(JSONGenerators.arrays) {
+            val ro = it.asReadOnly()
+
+            val newCopy = ro.snapshot()
+
+            newCopy shouldBeSimilarTo it
+            newCopy shouldNotBeSameInstanceAs it
+        }
+
+        ReadOnlyJSONArray.EMPTY.snapshot() shouldBeSameInstanceAs ReadOnlyJSONArray.EMPTY
     }
 
 })
