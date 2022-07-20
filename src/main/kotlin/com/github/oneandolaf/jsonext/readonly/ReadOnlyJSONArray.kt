@@ -18,9 +18,11 @@
 package com.github.oneandolaf.jsonext.readonly
 
 import com.github.oneandolaf.jsonext.extensions.deepCopy
+import com.github.oneandolaf.jsonext.extensions.jsonPointerOf
 import com.github.oneandolaf.jsonext.impl.Conversions
 import org.json.JSONArray
 import org.json.JSONObject
+import org.json.JSONPointer
 import java.math.BigDecimal
 import java.math.BigInteger
 
@@ -865,6 +867,40 @@ class ReadOnlyJSONArray private constructor(private val arr: JSONArray) : Iterab
      */
     fun itemsAsObjects(): List<ReadOnlyJSONObject> {
         return filterIsInstance<ReadOnlyJSONObject>()
+    }
+
+    /**
+     * Queries for a value using the passed JSON Pointer.
+     *
+     * The `pointerElements` passed should be the properties to query. They should _not_ be JSON-Pointer-escaped.
+     *
+     * @param pointerElements the property names
+     * @return the result of the query
+     */
+    fun query(pointerElements: List<String>): ReadOnlyJSONVal {
+        return query(jsonPointerOf(pointerElements))
+    }
+
+    /**
+     * Queries for a value using the passed JSON Pointer.
+     *
+     * The `pointer` passed must be a valid [RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901) JSON Pointer.
+     *
+     * @param pointer the pointer
+     * @return the result of the query
+     */
+    fun query(pointer: String): ReadOnlyJSONVal {
+        return query(JSONPointer(pointer))
+    }
+
+    /**
+     * Queries for a value using the passed JSON Pointer.
+     *
+     * @param pointer the pointer
+     * @return the result of the query
+     */
+    fun query(pointer: JSONPointer): ReadOnlyJSONVal {
+        return ReadOnlyJSONVal(arr.optQuery(pointer))
     }
 
 

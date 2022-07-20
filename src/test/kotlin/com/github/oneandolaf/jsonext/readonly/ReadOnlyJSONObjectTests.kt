@@ -17,15 +17,22 @@
 
 package com.github.oneandolaf.jsonext.readonly
 
+import com.github.oneandolaf.jsonext.extensions.jsonArrayOf
+import com.github.oneandolaf.jsonext.extensions.jsonObjectOf
+import com.github.oneandolaf.jsonext.extensions.jsonPointerOf
 import com.github.oneandolaf.jsonext.testutils.JSONGenerators
 import com.github.oneandolaf.jsonext.testutils.cross
+import com.github.oneandolaf.jsonext.testutils.shouldBeSimilarTo
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.property.checkAll
+import io.kotest.property.exhaustive.exhaustive
 import io.kotest.property.forAll
 import org.json.JSONObject
+import org.json.JSONPointer
 
 class ReadOnlyJSONObjectTests : FunSpec({
 
@@ -78,6 +85,85 @@ class ReadOnlyJSONObjectTests : FunSpec({
     test("keySet") {
         forAll(JSONGenerators.objects) {
             ReadOnlyJSONObject.create(it).keySet == it.keySet()
+        }
+    }
+
+    test("query") {
+        val obj = ReadOnlyJSONObject.create(
+            jsonObjectOf(
+                "foo" to "bar",
+                "anInt" to 42,
+                "aBool" to true,
+                "aSubObj" to mapOf(
+                    "aSubStr" to "value",
+                    "aSubDouble" to 3.14
+                ),
+                "aSubArr" to listOf(
+                    "a",
+                    4,
+                    false,
+                    mapOf(
+                        "nested" to "value"
+                    )
+                )
+            )
+        )
+
+        fun ReadOnlyJSONObject.checkForPointerFormats(rawPointer: List<String>, func: (ReadOnlyJSONVal) -> Unit) {
+            func(query(rawPointer))
+            func(query(jsonPointerOf(rawPointer)))
+            func(query(JSONPointer(jsonPointerOf(rawPointer))))
+        }
+
+        checkAll(
+            listOf(
+                emptyList<String>() to obj,
+                listOf("foo") to "bar",
+                listOf("anInt") to 42,
+                listOf("aBool") to true,
+                listOf("aSubObj") to jsonObjectOf(
+                    "aSubStr" to "value",
+                    "aSubDouble" to 3.14
+                ),
+                listOf("aSubObj", "aSubStr") to "value",
+                listOf("aSubObj", "aSubDouble") to 3.14,
+                listOf("aSubArr") to jsonArrayOf(
+                    "a",
+                    4,
+                    false,
+                    mapOf(
+                        "nested" to "value"
+                    )
+                ),
+                listOf("aSubArr", "0") to "a",
+                listOf("aSubArr", "1") to 4,
+                listOf("aSubArr", "2") to false,
+                listOf("aSubArr", "3") to jsonObjectOf(
+                    "nested" to "value"
+                ),
+                listOf("aSubArr", "3", "nested") to "value"
+            ).exhaustive()
+        ) { data ->
+            obj.checkForPointerFormats(data.first) {
+                it.orNull() shouldBeSimilarTo data.second
+            }
+        }
+
+        checkAll(
+            listOf(
+                listOf("Foo"),
+                listOf("something missing"),
+                listOf("aSubObj", "foo"),
+                listOf(""),
+                listOf("aSubObj", ""),
+                listOf("aSubArr", "foo"),
+                listOf("foo", "0"),
+                listOf("foo", "foo")
+            ).exhaustive()
+        ) { data ->
+            obj.checkForPointerFormats(data) {
+                it.orNull().shouldBeNull()
+            }
         }
     }
 

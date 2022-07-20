@@ -70,7 +70,7 @@ class JSONArrayExtensionTests : FunSpec({
 
     test("readOnlySnapshot") {
         checkAll(JSONGenerators.arrays) {
-            var readOnly = it.readOnlySnapshot()
+            val readOnly = it.readOnlySnapshot()
 
             readOnly shouldBeSimilarTo it
 

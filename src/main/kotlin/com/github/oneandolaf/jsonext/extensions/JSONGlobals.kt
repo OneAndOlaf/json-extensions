@@ -41,3 +41,25 @@ fun jsonArrayOf(vararg items: Any): JSONArray = JSONArray(listOf(*items))
  * @return an object containing the items
  */
 fun jsonObjectOf(vararg pairs: Pair<String, Any>): JSONObject = JSONObject(mapOf(*pairs))
+
+/**
+ * Creates the String representation of a JSON Pointer (see [RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901)) from a list of property names.
+ *
+ * The property names should _not_ already be JSON-Pointer-escaped.
+ */
+fun jsonPointerOf(vararg elements: String): String {
+    return jsonPointerOf(elements.asList())
+}
+
+/**
+ * Creates the String representation of a JSON Pointer (see [RFC 6901](https://datatracker.ietf.org/doc/html/rfc6901)) from a list of property names.
+ *
+ * The property names should _not_ already be JSON-Pointer-escaped.
+ */
+fun jsonPointerOf(elements: List<String>): String {
+    return if (elements.isEmpty()) "#" else "#/${
+        elements.joinToString("/") {
+            it.replace("~", "~0").replace("/", "~1")
+        }
+    }"
+}
