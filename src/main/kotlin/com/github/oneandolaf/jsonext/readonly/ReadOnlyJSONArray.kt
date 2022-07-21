@@ -18,6 +18,7 @@
 package com.github.oneandolaf.jsonext.readonly
 
 import com.github.oneandolaf.jsonext.extensions.deepCopy
+import com.github.oneandolaf.jsonext.extensions.jsonArrayOf
 import com.github.oneandolaf.jsonext.extensions.jsonPointerOf
 import com.github.oneandolaf.jsonext.impl.Conversions
 import org.json.JSONArray
@@ -1019,6 +1020,32 @@ class ReadOnlyJSONArray private constructor(private val arr: JSONArray) : Iterab
                 return EMPTY
             }
             return ReadOnlyJSONArray(arr.deepCopy())
+        }
+
+        /**
+         * Creates a read-only array from a list of items.
+         *
+         * Any future changes to objects or arrays inside [items] will not be reflected in the object returned.
+         */
+        @JvmStatic
+        fun snapshot(vararg items: Any): ReadOnlyJSONArray {
+            if (items.isEmpty()) {
+                return EMPTY
+            }
+            return snapshot(jsonArrayOf(*items))
+        }
+
+        /**
+         * Creates a read-only array from a list.
+         *
+         * Any future changes to [list] or objects or arrays therein will not be reflected in the object returned.
+         */
+        @JvmStatic
+        fun snapshot(list: List<*>): ReadOnlyJSONArray {
+            if (list.isEmpty()) {
+                return EMPTY
+            }
+            return snapshot(JSONArray(list))
         }
 
     }

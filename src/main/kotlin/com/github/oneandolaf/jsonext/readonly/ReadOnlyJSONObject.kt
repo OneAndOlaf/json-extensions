@@ -18,6 +18,7 @@
 package com.github.oneandolaf.jsonext.readonly
 
 import com.github.oneandolaf.jsonext.extensions.deepCopy
+import com.github.oneandolaf.jsonext.extensions.jsonObjectOf
 import com.github.oneandolaf.jsonext.extensions.jsonPointerOf
 import com.github.oneandolaf.jsonext.impl.Conversions
 import org.json.JSONArray
@@ -971,6 +972,32 @@ class ReadOnlyJSONObject private constructor(private val obj: JSONObject) {
                 return EMPTY
             }
             return ReadOnlyJSONObject(o.deepCopy())
+        }
+
+        /**
+         * Creates a read-only object from a list of key-value pairs.
+         *
+         * Any future changes to objects or arrays inside [pairs] will not be reflected in the object returned.
+         */
+        @JvmStatic
+        fun snapshot(vararg pairs: Pair<String, Any>): ReadOnlyJSONObject {
+            if (pairs.isEmpty()) {
+                return EMPTY
+            }
+            return snapshot(jsonObjectOf(*pairs))
+        }
+
+        /**
+         * Creates a read-only object from a map.
+         *
+         * Any future changes to [map] or objects or arrays therein will not be reflected in the object returned.
+         */
+        @JvmStatic
+        fun snapshot(map: Map<String, Any>): ReadOnlyJSONObject {
+            if (map.isEmpty()) {
+                return EMPTY
+            }
+            return snapshot(JSONObject(map))
         }
 
         internal fun makeReadOnly(o: Any): Any {
